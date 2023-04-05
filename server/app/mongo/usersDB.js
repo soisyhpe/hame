@@ -1,17 +1,13 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
 
 
-// create a new user in the database
+
+// create a new user in the database and return ObjectId
 async function createUser(name,lastname,username,email,password) {
     const user = {
-        "name": name,
+        "name": name, 
         "lastname": lastname,
         "username": username,
         "email": email,
@@ -20,22 +16,29 @@ async function createUser(name,lastname,username,email,password) {
     // check user collection if user already exists
     const userExists = await getUserByUsername(username);
 
-    users=client.db("test").collection("user");
-
     if (userExists) {
-        // user already exists
+        console.log("User already exists");
         return;
-    } else {
-        // user does not exist, create new user
-        const result = await users.insertOne(user);
     }
 
-    console.log(`New user created with the following id: ${result.insertedId}`);
+    // check if email is valid
+    if (!validateEmail(email)) {
+        console.log("Email is not valid");
+        return;
+    }
+
+    // insert user in database
+    users=client.db("Hame").collection("user");
+    const result = await users.insertOne(user);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return result.insertedId;
 }
+
+
 
 // get a user with a specific username
 async function getUserByUsername(username) {
-    users=client.db("test").collection("user");
+    users=client.db("Hame").collection("user");
     const query = { "username": username };
     const user = await users.findOne(query);
     return user;
@@ -43,7 +46,7 @@ async function getUserByUsername(username) {
 
 // get a user with a specific ObjectId
 async function getUserById(id) {
-    users=client.db("test").collection("user");
+    users=client.db("Hame").collection("user");
     const query = { "_id": id };
     const user = await users.findOne(query);
     return user;
@@ -51,7 +54,7 @@ async function getUserById(id) {
 
 // delete an user with a specific username
 async function deleteUser(username) {
-    users=client.db("test").collection("user");
+    users=client.db("Hame").collection("user");
     const query = { "username": username };
     const result = await users.deleteOne(query);
     console.log(`${result.deletedCount} document(s) was/were deleted.`);
@@ -60,7 +63,7 @@ async function deleteUser(username) {
 
 // return all users
 async function listUsers() {
-    users=client.db("test").collection("user");
+    users=client.db("Hame").collection("user");
     const cursor = users.find();
     return await cursor.toArray();
 }
@@ -71,3 +74,16 @@ function validateEmail(email) {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
 }
+
+
+
+
+async function main(){
+    const id=await createUser("Norras","Sarron","APAo","test123@gmail.com","123456")
+    // ObjectId to string
+    if (!id) return;
+    const idString=id.toString();
+    console.log(idString);
+}
+
+main().catch(console.error)
