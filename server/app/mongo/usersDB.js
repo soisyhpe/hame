@@ -96,13 +96,13 @@ export async function updateUser(username, name, lastname, email, password, birt
     console.log(`${result.matchedCount} document(s) matched the query criteria.`);
     console.log(`${result.modifiedCount} document(s) was/were updated.`);
 }
-
+/* 
 export async function main() {
     const id=await createUser("Norras","Sarron","APAo","test123@gmail.com","123456")
     // ObjectId to string
     if (!id) return;
     const idString=id.toString();
     console.log(idString);
-}
+} */
 
-main().catch(console.error)
+//main().catch(console.error)

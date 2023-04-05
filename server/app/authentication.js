@@ -1,15 +1,25 @@
 const express = require('express')
-const regex = require('./tools/regex.js')
+//const regex = require('./tools/regex.js')
+
+//import { createUser, deleteUser } from './mongo/usersDB.js'
 
 const app = express()
 const authentication_api = express.Router()
+
+const email_regex = new RegExp("/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/")
+const pseudo_regex = new RegExp("\S")
+const firstName_regex = new RegExp("\S")
+const lastName_regex = new RegExp("\S")
+const password_regex = new RegExp("\S")
 
 authentication_api.
   use(express.json())
 
   // get all users
   .get('/user', (req, res) => {
-    
+   res.json({
+    "ok" :""
+   })
   })
 
   // get a specific user from id
@@ -32,49 +42,57 @@ authentication_api.
     }
 
     // check for email validity
-    if (!regex.email.test(email)) {
+    console.log(email)
+    console.log(email_regex.test(email))
+    if (!email_regex.test(email)) {
       res.status(400).send("Requête invalide : format email invalide !")
     }
 
     // check for pseudo validity
-    if (regex.pseudo.test(pseudo)) {
+    if (pseudo_regex.test(pseudo)) {
       res.status(400).send("Requête invalide : format pseudo invalide !")
     }
 
     // check for firstName validity
-    if (regex.firstName.test(firstName)) {
+    if (firstName_regex.test(firstName)) {
       res.status(400).send("Requête invalide : format firstName invalide !")
     }
 
     // check for lastName validity
-    if (regex.lastName.test(lastName)) {
+    if (lastName_regex.test(lastName)) {
       res.status(400).send("Requête invalide : format lastName invalide !")
     }
 
     // check for password validity
-    if (regex.lastName.test(lastName)) {
+    if (password_regex.test(password)) {
       res.status(400).send("Requête invalide : format password invalide !")
     }
 
     // todo : call dedicated function and use return value for the res
+    // createUser(email, pseudo, firstName, lastName, password)
 
-    res.json({
+    /* res.json({
       "id": ""
-    })
-
-
-
-    console.log("")
-
+    } */
 
   })
 
   // delete a existing user
   .delete('/user/:id', (req, res) => {
+    
+    const { email, pseudo } = req.body
 
-    // todo : check if not exists
+    // check if request is complete
+    if (!email || !pseudo) {
+      res.status(400).send("Requête invalide : email ou pseudo sont nécessaires !");
+    }
 
-    // todo : return deleted id
+    // todo : vérifie que l'utilisateur existe (modifier deleteUser)
+    // deleteUser(pseudo)
+
+    res.json({
+      "deleted": "true"
+    })
 
   })
 
