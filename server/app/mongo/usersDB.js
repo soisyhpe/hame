@@ -5,7 +5,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 
 // create a new user in the database and return ObjectId
-async function createUser(name,lastname,username,email,password,birthdate="",location="",bio="",website="",profilePicture="") {
+export async function createUser(email, name, lastname, username, password, birthdate="", location="", bio="", website="", profilePicture="") {
     const user = {
         "name": name, 
         "lastname": lastname,
@@ -44,7 +44,7 @@ async function createUser(name,lastname,username,email,password,birthdate="",loc
 
 
 // get a user with a specific username
-async function getUserByUsername(username) {
+export async function getUserByUsername(username) {
     users=client.db("Hame").collection("user");
     const query = { "username": username };
     const user = await users.findOne(query);
@@ -52,7 +52,7 @@ async function getUserByUsername(username) {
 }
 
 // get a user with a specific ObjectId
-async function getUserById(id) {
+export async function getUserById(id) {
     users=client.db("Hame").collection("user");
     const query = { "_id": id };
     const user = await users.findOne(query);
@@ -60,7 +60,7 @@ async function getUserById(id) {
 }
 
 // delete an user with a specific username
-async function deleteUser(username) {
+export async function deleteUser(username) {
     users=client.db("Hame").collection("user");
     const query = { "username": username };
     const result = await users.deleteOne(query);
@@ -69,7 +69,7 @@ async function deleteUser(username) {
 
 
 // return all users
-async function listUsers() {
+export async function listUsers() {
     users=client.db("Hame").collection("user");
     const cursor = users.find();
     return await cursor.toArray();
@@ -77,13 +77,13 @@ async function listUsers() {
 
 
 // regexp to check if email is valid
-function validateEmail(email) {
+export function validateEmail(email) {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
 }
 
 // update user
-async function updateUser(username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
+export async function updateUser(username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
     users=client.db("Hame").collection("user");
     const query = { "username": username };
     const newValues = { $set: { "name": name, "lastname": lastname, "email": email, "password": password, "birthdate": birthdate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
@@ -92,9 +92,7 @@ async function updateUser(username, name, lastname, email, password, birthdate="
     console.log(`${result.modifiedCount} document(s) was/were updated.`);
 }
 
-
-
-async function main(){
+export async function main() {
     const id=await createUser("Norras","Sarron","APAo","test123@gmail.com","123456")
     // ObjectId to string
     if (!id) return;
