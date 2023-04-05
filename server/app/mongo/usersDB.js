@@ -17,7 +17,11 @@ export async function createUser(email, name, lastname, username, password, birt
         "creationDate": new Date().getTime(),
         "bio": bio,
         "website": website,
-        "profilePicture": profilePicture
+        "profilePicture": profilePicture,
+        "likedMessages": [],
+        "retweetedMessages": [],
+        "followedUsers": [],
+        "followers": []
     }
     // check user collection if user already exists
     const userExists = await getUserByUsername(username);
