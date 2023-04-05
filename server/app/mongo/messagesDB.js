@@ -11,3 +11,27 @@ async function getMessageById(id) {
     const message= await messages.findOne(query);
     return message;
 }
+
+// get all messages from a specific user
+async function getMessagesFromUser(username) {
+    messages=client.db("Hame").collection("message");
+    const query = { "username": username };
+
+    const messagesFromUser = await messages.find(query).toArray();
+    return messagesFromUser;
+}
+
+// send a public message 
+async function sendPublicMessage(username, message) {
+    const publicMessage = {
+        "username": username,
+        "message": message,
+        "timestamp": new Date().getTime(),
+        "type": "public"
+    }
+
+    messages=client.db("Hame").collection("message");
+    const result = await messages.insertOne(publicMessage);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return result.insertedId;
+}

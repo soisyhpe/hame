@@ -5,13 +5,19 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 
 // create a new user in the database and return ObjectId
-async function createUser(name,lastname,username,email,password) {
+async function createUser(name,lastname,username,email,password,birthdate="",location="",bio="",website="",profilePicture="") {
     const user = {
         "name": name, 
         "lastname": lastname,
         "username": username,
         "email": email,
-        "password": password
+        "password": password,
+        "birthdate": birthdate,
+        "location": location,
+        "creationDate": new Date().getTime(),
+        "bio": bio,
+        "website": website,
+        "profilePicture": profilePicture
     }
     // check user collection if user already exists
     const userExists = await getUserByUsername(username);
@@ -29,6 +35,7 @@ async function createUser(name,lastname,username,email,password) {
 
     // insert user in database
     users=client.db("Hame").collection("user");
+
     const result = await users.insertOne(user);
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
     return result.insertedId;
@@ -75,6 +82,15 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+// update user
+async function updateUser(username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
+    users=client.db("Hame").collection("user");
+    const query = { "username": username };
+    const newValues = { $set: { "name": name, "lastname": lastname, "email": email, "password": password, "birthdate": birthdate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
+    const result = await users.updateOne(query, newValues);
+    console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+    console.log(`${result.modifiedCount} document(s) was/were updated.`);
+}
 
 
 
