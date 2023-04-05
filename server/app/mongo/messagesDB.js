@@ -26,6 +26,7 @@ async function sendPublicMessage(username, message) {
     const publicMessage = {
         "username": username,
         "message": message,
+        "likes": 0,
         "timestamp": new Date().getTime(),
         "type": "public"
     }
@@ -35,3 +36,22 @@ async function sendPublicMessage(username, message) {
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
     return result.insertedId;
 }
+
+// send a private message
+async function sendPrivateMessage(username, message, senderid,receiverid) {
+    const privateMessage = {
+        "username": username,
+        "message": message,
+        "timestamp": new Date().getTime(),
+        "type": "private",
+        "senderid": senderid,
+        "receiverid": receiverid
+    }
+
+    messages=client.db("Hame").collection("message");
+    const result = await messages.insertOne(privateMessage);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    return result.insertedId;
+}
+
+

@@ -24,13 +24,13 @@ export async function createUser(email, name, lastname, username, password, birt
 
     if (userExists) {
         console.log("User already exists");
-        return;
+        return false;
     }
 
     // check if email is valid
     if (!validateEmail(email)) {
         console.log("Email is not valid");
-        return;
+        return false;
     }
 
     // insert user in database
@@ -64,7 +64,12 @@ export async function deleteUser(username) {
     users=client.db("Hame").collection("user");
     const query = { "username": username };
     const result = await users.deleteOne(query);
+    if (result.deletedCount === 0) {
+        console.log("No documents matched the query. No documents were deleted.");
+        return false;
+    }
     console.log(`${result.deletedCount} document(s) was/were deleted.`);
+    return true;
 }
 
 
