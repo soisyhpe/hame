@@ -1,8 +1,8 @@
 // local settings
-const debug = true;
+const debugconst = true;
 
 function debug(message) {
-  if (debug) console.log(message);
+  if (debugconst) console.log(message);
 }
 
 module.exports = { debug };

@@ -1,8 +1,8 @@
 // dependencies
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
-const authentication_tools = require('./tools/authentication_tools')
-const { debug } = require('./tools/debug_tools')
+const authentication_tools = require('../tools/authentication_tools')
+const { debug } = require('../tools/debug_tools')
 
 // mongodb's stuff
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
