@@ -1,14 +1,14 @@
 // dependencies
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
-const authentication_tools = require('./tools/authentication_tools')
-const { debug } = require('./tools/debug_tools')
+const authentication_tools = require('../tools/authentication_tools')
+const { debug } = require('../tools/debug_tools')
+const {randomBytes}=require('crypto');
 
 // mongodb's stuff
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const users = client.db("Hame").collection("users")
-
 
 
 
@@ -24,7 +24,7 @@ const users = client.db("Hame").collection("users")
  * @param {string} bio
  * @param {string} website
  * @param {string} profilePicture
- * @returns {ObjectId|boolean} ObjectId of the user if everything is valid, false otherwise
+ * @returns {string|boolean} ID of the user if everything is valid, false otherwise
 */
 async function createUser(email, firstName, lastName, birthDate, userName, password, location = "", bio = "", website = "", profilePicture = "") {
     // check every required fields
@@ -76,6 +76,7 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
 
     // insert user in database
     const newUser = {
+        "userid":randomBytes(16).toString("hex"),
         "email": email,
         "firstName": firstName,
         "lastName": lastName,
@@ -116,11 +117,11 @@ async function getUserByuserName(userName) {
 
 /**
  * Get a user with a specific id
- * @param {ObjectId} id
+ * @param {string} id
  * @returns {Object|boolean} user if successful, false otherwise
 */
 async function getUserById(id) {
-    const query = { "_id": id };
+    const query = { "userid": id };
     const user = await users.findOne(query);
     return user;
 }
@@ -234,7 +235,7 @@ async function updateUser(userid,userName, name, lastName, email, password, birt
         return false;
     }
 
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues = { $set: { "userName":userName,"name": name, "lastName": lastName, "email": email, "password": password, "birthDate": birthDate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
     const result = await users.updateOne(query, newValues);
     console.log(`${result.matchedCount} document(s) matched the query criteria.`);
@@ -244,12 +245,12 @@ async function updateUser(userid,userName, name, lastName, email, password, birt
 
 /**
  * Update a user's email
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} email
  * @returns {boolean} true if successful, false otherwise
 */
 async function updateUser_email(userid,email){
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues = { $set: { "email": email } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
@@ -264,7 +265,7 @@ async function updateUser_email(userid,email){
 
 /**
  * Update a user's userName
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} newuserName
  * @returns {boolean} true if successful, false otherwise
 */
@@ -280,7 +281,7 @@ async function updateUser_userName(userid,newuserName){
         console.log("userName already exists");
         return false;
     }
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues={ $set: { "userName": newuserName } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
@@ -294,7 +295,7 @@ async function updateUser_userName(userid,newuserName){
 
 /**
  * Update a user's password
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} password
  * @returns {boolean} true if successful, false otherwise
 */
@@ -313,7 +314,7 @@ async function updateUser_password(userid,password){
     password = await bcrypt.hash(password, 10);
 
 
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues={ $set: { "password": password } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
@@ -329,7 +330,7 @@ async function updateUser_password(userid,password){
 
 /**
  * Update a user's first name and last name
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} newfirstName
  * @param {string} newlastName
  * @returns {boolean} true if successful, false otherwise
@@ -339,7 +340,7 @@ async function updateUser_name(userid,newfirstName,newlastName){
         console.log("firstName or lastName is empty");
         return false;
     }
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues={ $set: { "name": newfirstName, "lastName": newlastName } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
@@ -353,7 +354,7 @@ async function updateUser_name(userid,newfirstName,newlastName){
 
 /**
  * Update a user's bio
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} newBio
  * @returns {boolean} true if successful, false otherwise
 */
@@ -362,7 +363,7 @@ async function updateUser_bio(userid,newBio){
         console.log("Bio is empty");
         return false;
     }
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues={ $set: { "bio": newBio } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
@@ -376,7 +377,7 @@ async function updateUser_bio(userid,newBio){
 
 /**
  * Update a user's profile picture
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} profilePicture
  * @returns {boolean} true if successful, false otherwise
 */
@@ -385,7 +386,7 @@ async function updateUser_profilePicture(userid,profilePicture){
         console.log("Profile picture is empty");
         return false;
     }
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues={ $set: { "profilePicture": profilePicture } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
@@ -400,7 +401,7 @@ async function updateUser_profilePicture(userid,profilePicture){
 
 /**
  * Update a user's birthday
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} birthday
  * @returns {boolean} true if successful, false otherwise
 */
@@ -415,7 +416,7 @@ async function updateUser_birthday(userid,birthday){
         return false;
     }
     
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues={ $set: { "birthday": birthday } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
@@ -433,7 +434,7 @@ async function updateUser_birthday(userid,birthday){
 
 /**
  * Update a user's website
- * @param {ObjectId} userid
+ * @param {string} userid
  * @param {string} website
  * @returns {boolean} true if successful, false otherwise
 */
@@ -447,7 +448,7 @@ async function updateUser_website(userid,website){
         return false;
     }
 
-    const query = { "_id": userid };
+    const query = { "userid": userid };
     const newValues={ $set: { "website": website } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
