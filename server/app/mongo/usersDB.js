@@ -1,8 +1,8 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-const bcrypt=require('bcrypt');
-
+const bcrypt = require('bcrypt');
 
 /**
  * Create a new user entry in the database (user and friend collection)
@@ -475,4 +475,4 @@ async function main() {
 
 //main().catch(console.error)
 
-module.s = { createUser, deleteUser, listUsers }
+module.exports = { createUser, deleteUser, listUsers }
