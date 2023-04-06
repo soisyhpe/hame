@@ -1,3 +1,1 @@
-//require('./app/mongo/usersDB.js');
-require('./app/authentication.js')
-
+require('./app/default.js')
