@@ -2,7 +2,6 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 const authentication_tools = require('../tools/authentication_tools')
-const { debug } = require('../tools/debug_tools')
 const {randomBytes}=require('crypto');
 
 // mongodb's stuff
