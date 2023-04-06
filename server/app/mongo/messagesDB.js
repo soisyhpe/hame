@@ -1,18 +1,32 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
-// get a message with a specific id
+/**
+ * get a message with a specific id
+ * @param {ObjectId} id
+ * @returns {Object} message with a specific id
+ * @returns {undefined | boolean} message if successful, false otherwise
+*/
 async function getMessageById(id) {
     messages=client.db("Hame").collection("message");
     const query = { "_id": id };
 
     const message= await messages.findOne(query);
+    if (message == null) {
+        console.log("Message does not exist");
+        return false;
+    }
     return message;
 }
 
-// get all messages from a specific user
+
+/**
+ * 
+ * @param {string} username 
+ * @returns {Array} array of messages from a specific user
+ */
 async function getMessagesFromUser(username) {
     messages=client.db("Hame").collection("message");
     const query = { "username": username };
@@ -21,7 +35,13 @@ async function getMessagesFromUser(username) {
     return messagesFromUser;
 }
 
-// send a public message 
+
+/**
+ * send a public message
+ * @param {string} username
+ * @param {string} message
+ * @returns {ObjectId|boolean} ObjectId of the message if successful, false otherwise
+*/
 async function sendPublicMessage(username, message) {
     const publicMessage = {
         "username": username,
@@ -46,7 +66,14 @@ async function sendPublicMessage(username, message) {
     return result.insertedId;
 }
 
-// send a private message
+/**
+ * send a private message
+ * @param {string} username
+ * @param {string} message
+ * @param {ObjectId} senderid
+ * @param {ObjectId} receiverid
+ * @returns {ObjectId|boolean} ObjectId of the message if successful, false otherwise
+*/
 async function sendPrivateMessage(username, message, senderid,receiverid) {
     const privateMessage = {
         "username": username,
@@ -68,7 +95,11 @@ async function sendPrivateMessage(username, message, senderid,receiverid) {
     return result.insertedId;
 }
 
-// delete a message with a specific id
+/**
+ * delete a message with a specific id
+ * @param {ObjectId} id
+ * @returns {boolean} true if successful, false otherwise
+*/
 async function deleteMessageById(id) {
     messages=client.db("Hame").collection("message");
     const query = { "_id": id };
@@ -82,7 +113,13 @@ async function deleteMessageById(id) {
     return true;
 }
 
-// like a message with a specific id
+
+/**
+ * like a message with a specific id
+ * @param {ObjectId} usernameid
+ * @param {ObjectId} messageid
+ * @returns {boolean} true if successful, false otherwise
+*/
 async function likeMessageById(usernameid,messageid) {
     // need to update like count in message
     messages=client.db("Hame").collection("message");
@@ -106,7 +143,13 @@ async function likeMessageById(usernameid,messageid) {
     return true;
 }
 
-// unlike a message with a specific id
+
+/**
+ * unlike a message with a specific id
+ * @param {ObjectId} usernameid
+ * @param {ObjectId} messageid
+ * @returns {boolean} true if successful, false otherwise
+*/
 async function unlikeMessageById(usernameid,messageid) {
     // need to update like count in message
     messages=client.db("Hame").collection("message");
@@ -131,7 +174,12 @@ async function unlikeMessageById(usernameid,messageid) {
 }
 
 
-// retweet a message with a specific id
+/**
+ * retweet a message with a specific id
+ * @param {ObjectId} usernameid
+ * @param {ObjectId} messageid
+ * @returns {boolean} true if successful, false otherwise
+*/
 async function retweetMessageById(usernameid,messageid) {
     // need to update retweet count in message
     messages=client.db("Hame").collection("message");
@@ -155,7 +203,12 @@ async function retweetMessageById(usernameid,messageid) {
 }
 
 
-// unretweet a message with a specific id
+/**
+ * unretweet a message with a specific id
+ * @param {ObjectId} usernameid
+ * @param {ObjectId} messageid
+ * @returns {boolean} true if successful, false otherwise
+*/
 async function unretweetMessageById(usernameid,messageid) {
     //  need to update retweet count in message
     messages=client.db("Hame").collection("message");
@@ -177,6 +230,43 @@ async function unretweetMessageById(usernameid,messageid) {
     const result2=users.updateOne(query2, newvalues);
     console.log(`Updated ${result1.modifiedCount} document(s)`);
     return true;
+}
+
+/**
+ * comment on a message with a specific id
+ * @param {ObjectId} usernameid  - username of the user who is commenting
+ * @param {ObjectId} messageid - id of the message being commented on
+ * @param {string} comment - comment message
+ * @returns {ObjectId} - id of the comment
+*/
+async function commentMessageById(usernameid,messageid,comment) {
+    const commentMessage = {
+        "username": usernameid,
+        "message": comment,
+        "timestamp": new Date().getTime(),
+        "likes": 0,
+        "retweets": 0,
+        "type": "comment",
+        "messageid": messageid,
+        "comments": []
+    }
+
+    messages=client.db("Hame").collection("message");
+    const result = await messages.insertOne(commentMessage);
+
+    // update comments in message
+    const query = { "_id": messageid };
+    newvalues= { $push: { "comments": result.insertedId } };
+
+    const result2=messages.updateOne(query, newvalues);
+    if (result2.modifiedCount == 0) {
+        console.log("Failed to comment message");
+        return false;
+    }
+
+    console.log(`Comment of _id: ${result.insertedId} have been successfully inserted into message _id: ${messageid}`);
+
+    return result.insertedId;
 }
 
     
