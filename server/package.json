@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "Hame server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -7,6 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
+  "contributors": [
+    {
+      "name": "Yenal BAYSAN",
+      "email": "yenal.baysan@etu.sorbonne-universite.fr"
+    },
+    {
+      "name": "Eros CHAN",
+      "email": "eros.chan@etu.sorbonne-universite.fr"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
