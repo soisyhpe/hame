@@ -1,101 +1,111 @@
+// dependencies
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const bcrypt = require('bcrypt');
+const authentication_tools = require('./tools/authentication_tools')
+const { debug } = require('./tools/debug_tools')
 
+// mongodb's stuff
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-const bcrypt = require('bcrypt');
+const users = client.db("Hame").collection("users")
+
+
+
 
 /**
  * Create a new user entry in the database (user and friend collection)
  * @param {string} email
- * @param {string} name
- * @param {string} lastname
- * @param {string} username
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {string} birthDate
+ * @param {string} userName
  * @param {string} password
- * @param {string} birthdate
  * @param {string} location
  * @param {string} bio
  * @param {string} website
  * @param {string} profilePicture
  * @returns {ObjectId|boolean} ObjectId of the user if everything is valid, false otherwise
 */
-async function createUser(email, name, lastname, username, password, birthdate="", location="", bio="", website="", profilePicture="") {
-    if (email == "" || name == "" || lastname == "" || username == "" || password == "") {
-        console.log("Missing information");
-        return false;
+async function createUser(email, firstName, lastName, birthDate, userName, password, location = "", bio = "", website = "", profilePicture = "") {
+    // check every required fields
+    if (email == "" || firstName == "" || lastName == "" || birthDate == "" || userName == "" || password == "") {
+        return "email, firstName, lastName, birthDate, userName and password fields are required";
     }
 
-    if (!validatePassword(password)) {
-        console.log("Password is not valid");
-        return false;
+    // check for email validity
+    if (!authentication_tools.checkEmail(email)) {
+        return "email not valid"
     }
+    debug("Success : email is valid")
 
-    // hash password
-    password=await bcrypt.hash(password, 10);
+    // check for firstName validity
+    if (!authentication_tools.checkfirstName(firstName)) {
+        return "firstName not valid"
+    }
+    debug("Success : firstName is valid")
 
+    // check for lastName validity
+    if (!authentication_tools.checklastName(lastName)) {
+        return "lastName not valid"
+    }
+    debug("Success : lastName is valid")
 
-   
-    const user = {
-        "name": name, 
-        "lastname": lastname,
-        "username": username,
+    // check for userName validity
+    if (!authentication_tools.checkuserName(userName)) {
+        return "userName not valid"
+    }
+    debug("Success : userName is valid")
+
+    // check for birthDate validity
+    if (!authentication_tools.checkbirthDate(birthDate)) {
+        return "birthDate not valid"
+    }
+    debug("Success : birthDate is valid")
+
+    // check for password validity
+    if (!authentication_tools.checkPassword(password)) {
+        return "password not valid"
+    }
+    debug("Success : password is valid")
+
+    // check user collection if user already exists
+    if (await getUserByuserName(userName)) {
+        return "User already exists";
+    }
+    debug("Success : email is valid")
+
+    // insert user in database
+    const newUser = {
         "email": email,
-        "password": password,
-        "birthdate": birthdate,
+        "firstName": firstName,
+        "lastName": lastName,
+        "birthDate": birthDate,
+        "userName": userName,
+        "password": await bcrypt.hash(password, 10),
         "location": location,
-        "creationDate": new Date().getTime(),
         "bio": bio,
         "website": website,
         "profilePicture": profilePicture,
         "likedMessages": [],
         "retweetedMessages": [],
         "followedUsers": [],
-        "followers": []
-    }
-    // check user collection if user already exists
-    const userExists = await getUserByUsername(username);
-
-    if (userExists) {
-        console.log("User already exists");
-        return false;
+        "followers": [],
+        "creationDate": new Date().getTime(),
     }
 
-    // check if email is valid
-    if (!validateEmail(email)) {
-        console.log("Email is not valid");
-        return false;
-    }
-
-
-
-    // insert user in database
-    users=client.db("Hame").collection("user");
-
-    const result = await users.insertOne(user);
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
-
-    const userfriend= {
-        "username": username,
-        "userid": result.insertedId,
-        "friends": []
-    }
-
-    friends=client.db("Hame").collection("friends");
-    const result2 = await friends.insertOne(userfriend);
-
+    const result = await users.insertOne(newUser);
+    if (debug) console.log(`new user registered ${result.insertedId}`);
 
     return result.insertedId;
 }
 
-
-
 /**
- * Get a user with a specific username
- * @param {string} username
- * @returns {Object|boolean} user with the specific username, false otherwise
+ * Get a user with a specific userName
+ * @param {string} userName
+ * @returns {Object|boolean} user with the specific userName, false otherwise
 */
-async function getUserByUsername(username) {
-    users=client.db("Hame").collection("user");
-    const query = { "username": username };
+async function getUserByuserName(userName) {
+    const query = { "userName": userName };
     const user = await users.findOne(query);
     if (user == null) {
         console.log("User does not exist");
@@ -110,26 +120,26 @@ async function getUserByUsername(username) {
  * @returns {Object|boolean} user if successful, false otherwise
 */
 async function getUserById(id) {
-    users=client.db("Hame").collection("user");
     const query = { "_id": id };
     const user = await users.findOne(query);
     return user;
 }
 
 /**
- * Delete a user with a specific username
- * @param {string} username
+ * Delete a user with a specific userName
+ * @param {string} userName
  * @returns {boolean} true if successful, false otherwise
 */
-async function deleteUser(username) {
-    users=client.db("Hame").collection("user");
-    const query = { "username": username };
+async function deleteUser(userName) {
+    const query = { "userName": userName };
     const result = await users.deleteOne(query);
+    
     if (result.deletedCount === 0) {
-        console.log("No documents matched the query. No documents were deleted.");
+        if (debug) console.log("No documents matched the query. No documents were deleted.");
         return false;
     }
-    console.log(`${result.deletedCount} document(s) was/were deleted.`);
+    
+    if (debug) console.log(`${result.deletedCount} document(s) was/were deleted.`);
     return true;
 }
 
@@ -139,7 +149,6 @@ async function deleteUser(username) {
  * @returns {Array} array of users
 */
 async function listUsers() {
-    users=client.db("Hame").collection("user");
     const cursor = users.find();
     return await cursor.toArray();
 }
@@ -203,12 +212,12 @@ function validateWebsite(website){
  * Update a user
  * @returns {boolean} true if successful, false otherwise
 */
-async function updateUser(userid,username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
-    if (username == "" || name == "" || lastname == "" || email == "" || password == "") {
+async function updateUser(userid,userName, name, lastName, email, password, birthDate="", location="", bio="", website="", profilePicture="") {
+    if (userName == "" || name == "" || lastName == "" || email == "" || password == "") {
         console.log("Missing fields");
         return false;
     }
-    if (!validateBirthday(birthdate)) {
+    if (!validateBirthday(birthDate)) {
         console.log("Birthday is not valid");
         return false;
     }
@@ -225,9 +234,8 @@ async function updateUser(userid,username, name, lastname, email, password, birt
         return false;
     }
 
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
-    const newValues = { $set: { "username":username,"name": name, "lastname": lastname, "email": email, "password": password, "birthdate": birthdate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
+    const newValues = { $set: { "userName":userName,"name": name, "lastName": lastName, "email": email, "password": password, "birthDate": birthDate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
     const result = await users.updateOne(query, newValues);
     console.log(`${result.matchedCount} document(s) matched the query criteria.`);
     console.log(`${result.modifiedCount} document(s) was/were updated.`);
@@ -241,7 +249,6 @@ async function updateUser(userid,username, name, lastname, email, password, birt
  * @returns {boolean} true if successful, false otherwise
 */
 async function updateUser_email(userid,email){
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
     const newValues = { $set: { "email": email } };
     const result = await users.updateOne(query, newValues);
@@ -256,26 +263,25 @@ async function updateUser_email(userid,email){
 }
 
 /**
- * Update a user's username
+ * Update a user's userName
  * @param {ObjectId} userid
- * @param {string} newUsername
+ * @param {string} newuserName
  * @returns {boolean} true if successful, false otherwise
 */
-async function updateUser_username(userid,newUsername){
+async function updateUser_userName(userid,newuserName){
 
-    if (newUsername===""){
-        console.log("Username is empty");
+    if (newuserName===""){
+        console.log("userName is empty");
         return false;
     }
-    users=client.db("Hame").collection("user");
-    // check if username exists
-    const userExists = await getUserByUsername(newUsername);
+    // check if userName exists
+    const userExists = await getUserByuserName(newuserName);
     if (userExists) {
-        console.log("Username already exists");
+        console.log("userName already exists");
         return false;
     }
     const query = { "_id": userid };
-    const newValues={ $set: { "username": newUsername } };
+    const newValues={ $set: { "userName": newuserName } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
@@ -307,7 +313,6 @@ async function updateUser_password(userid,password){
     password = await bcrypt.hash(password, 10);
 
 
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
     const newValues={ $set: { "password": password } };
     const result = await users.updateOne(query, newValues);
@@ -325,18 +330,17 @@ async function updateUser_password(userid,password){
 /**
  * Update a user's first name and last name
  * @param {ObjectId} userid
- * @param {string} newFirstname
- * @param {string} newLastname
+ * @param {string} newfirstName
+ * @param {string} newlastName
  * @returns {boolean} true if successful, false otherwise
 */
-async function updateUser_name(userid,newFirstname,newLastname){
-    if (newFirstname==="" || newLastname===""){
-        console.log("Firstname or lastname is empty");
+async function updateUser_name(userid,newfirstName,newlastName){
+    if (newfirstName==="" || newlastName===""){
+        console.log("firstName or lastName is empty");
         return false;
     }
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
-    const newValues={ $set: { "name": newFirstname, "lastname": newLastname } };
+    const newValues={ $set: { "name": newfirstName, "lastName": newlastName } };
     const result = await users.updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
@@ -358,7 +362,6 @@ async function updateUser_bio(userid,newBio){
         console.log("Bio is empty");
         return false;
     }
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
     const newValues={ $set: { "bio": newBio } };
     const result = await users.updateOne(query, newValues);
@@ -382,7 +385,6 @@ async function updateUser_profilePicture(userid,profilePicture){
         console.log("Profile picture is empty");
         return false;
     }
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
     const newValues={ $set: { "profilePicture": profilePicture } };
     const result = await users.updateOne(query, newValues);
@@ -413,7 +415,6 @@ async function updateUser_birthday(userid,birthday){
         return false;
     }
     
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
     const newValues={ $set: { "birthday": birthday } };
     const result = await users.updateOne(query, newValues);
@@ -446,7 +447,6 @@ async function updateUser_website(userid,website){
         return false;
     }
 
-    users=client.db("Hame").collection("user");
     const query = { "_id": userid };
     const newValues={ $set: { "website": website } };
     const result = await users.updateOne(query, newValues);
@@ -459,20 +459,5 @@ async function updateUser_website(userid,website){
     }
 }
 
-
-
-
-
-
-/* 
-async function main() {
-    const id=await createUser("Norras","Sarron","APAo","test123@gmail.com","123456")
-    // ObjectId to string
-    if (!id) return;
-    const idString=id.toString();
-    console.log(idString);
-} */
-
-//main().catch(console.error)
-
+// specify which functions should be accessed from outside
 module.exports = { createUser, deleteUser, listUsers }
