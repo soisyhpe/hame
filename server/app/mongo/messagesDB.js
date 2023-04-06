@@ -1,6 +1,7 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const { randomBytes } =  require('crypto');
 
 
 /**
@@ -44,6 +45,7 @@ async function getMessagesFromUser(username) {
 */
 async function sendPublicMessage(username, message) {
     const publicMessage = {
+        "messageid": (new Date()).valueOf().toString('hex') + randomBytes(16).toString('hex'),
         "username": username,
         "message": message,
         "likes": 0,
