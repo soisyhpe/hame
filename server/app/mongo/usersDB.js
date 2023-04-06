@@ -18,7 +18,7 @@ const bcrypt=require('bcrypt');
  * @param {string} profilePicture
  * @returns {ObjectId|boolean} ObjectId of the user if everything is valid, false otherwise
 */
-export async function createUser(email, name, lastname, username, password, birthdate="", location="", bio="", website="", profilePicture="") {
+async function createUser(email, name, lastname, username, password, birthdate="", location="", bio="", website="", profilePicture="") {
     if (email == "" || name == "" || lastname == "" || username == "" || password == "") {
         console.log("Missing information");
         return false;
@@ -93,7 +93,7 @@ export async function createUser(email, name, lastname, username, password, birt
  * @param {string} username
  * @returns {Object|boolean} user with the specific username, false otherwise
 */
-export async function getUserByUsername(username) {
+async function getUserByUsername(username) {
     users=client.db("Hame").collection("user");
     const query = { "username": username };
     const user = await users.findOne(query);
@@ -109,7 +109,7 @@ export async function getUserByUsername(username) {
  * @param {ObjectId} id
  * @returns {Object|boolean} user if successful, false otherwise
 */
-export async function getUserById(id) {
+async function getUserById(id) {
     users=client.db("Hame").collection("user");
     const query = { "_id": id };
     const user = await users.findOne(query);
@@ -121,7 +121,7 @@ export async function getUserById(id) {
  * @param {string} username
  * @returns {boolean} true if successful, false otherwise
 */
-export async function deleteUser(username) {
+async function deleteUser(username) {
     users=client.db("Hame").collection("user");
     const query = { "username": username };
     const result = await users.deleteOne(query);
@@ -138,7 +138,7 @@ export async function deleteUser(username) {
  * Get all users
  * @returns {Array} array of users
 */
-export async function listUsers() {
+async function listUsers() {
     users=client.db("Hame").collection("user");
     const cursor = users.find();
     return await cursor.toArray();
@@ -150,7 +150,7 @@ export async function listUsers() {
  * @param {string} email
  * @returns {boolean} true if valid, false otherwise
 */
-export function validateEmail(email) {
+ function validateEmail(email) {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
 }
@@ -203,7 +203,7 @@ function validateWebsite(website){
  * Update a user
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser(userid,username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
+async function updateUser(userid,username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
     if (username == "" || name == "" || lastname == "" || email == "" || password == "") {
         console.log("Missing fields");
         return false;
@@ -240,7 +240,7 @@ export async function updateUser(userid,username, name, lastname, email, passwor
  * @param {string} email
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_email(userid,email){
+async function updateUser_email(userid,email){
     users=client.db("Hame").collection("user");
     const query = { "_id": userid };
     const newValues = { $set: { "email": email } };
@@ -261,7 +261,7 @@ export async function updateUser_email(userid,email){
  * @param {string} newUsername
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_username(userid,newUsername){
+async function updateUser_username(userid,newUsername){
 
     if (newUsername===""){
         console.log("Username is empty");
@@ -292,7 +292,7 @@ export async function updateUser_username(userid,newUsername){
  * @param {string} password
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_password(userid,password){
+async function updateUser_password(userid,password){
     if (password===""){
         console.log("Password is empty");
         return false;
@@ -329,7 +329,7 @@ export async function updateUser_password(userid,password){
  * @param {string} newLastname
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_name(userid,newFirstname,newLastname){
+async function updateUser_name(userid,newFirstname,newLastname){
     if (newFirstname==="" || newLastname===""){
         console.log("Firstname or lastname is empty");
         return false;
@@ -353,7 +353,7 @@ export async function updateUser_name(userid,newFirstname,newLastname){
  * @param {string} newBio
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_bio(userid,newBio){
+async function updateUser_bio(userid,newBio){
     if (newBio===""){
         console.log("Bio is empty");
         return false;
@@ -377,7 +377,7 @@ export async function updateUser_bio(userid,newBio){
  * @param {string} profilePicture
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_profilePicture(userid,profilePicture){
+async function updateUser_profilePicture(userid,profilePicture){
     if (profilePicture===""){
         console.log("Profile picture is empty");
         return false;
@@ -402,7 +402,7 @@ export async function updateUser_profilePicture(userid,profilePicture){
  * @param {string} birthday
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_birthday(userid,birthday){
+async function updateUser_birthday(userid,birthday){
     if (birthday===""){
         console.log("Birthday is empty");
         return false;
@@ -436,7 +436,7 @@ export async function updateUser_birthday(userid,birthday){
  * @param {string} website
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser_website(userid,website){
+async function updateUser_website(userid,website){
     if (website===""){
         console.log("Website is empty");
         return false;
@@ -465,7 +465,7 @@ export async function updateUser_website(userid,website){
 
 
 /* 
-export async function main() {
+async function main() {
     const id=await createUser("Norras","Sarron","APAo","test123@gmail.com","123456")
     // ObjectId to string
     if (!id) return;
@@ -474,3 +474,5 @@ export async function main() {
 } */
 
 //main().catch(console.error)
+
+module.s = { createUser, deleteUser, listUsers }
