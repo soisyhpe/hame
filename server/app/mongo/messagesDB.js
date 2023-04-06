@@ -78,6 +78,7 @@ async function sendPublicMessage(username, message) {
 */
 async function sendPrivateMessage(username, message, senderid,receiverid) {
     const privateMessage = {
+        "messageid": (new Date()).valueOf().toString('hex') + randomBytes(16).toString('hex'),
         "username": username,
         "message": message,
         "senderid": senderid,
