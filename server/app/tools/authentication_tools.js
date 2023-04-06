@@ -1,7 +1,7 @@
 const EMAIL = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g
 const FIRSTNAME = /^\w{1,32}$/g;
 const LASTNAME = /^\w{1,64}$/g;
-// todo : BIRTHDATE
+const BIRTHDATE = /^((0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(?:19|20)\d\d)$/g;
 const USERNAME = /^\w{3,16}$/g;
 const PASSWORD = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/g;
 
