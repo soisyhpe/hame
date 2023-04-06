@@ -7,7 +7,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
  * get a message with a specific id
  * @param {ObjectId} id
  * @returns {Object} message with a specific id
- * @returns {undefined | boolean} message if successful, false otherwise
+ * @returns {Object | boolean} message if exists,false otherwise
 */
 async function getMessageById(id) {
     messages=client.db("Hame").collection("message");

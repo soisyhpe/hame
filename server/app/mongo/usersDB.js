@@ -5,7 +5,7 @@ const bcrypt=require('bcrypt');
 
 
 /**
- * Create a new user
+ * Create a new user entry in the database (user and friend collection)
  * @param {string} email
  * @param {string} name
  * @param {string} lastname
@@ -65,11 +65,24 @@ export async function createUser(email, name, lastname, username, password, birt
         return false;
     }
 
+
+
     // insert user in database
     users=client.db("Hame").collection("user");
 
     const result = await users.insertOne(user);
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
+
+    const userfriend= {
+        "username": username,
+        "userid": result.insertedId,
+        "friends": []
+    }
+
+    friends=client.db("Hame").collection("friends");
+    const result2 = await friends.insertOne(userfriend);
+
+
     return result.insertedId;
 }
 
@@ -188,20 +201,13 @@ function validateWebsite(website){
 
 /**
  * Update a user
- * @param {string} username
- * @param {string} name
- * @param {string} lastname
- * @param {string} email
- * @param {string} password
- * @param {string} birthdate
- * @param {string} location
- * @param {string} bio
- * @param {string} website
- * @param {string} profilePicture
  * @returns {boolean} true if successful, false otherwise
 */
-export async function updateUser(username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
-    
+export async function updateUser(userid,username, name, lastname, email, password, birthdate="", location="", bio="", website="", profilePicture="") {
+    if (username == "" || name == "" || lastname == "" || email == "" || password == "") {
+        console.log("Missing fields");
+        return false;
+    }
     if (!validateBirthday(birthdate)) {
         console.log("Birthday is not valid");
         return false;
@@ -218,10 +224,10 @@ export async function updateUser(username, name, lastname, email, password, birt
         console.log("Email is not valid");
         return false;
     }
-    
+
     users=client.db("Hame").collection("user");
-    const query = { "username": username };
-    const newValues = { $set: { "name": name, "lastname": lastname, "email": email, "password": password, "birthdate": birthdate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
+    const query = { "_id": userid };
+    const newValues = { $set: { "username":username,"name": name, "lastname": lastname, "email": email, "password": password, "birthdate": birthdate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
     const result = await users.updateOne(query, newValues);
     console.log(`${result.matchedCount} document(s) matched the query criteria.`);
     console.log(`${result.modifiedCount} document(s) was/were updated.`);
