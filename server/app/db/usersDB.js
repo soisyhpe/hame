@@ -96,7 +96,7 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
     const result = await users.insertOne(newUser);
     if (debug) console.log(`new user registered ${result.insertedId}`);
 
-    return result.insertedId;
+    return newUser.userid;
 }
 
 /**
@@ -237,8 +237,13 @@ async function updateUser(userid,userName, name, lastName, email, password, birt
     const query = { "userid": userid };
     const newValues = { $set: { "userName":userName,"name": name, "lastName": lastName, "email": email, "password": password, "birthDate": birthDate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
     const result = await users.updateOne(query, newValues);
+    if (result.modifiedCount === 0) {
+        console.log("No documents matched the query. No documents were updated.");
+        return false;
+    }
     console.log(`${result.matchedCount} document(s) matched the query criteria.`);
     console.log(`${result.modifiedCount} document(s) was/were updated.`);
+    return true;
 }
 
 
