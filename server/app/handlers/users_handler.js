@@ -4,9 +4,9 @@ const usersDB = require('../mongo/usersDB');
 const authentication_tools = require('../tools/authentication_tools')
 
 // express' stuff
-const user_api = express.Router();
+const USERS_API = express.Router();
 
-user_api.
+USERS_API.
   use(express.json())
 
   // get all users
@@ -15,7 +15,7 @@ user_api.
   })
 
   // get a specific user from id
-  .get('/:id', (req, res) => {
+  .get('/:userId', (req, res) => {
     // call dedicated function
     const result = usersDB.getUserById(req.params.id)
 
@@ -102,7 +102,7 @@ user_api.
   })
 
   // delete a existing user
-  .delete('/:id', (req, res) => {
+  .delete('/:userId', (req, res) => {
 
     // call dedicated function
     const result = deleteUser(id)
@@ -124,4 +124,34 @@ user_api.
       })
   })
 
-module.exports = { user_api };
+  // following : get all following users
+  .get('/:userId/following', (req, res) => {
+
+  })
+
+  // following : post a new following user
+  .post('/:userId/following/', (req, res) => {
+
+  })
+
+  // following : delete a following user
+  .delete('/:userId/following/:userId', (req, res) => {
+
+  })
+
+  // followers : get all followers users
+  .get('/:userId/followers', (req, res) => {
+
+  })
+
+  // followers : post a new following user
+  .get('/:userId/followers/', (req, res) => {
+
+  })
+
+  // followers : delete a following user
+  .get('/:userId/followers/:userId', (req, res) => {
+    
+  })
+
+module.exports = { USERS_API };
