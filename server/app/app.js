@@ -2,10 +2,10 @@
 const express = require('express');
 
 // handlers
-const { USERS_API } = require('./handlers/users_handler');
-const { MESSAGES_API } = require('./handlers/messages_handler');
-const { PRIVATE_MESSAGES_API } = require('./handlers/private_messages_handler');
-const { SAVED_MESSAGES_API } = require('./handlers/saved_messages_handler');
+const { USERS_API } = require('./routes/users');
+const { MESSAGES_API } = require('./routes/messages');
+const { PRIVATE_MESSAGES_API } = require('./routes/private_messages');
+const { SAVED_MESSAGES_API } = require('./routes/saved_messages');
 
 // express' stuff
 const app = express();
