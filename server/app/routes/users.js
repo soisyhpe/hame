@@ -1,6 +1,6 @@
 // dependencies
 const express = require('express');
-const usersDB = require('../mongo/usersDB');
+const usersDB = require('../db/usersDB');
 const authentication_tools = require('../tools/authentication_tools')
 
 // express' stuff
