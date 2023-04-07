@@ -2,9 +2,9 @@
 const express = require('express');
 
 // express' stuff
-const message_api = express.Router();
+const MESSAGES_API = express.Router();
 
-message_api
+MESSAGES_API
   .use(express.json())
 
   // get all messages
@@ -34,7 +34,7 @@ message_api
 
   // put a message (modify a message)
   .put('/:messageId', (req, res) => {
-    
+
   })
 
-module.exports = { message_api }
+module.exports = { MESSAGES_API }
