@@ -38,25 +38,25 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
     console.log("Success : email is valid")
 
     // check for firstName validity
-    if (!authentication_tools.checkfirstName(firstName)) {
+    if (!authentication_tools.checkFirstName(firstName)) {
         return "firstName not valid"
     }
     console.log("Success : firstName is valid")
 
     // check for lastName validity
-    if (!authentication_tools.checklastName(lastName)) {
+    if (!authentication_tools.checkLastName(lastName)) {
         return "lastName not valid"
     }
     console.log("Success : lastName is valid")
 
     // check for userName validity
-    if (!authentication_tools.checkuserName(userName)) {
+    if (!authentication_tools.checkUserName(userName)) {
         return "userName not valid"
     }
     console.log("Success : userName is valid")
 
     // check for birthDate validity
-    if (!authentication_tools.checkbirthDate(birthDate)) {
+    if (!authentication_tools.checkBirthDate(birthDate)) {
         return "birthDate not valid"
     }
     console.log("Success : birthDate is valid")
@@ -94,8 +94,12 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
     }
 
     const result = await users.insertOne(newUser);
-    if (debug) console.log(`new user registered ${result.insertedId}`);
-
+    
+    if (result.insertedCount === 0) {
+        console.log("No documents inserted");
+        return false;
+    }
+    console.log(`new user registered ${result.insertedId}`);
     return newUser.userid;
 }
 

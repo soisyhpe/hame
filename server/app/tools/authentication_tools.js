@@ -18,7 +18,7 @@ function checkLastName(lastName) {
 }
 
 function checkBirthDate(birthDate) {
-  return true;
+  return BIRTHDATE.test(birthDate);
 }
 
 function checkUserName(userName) {
