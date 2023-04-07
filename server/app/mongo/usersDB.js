@@ -35,43 +35,43 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
     if (!authentication_tools.checkEmail(email)) {
         return "email not valid"
     }
-    debug("Success : email is valid")
+    console.log("Success : email is valid")
 
     // check for firstName validity
     if (!authentication_tools.checkfirstName(firstName)) {
         return "firstName not valid"
     }
-    debug("Success : firstName is valid")
+    console.log("Success : firstName is valid")
 
     // check for lastName validity
     if (!authentication_tools.checklastName(lastName)) {
         return "lastName not valid"
     }
-    debug("Success : lastName is valid")
+    console.log("Success : lastName is valid")
 
     // check for userName validity
     if (!authentication_tools.checkuserName(userName)) {
         return "userName not valid"
     }
-    debug("Success : userName is valid")
+    console.log("Success : userName is valid")
 
     // check for birthDate validity
     if (!authentication_tools.checkbirthDate(birthDate)) {
         return "birthDate not valid"
     }
-    debug("Success : birthDate is valid")
+    console.log("Success : birthDate is valid")
 
     // check for password validity
     if (!authentication_tools.checkPassword(password)) {
         return "password not valid"
     }
-    debug("Success : password is valid")
+    console.log("Success : password is valid")
 
     // check user collection if user already exists
     if (await getUserByuserName(userName)) {
         return "User already exists";
     }
-    debug("Success : email is valid")
+    console.log("Success : email is valid")
 
     // insert user in database
     const newUser = {
