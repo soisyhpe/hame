@@ -10,17 +10,17 @@ user_api.
   use(express.json())
 
   // get all users
-  .get('/user', (req, res) => {
+  .get('/', (req, res) => {
     res.json(usersDB.listUsers())
   })
 
   // get a specific user from id
-  .get('/user/:id', (req, res) => {
+  .get('/:id', (req, res) => {
     // call dedicated function
     const result = usersDB.getUserById(req.params.id)
 
     // check 
-    if (result == false) {
+    if (result === false) {
       res
         .status(404)
         .json({
@@ -40,7 +40,7 @@ user_api.
   })
 
   // post a new user
-  .post('/user/:id', (req, res) => {
+  .post('/', (req, res) => {
     // request parameters
     const { email, firstName, lastName, userName, birthDate, password } = req.body
 
@@ -84,7 +84,7 @@ user_api.
     const result = usersDB.createUser(email, firstName, lastName, birthDate, userName, password)
 
     // check if new user was created
-    if (result == false) {
+    if (result === false) {
       res
         .status(400)
         .json({
@@ -102,13 +102,13 @@ user_api.
   })
 
   // delete a existing user
-  .delete('/user/:id', (req, res) => {
+  .delete('/:id', (req, res) => {
 
     // call dedicated function
     const result = deleteUser(id)
 
     // check if user was deleted
-    if (result == false) {
+    if (result === false) {
       res
         .status(404)
         .json({

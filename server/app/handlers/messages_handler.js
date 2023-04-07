@@ -7,4 +7,34 @@ const message_api = express.Router();
 message_api
   .use(express.json())
 
+  // get all messages
+  .get('/', (req, res) => {
+
+  })
+
+  // get all messages from user id
+  .get('/:userId', (req, res) => {
+
+  })
+
+  // get a specific message from its id
+  .get('/:messageId', (req, res) => {
+    
+  })
+
+  // post a new message
+  .post('/', (req, res) => {
+
+  })
+
+  // delete a message
+  .delete('/:messageId', (req, res) => {
+
+  })
+
+  // put a message (modify a message)
+  .put('/:messageId', (req, res) => {
+    
+  })
+
 module.exports = { message_api }
