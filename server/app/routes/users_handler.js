@@ -151,7 +151,7 @@ USERS_API.
 
   // followers : delete a following user
   .get('/:userId/followers/:userId', (req, res) => {
-    
+
   })
 
 module.exports = { USERS_API };

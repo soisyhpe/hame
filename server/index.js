@@ -1,1 +1,1 @@
-require('./app/default.js')
+require('./app/app.js')
