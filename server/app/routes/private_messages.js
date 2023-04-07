@@ -12,25 +12,26 @@ const PRIVATE_MESSAGES_API = express.Router();
  * conversation structure :
  * {
  *   _id: ...
- *   author: userId2
+ *   conversation_id: ...
+ *   author: user_id2
  *   participants: [
- *     userId1, userId2
- *   ],
- *   events: [
- *     {
- *       type: "{groupRenamed}"
- *       timestamp: ...
- *     }
+ *     user_id1, user_id2
  *   ],
  *   messages: [
  *     {
- *       author: userId1
+ *       message_id: ...
+ *       author: user_id1
  *       content: "voilà un message"
+ *       reply_to: message_id
+ *       is_read: boolean
  *       timestamp: ...
  *     },
  *     {
- *       author: userId2
+ *       message_id: ...
+ *       author: user_id2
  *       content: "voilà une réponse"
+ *       reply_to: message_id
+ *       is_read: boolean
  *       timestamp: ...
  *     }
  *   ]
