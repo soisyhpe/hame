@@ -86,11 +86,11 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
         "bio": bio,
         "website": website,
         "profilePicture": profilePicture,
-        "likedMessages": [],
-        "retweetedMessages": [],
-        "followedUsers": [],
-        "followers": [],
-        "creationDate": new Date().getTime(),
+        "followers":0,
+        "followings":0,
+        "likedMessages":0,
+        "retweetedMessages":0,
+        "creationDate": new Date().getTime()
     }
 
     const result = await users.insertOne(newUser);
@@ -139,11 +139,11 @@ async function deleteUser(userName) {
     const result = await users.deleteOne(query);
     
     if (result.deletedCount === 0) {
-        if (debug) console.log("No documents matched the query. No documents were deleted.");
+        console.log("No documents matched the query. No documents were deleted.");
         return false;
     }
     
-    if (debug) console.log(`${result.deletedCount} document(s) was/were deleted.`);
+    console.log(`${result.deletedCount} document(s) was/were deleted.`);
     return true;
 }
 
