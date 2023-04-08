@@ -2,6 +2,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const { randomBytes } =  require('crypto');
+const messages=client.db("Hame").collection("message");
+const users=client.db("Hame").collection("user");
 
 
 /**
@@ -11,7 +13,7 @@ const { randomBytes } =  require('crypto');
  * @returns {Object | boolean} message if exists,false otherwise
 */
 async function getMessageById(id) {
-    messages=client.db("Hame").collection("message");
+    
     const query = { "messageid": id };
 
     const message= await messages.findOne(query);
@@ -29,7 +31,7 @@ async function getMessageById(id) {
  * @returns {Array} array of messages from a specific user
  */
 async function getMessagesFromUser(username) {
-    messages=client.db("Hame").collection("message");
+
     const query = { "username": username };
 
     const messagesFromUser = await messages.find(query).toArray();
@@ -55,12 +57,11 @@ async function sendPublicMessage(username, message) {
         "type": "public"
     }
 
-    messages=client.db("Hame").collection("message");
     const result = await messages.insertOne(publicMessage);
 
 
     // if failed to send message
-    if (result.insertedId == null) {
+    if (result == null) {
         console.log("Failed to send message");
         return false;
     }
@@ -87,10 +88,10 @@ async function sendPrivateMessage(username, message, senderid,receiverid) {
         "type": "private"
     }
 
-    messages=client.db("Hame").collection("message");
+
     const result = await messages.insertOne(privateMessage);
     // if failed to send message
-    if (result.insertedId == null) {
+    if (result == null) {
         console.log("Failed to send message");
         return false;
     }
@@ -104,10 +105,10 @@ async function sendPrivateMessage(username, message, senderid,receiverid) {
  * @returns {boolean} true if successful, false otherwise
 */
 async function deleteMessageById(id) {
-    messages=client.db("Hame").collection("message");
+
     const query = { "messageid": id };
 
-    const result = await messages.deleteOne(query);
+    const result = messages.deleteOne(query);
     if (result.deletedCount == 0) {
         console.log("Failed to delete message");
         return false;
@@ -125,11 +126,11 @@ async function deleteMessageById(id) {
 */
 async function likeMessageById(usernameid,messageid) {
     // need to update like count in message
-    messages=client.db("Hame").collection("message");
+
     const query = { "messageid": messageid };
     newvalues= { $inc: { "likes": 1 } };
 
-    const result = messages.updateOne(query, newvalues);
+    const result = await messages.updateOne(query, newvalues);
     
     if (result.modifiedCount == 0) {
         console.log("Failed to like message");
@@ -137,7 +138,7 @@ async function likeMessageById(usernameid,messageid) {
     }
 
     // need to update liked messages in user
-    users=client.db("Hame").collection("user");
+    
     const query2 = { "username": usernameid };
     newvalues= { $push: { "likedMessages": messageid } };
     const result2= users.updateOne(query2, newvalues);
@@ -155,7 +156,7 @@ async function likeMessageById(usernameid,messageid) {
 */
 async function unlikeMessageById(usernameid,messageid) {
     // need to update like count in message
-    messages=client.db("Hame").collection("message");
+    
     const query = { "messageid": messageid };
     newvalues= { $inc: { "likes": -1 } };
 
@@ -166,7 +167,7 @@ async function unlikeMessageById(usernameid,messageid) {
     }
 
     // need to update liked messages in user
-    users=client.db("Hame").collection("user");
+    
     const query2 = { "username": usernameid };
     newvalues= { $pull: { "likedMessages": messageid } };
 
@@ -185,7 +186,7 @@ async function unlikeMessageById(usernameid,messageid) {
 */
 async function retweetMessageById(usernameid,messageid) {
     // need to update retweet count in message
-    messages=client.db("Hame").collection("message");
+    
     const query = { "messageid": messageid };
     newvalues= { $inc: { "retweets": 1 } };
 
@@ -196,7 +197,7 @@ async function retweetMessageById(usernameid,messageid) {
     }
 
     // need to update retweeted messages in user
-    users=client.db("Hame").collection("user");
+    
     const query2 = { "username": usernameid };
     newvalues= { $push: { "retweetedMessages": messageid } };
 
@@ -214,7 +215,7 @@ async function retweetMessageById(usernameid,messageid) {
 */
 async function unretweetMessageById(usernameid,messageid) {
     //  need to update retweet count in message
-    messages=client.db("Hame").collection("message");
+    
     const query = { "messageid": messageid };
     newvalues= { $inc: { "retweets": -1 } };
 
@@ -226,7 +227,7 @@ async function unretweetMessageById(usernameid,messageid) {
     }
 
     // need to update retweeted messages in user
-    users=client.db("Hame").collection("user");
+    
     const query2 = { "username": usernameid };
     newvalues= { $pull: { "retweetedMessages": messageid } };
 
@@ -254,7 +255,7 @@ async function commentMessageById(usernameid,messageid,comment) {
         "comments": []
     }
 
-    messages=client.db("Hame").collection("message");
+    
     const result = await messages.insertOne(commentMessage);
 
     // update comments in message
