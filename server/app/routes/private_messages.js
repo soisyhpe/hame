@@ -1,38 +1,55 @@
 // dependencies
 const express = require('express');
 const pm = require('../db/private_messages_db');
+const { UUID_REGEX } = require('../tools/http_validation_tools');
+const { object, string, number, array, boolean, date } = require('yup');
 
 // express' stuff
 const PRIVATE_MESSAGES_API = express.Router();
 
+// local stuff
+let conversationSchema = object(
+  {
+    author_id: number()
+      .positive()
+      .required(),
+    participants: array()
+      .min(2, 'conversation with participants lower than 2 is not allowed')
+      .max(2, 'actually, you cannot create conversation with more than 2 participants')
+      .required(),
+    creation_date: date()
+      .required()
+  }
+)
+let messageSchema = object(
+  {
+    author_id: number()
+      .positive()
+      .required(),
+    content: string()
+      .min(1, 'content with no length is not allowed')
+      .max(256, 'content maximum length should be lower than 256 characters')
+      .required(),
+    type: string()
+      .oneOf(['TEXT', 'FILE', 'VOICE', 'PICTURE', 'VIDEO'], 'wrong type')
+      .default(() => "TEXT")
+      .optional(),
+    reply_to: string()
+      .matches(UUID_REGEX, 'reply_to should contains a valid UUID')
+      .required(),
+    is_read: boolean()
+      .default(() => false)
+      .optional(),
+    conversation_id: string()
+      .matches(UUID_REGEX, 'conversation_id should contains a valid UUID')
+      .required(),
+    sent_date: date()
+      .required()
+  }
+)
 
 
 
-/**
- * conversation schema :
- * {
- *   _id: ...,
- *   conversation_id: ...,
- *   author_id: user_id2,
- *   participants: [
- *     user_id1, user_id2
- *   ],
- *   creation_date: ...
- * }
- * 
- * message schema:
- * {
- *   _id: ...,
- *   message_id: ...,
- *   author_id: user_id1,
- *   content: "voilà un message",
- *   type: ...,
- *   reply_to: message_id,
- *   is_read: boolean,
- *   conversation_id: ...,
- *   sent_date: ...
- * }
- */
 
 PRIVATE_MESSAGES_API
   .use(express.json())
@@ -72,7 +89,22 @@ PRIVATE_MESSAGES_API
 
   // post a new message
   .post('/:userId/conversations/:conversationId/messages/', async (req, res) => {
-    let { content, type, reply_to, is_read, sent_date } = req.body; 
+    let { content, type, reply_to, is_read, sent_date } = req.body;
+
+    try {
+      let parsedMessage = await messageSchema.validate({
+        author_id: req.params.userId,
+        content: content,
+        type: type,
+        reply_to: reply_to,
+        is_read: is_read,
+        conversation_id: conversation_id,
+        sent_date: sent_date
+      });
+    } catch (err) {
+      res.status(500).json({type: err.name, message: err.message})
+    }
+
     let result = await pm.sendMessage(req.params.userId, content, type, reply_to, is_read, req.params.conversationId, sent_date);
 
     if (!result) res.status(400).json({message: "Unable to post a new message"});
