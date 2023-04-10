@@ -88,8 +88,6 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
         "profilePicture": profilePicture,
         "followers":0,
         "followings":0,
-        "likedMessages":0,
-        "retweetedMessages":0,
         "creationDate": new Date().getTime()
     }
 

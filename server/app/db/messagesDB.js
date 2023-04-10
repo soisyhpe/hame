@@ -3,6 +3,8 @@ const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retry
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const { randomBytes } =  require('crypto');
 const messages=client.db("Hame").collection("message");
+const likedMessages=client.db("Hame").collection("likedMessage");
+const retweetedMessages=client.db("Hame").collection("retweetedMessage");
 const users=client.db("Hame").collection("user");
 
 
@@ -125,24 +127,23 @@ async function deleteMessageById(id) {
  * @returns {boolean} true if successful, false otherwise
 */
 async function likeMessageById(usernameid,messageid) {
+
+    if (likedMessages.findOne({"messageid":messageid,"userid":usernameid})!==null){
+        console.log(`${usernameid} already liked ${messageid}`);
+        return false;
+    }
     // need to update like count in message
 
-    const query = { "messageid": messageid };
-    newvalues= { $inc: { "likes": 1 } };
-
-    const result = await messages.updateOne(query, newvalues);
+    const result = await messages.updateOne({ "messageid": messageid }, { $inc: { "likes": 1 } });
     
     if (result.modifiedCount == 0) {
         console.log("Failed to like message");
         return false;
     }
 
-    // need to update liked messages in user
-    
-    const query2 = { "username": usernameid };
-    newvalues= { $push: { "likedMessages": messageid } };
-    const result2= users.updateOne(query2, newvalues);
+    // need to set a liked message entry 
 
+    const result2=await likedMessages.insertOne({"messageid": messageid,"userid" : usernameid});
     console.log(`Updated ${result.modifiedCount} document(s)`);
     return true;
 }
@@ -155,12 +156,15 @@ async function likeMessageById(usernameid,messageid) {
  * @returns {boolean} true if successful, false otherwise
 */
 async function unlikeMessageById(usernameid,messageid) {
+
+    if (likedMessages.findOne({"messageid":messageid,"userid":usernameid})===null){
+        console.log(`${usernameid} didn't liked ${messageid}`);
+        return false;
+    }
     // need to update like count in message
     
-    const query = { "messageid": messageid };
-    newvalues= { $inc: { "likes": -1 } };
 
-    const result=messages.updateOne(query, newvalues);
+    const result=messages.updateOne({ "messageid": messageid }, { $inc: { "likes": -1 } });
     if (result.modifiedCount == 0) {
         console.log("Failed to unlike message");
         return false;
@@ -168,10 +172,7 @@ async function unlikeMessageById(usernameid,messageid) {
 
     // need to update liked messages in user
     
-    const query2 = { "username": usernameid };
-    newvalues= { $pull: { "likedMessages": messageid } };
-
-    const result2=users.updateOne(query2, newvalues);
+    const result2=likedMessages.deleteOne({"messageid" : messageid ,"userid": usernameid});
     console.log(`Updated ${result.modifiedCount} document(s)`);
 
     return true;
@@ -185,12 +186,16 @@ async function unlikeMessageById(usernameid,messageid) {
  * @returns {boolean} true if successful, false otherwise
 */
 async function retweetMessageById(usernameid,messageid) {
+
+    if (retweetedMessages.findOne({"messageid":messageid,"userid":usernameid})!==null){
+        console.log(`${usernameid} already retweeted ${messageid}`);
+        return false;
+    }
     // need to update retweet count in message
     
-    const query = { "messageid": messageid };
-    newvalues= { $inc: { "retweets": 1 } };
 
-    const result1=messages.updateOne(query, newvalues);
+
+    const result1=messages.updateOne({ "messageid": messageid },  { $inc: { "retweets": 1 } });
     if (result1.modifiedCount == 0) {
         console.log("Failed to retweet message");
         return false;
@@ -198,11 +203,11 @@ async function retweetMessageById(usernameid,messageid) {
 
     // need to update retweeted messages in user
     
-    const query2 = { "username": usernameid };
-    newvalues= { $push: { "retweetedMessages": messageid } };
 
-    const result2=users.updateOne(query2, newvalues);
-    console.log(`Updated ${result1.modifiedCount} document(s)`);
+    const result2= await retweetedMessages.insertOne({"messageid" : messageid , "userid" : usernameid});
+
+
+    console.log(`${result2.deletedCount} documents deleted`);
     return true;
 }
 
@@ -214,12 +219,14 @@ async function retweetMessageById(usernameid,messageid) {
  * @returns {boolean} true if successful, false otherwise
 */
 async function unretweetMessageById(usernameid,messageid) {
+    if (retweetedMessages.findOne({"messageid":messageid,"userid":usernameid})===null){
+        console.log(`${usernameid} didn't retweeted ${messageid}`);
+        return false;
+    }
     //  need to update retweet count in message
     
-    const query = { "messageid": messageid };
-    newvalues= { $inc: { "retweets": -1 } };
 
-    const result1=messages.updateOne(query, newvalues);
+    const result1=messages.updateOne({ "messageid": messageid }, { $inc: { "retweets": -1 } });
 
     if (result1.modifiedCount == 0) {
         console.log("Failed to unretweet message");
@@ -228,11 +235,10 @@ async function unretweetMessageById(usernameid,messageid) {
 
     // need to update retweeted messages in user
     
-    const query2 = { "username": usernameid };
-    newvalues= { $pull: { "retweetedMessages": messageid } };
+    const result2 = retweetedMessages.deleteOne({"messageid":messageid,"userid":usernameid});
 
-    const result2=users.updateOne(query2, newvalues);
-    console.log(`Updated ${result1.modifiedCount} document(s)`);
+    console.log(`${result2.deletedCount} documents deleted`);
+
     return true;
 }
 
