@@ -8,10 +8,16 @@ const retweetedMessages=client.db("Hame").collection("retweetedMessage");
 const users=client.db("Hame").collection("user");
 
 
+
+async function getAllMessages(){
+    const result = await messages.find({}).toArray();
+    return result;
+}
+
 /**
  * get a message with a specific id
- * @param {ObjectId} id
- * @returns {Object} message with a specific id
+ * @param {string} id
+ * @returns {string} message with a specific id
  * @returns {Object | boolean} message if exists,false otherwise
 */
 async function getMessageById(id) {
@@ -48,8 +54,15 @@ async function getMessagesFromUser(username) {
  * @returns {string|boolean} Id of the message if successful, false otherwise
 */
 async function sendPublicMessage(username, message) {
+    console.log(username);
+    console.log(message);
+    if (username === undefined || message === undefined || username === null || message === null || username === "" || message === "") {
+        console.log("Username or message is null");
+        return false;
+    }
+
     const publicMessage = {
-        "messageid": (new Date()).valueOf().toString('hex') + randomBytes(16).toString('hex'),
+        "messageid": (new Date()).valueOf().toString() + randomBytes(16).toString('hex'),
         "username": username,
         "message": message,
         "likes": 0,
@@ -111,11 +124,11 @@ async function deleteMessageById(id) {
     const query = { "messageid": id };
 
     const result = messages.deleteOne(query);
-    if (result.deletedCount == 0) {
+    if ((await result).deletedCount === 0) {
         console.log("Failed to delete message");
         return false;
     }
-    console.log(`Deleted ${result.deletedCount} document(s)`);
+    console.log(`Deleted ${(await result).deletedCount} document(s)`);
     return true;
 }
 
@@ -303,8 +316,29 @@ async function commentMessageById(usernameid,messageid,comment) {
 }
 
 
+async function modifyMessage(messageid, newMessage) {
+    if (messageid === null || newMessage === null || messageid === undefined || newMessage === undefined || messageid === "" || newMessage === "") {
+        console.log("Invalid messageid or newMessage");
+        return false;
+    }
+    const query = { "messageid": messageid };
+    newvalues = { $set: { "message": newMessage } };
 
-module.exports={getMessageById , getMessageById , sendPrivateMessage , sendPublicMessage , getMessagesFromUser , deleteMessageById , likeMessageById , unlikeMessageById , retweetMessageById , unretweetMessageById , getLikingUsers , getRetweetingUsers , commentMessageById};
+    const result = await messages.updateOne(query, newvalues);
+
+    if (result.modifiedCount == 0) {
+        console.log("Failed to modify message");
+        return false;
+    }
+
+    console.log(`Updated ${result.modifiedCount} document(s)`);
+    return true;
+}
+
+
+
+
+module.exports={getAllMessages , getMessageById , getMessageById , sendPrivateMessage , sendPublicMessage , getMessagesFromUser , deleteMessageById , likeMessageById , unlikeMessageById , retweetMessageById , unretweetMessageById , getLikingUsers , getRetweetingUsers , commentMessageById , modifyMessage};
 
 
 
