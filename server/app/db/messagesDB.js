@@ -242,6 +242,29 @@ async function unretweetMessageById(usernameid,messageid) {
     return true;
 }
 
+
+/**
+ * Get list of users who liked the message with the specified ID
+ * @param {string} messageid 
+ * @returns List of user's ID
+ */
+async function getLikingUsers(messageid){
+    const list=likedMessages.find({"messageid" : messageid},{projection:{"userid" : 1}}).toArray();
+    return list;
+}
+
+
+/**
+ * Get list of users who retweeted the message with the specified ID
+ * @param {string} messageid 
+ * @returns List of user's ID
+ */
+async function getRetweetingUsers(messageid){
+    const list = likedMessages.find({"messageid" : messageid }, {projection : {"userid" : 1}}).toArray();
+
+    return list;
+}
+
 /**
  * comment on a message with a specific id
  * @param {string} usernameid  - username of the user who is commenting
@@ -279,7 +302,9 @@ async function commentMessageById(usernameid,messageid,comment) {
     return commentMessage.messageid;
 }
 
-    
+
+
+module.exports={getMessageById , getMessageById , sendPrivateMessage , sendPublicMessage , getMessagesFromUser , deleteMessageById , likeMessageById , unlikeMessageById , retweetMessageById , unretweetMessageById , getLikingUsers , getRetweetingUsers , commentMessageById};
 
 
 
