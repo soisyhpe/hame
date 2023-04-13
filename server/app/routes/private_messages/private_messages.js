@@ -2,7 +2,7 @@
 const express = require('express');
 const pm = require('../../db/private_messages_db');
 const { validateConversation, validateMessage } = require('./validate_ressource');
-const { conversationSchema, messageSchema } = require('./validator');
+const { conversationSchema, messageSchema } = require('./validator_schemas');
 
 // express stuff
 const PRIVATE_MESSAGES_API = express.Router();
