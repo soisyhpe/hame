@@ -1,6 +1,6 @@
 // dependencies
 const express = require('express');
-const { getFriends, addFriend, deleteFriend } = require('../../db/friendsDB');
+const { getFriends, addFriend, deleteFriend } = require('../../db/friends_db');
 const { validate } = require('../../routes/validate_ressource');
 const { friendsSchema, addFriendSchema, deleteFriendSchema } = require('./validator_schemas');
 
