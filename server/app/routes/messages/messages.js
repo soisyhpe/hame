@@ -1,6 +1,6 @@
 // dependencies
 const express = require('express');
-const messages = require('../db/messagesDB.js');
+const messages = require('../../db/messagesDB.js');
 
 
 // express' stuff
