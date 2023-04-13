@@ -7,7 +7,7 @@ const validateConversation = (conversationSchema) => async (req, res, next) => {
     });
     return next();
   } catch (err) {
-    res.status(400).json({error: err.errors.join(', ')})
+    res.status(400).json({message: `Your request is invalid`, error: err.errors});
   }
 }
 
@@ -20,7 +20,7 @@ const validateMessage = (messageSchema) => async (req, res, next) => {
     });
     return next();
   } catch(err) {
-    res.status(400).json({error: err.errors.join(',')});
+    res.status(400).json({message: `Your request is invalid`, errors: err.errors});
   }
 }
 

@@ -28,9 +28,9 @@ PRIVATE_MESSAGES_API
 
   // post a new conversation
   .post('/:author_id/conversations/', validateConversation(conversationSchema), async (req, res) => {
-    let result = await pm.createConversation(req.params.userId, req.body.participants, req.body.creation_date);
+    let result = await pm.createConversation(req.params.author_id, req.body.participants, req.body.creation_date);
 
-    if (!result) res.status(400).json({message: "Unable tso create a new conversation"});
+    if (!result) res.status(400).json({message: "Unable to create a new conversation"});
     else res.status(200).json({message: "New conversation was created successfully"});
   })
  
