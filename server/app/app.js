@@ -16,7 +16,7 @@ const app = express();
 
 // local stuff
 const SERVER_PORT = 8000;
-const BASE = 'v1'
+const BASE = '/v1'
 
 app
   .use(BASE + '/users', USERS_API)
@@ -29,7 +29,7 @@ app
   .use(BASE + '/circles', CIRCLES_API)
   .listen(SERVER_PORT, () => {
     console.log(`[HAME SERVER] API running at http://localhost:${SERVER_PORT}/`)
-});
+  });
 
 /*async function run() {
   try {

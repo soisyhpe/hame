@@ -8,8 +8,7 @@ const LIKED_MESSAGES_COLLECTION_NAME = "liked_messages";
 
 async function getMessages(limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {};
-  let results = await collection.find(query).limit(limit).toArray();
+  let results = await collection.find().limit(limit).toArray();
 
   return results;
 }

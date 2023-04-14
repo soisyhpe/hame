@@ -5,7 +5,6 @@ const { UUID_REGEX } = require('../../tools/validation_tools');
 const messagesSchema = object(
   {
     params: object({
-      user_id: string().matches(UUID_REGEX).required(),
       limit: number().positive().optional()
     })
   }
@@ -14,7 +13,7 @@ const messagesSchema = object(
 const messagesFromUserSchema = object(
   {
     params: object({
-      user_id: string().matches(UUID_REGEX).required(),
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required(),
       limit: number().positive().optional()
     })
   }
@@ -23,7 +22,7 @@ const messagesFromUserSchema = object(
 const messageFromIdSchema = object(
   {
     params: object({
-      message_id: string().matches(UUID_REGEX).required()
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required()
     })
   }
 );
@@ -32,8 +31,8 @@ const sendMessageSchema = object(
   {
     body: object({
       text: string().min(1).max(256).required(),
-      replied_to: string().matches(UUID_REGEX).default('').required(),
-      reposted_from: string().matches(UUID_REGEX).default('').required(),
+      replied_to: string().matches(UUID_REGEX, 'params.replied_id must be a valid uuid').default('').required(),
+      reposted_from: string().matches(UUID_REGEX, 'params.reposted_id must be a valid uuid').default('').required(),
       place: object({
         position: object({
           latitude: number().min(-90).max(90).required(),
@@ -55,7 +54,7 @@ const sendMessageSchema = object(
       creation_date: date().required()
     }),
     params: object({
-      user_id: string().matches(UUID_REGEX).required()
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required()
     })
   }
 );
@@ -63,7 +62,7 @@ const sendMessageSchema = object(
 const responsesSchema = object(
   {
     params: object({
-      message_id: string().matches(UUID_REGEX).required(),
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
       limit: number().positive().optional()
     })
   }
@@ -72,10 +71,10 @@ const responsesSchema = object(
 const deleteMessageSchema = object(
   {
     body: object({
-      user_id: string().matches(UUID_REGEX).required()
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required()
     }),
     params: object({
-      message_id: string().matches(UUID_REGEX).required()
+      message_id: string().matches(UUID_REGEX, 'message.user_id must be a valid uuid').required()
     })
   }
 );
@@ -83,7 +82,7 @@ const deleteMessageSchema = object(
 const likingUsersSchema = object(
   {
     params: object({
-      message_id: string().matches(UUID_REGEX).required(),
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
       limit: number().positive().optional()
     })
   }
@@ -92,11 +91,11 @@ const likingUsersSchema = object(
 const likeMessageSchema = object(
   {
     body: object({
-      user_id: string().matches(UUID_REGEX).required(),
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required(),
       creation_date: date().required()
     }),
     params: object({
-      message_id: string().matches(UUID_REGEX).required()
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required()
     })
   }
 );
@@ -104,10 +103,10 @@ const likeMessageSchema = object(
 const unlikedMessageSchema = object(
   {
     body: object({
-      user_id: string().matches(UUID_REGEX).required(),
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required(),
     }),
     params: object({
-      message_id: string().matches(UUID_REGEX).required()
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required()
     })
   }
 );
@@ -115,7 +114,7 @@ const unlikedMessageSchema = object(
 const likedMessagesSchema = object(
   {
     params: object({
-      user_id: string().matches(UUID_REGEX).required(),
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required(),
       limit: number().positive().optional()
     })
   }
@@ -124,7 +123,7 @@ const likedMessagesSchema = object(
 const respostingUsersSchema = object(
   {
     params: object({
-      message_id: string().matches(UUID_REGEX).required(),
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
       limit: number().positive().optional()
     })
   }
@@ -133,7 +132,7 @@ const respostingUsersSchema = object(
 const respostedMessagesSchema = object(
   {
     params: object({
-      message_id: string().matches(UUID_REGEX).required(),
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
       limit: number().positive().optional()
     })
   }
