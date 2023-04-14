@@ -11,7 +11,7 @@ FRIENDS_API.
   use(express.json())
 
   // friends : get friends
-  .get('/:user_id/friends', async (req, res) => {
+  .get('/:user_id', async (req, res) => {
     let result = await getFriends(req.params.user_id);
 
     if (!result) res.status(204).json({message: 'No friends was found for specified user'});
@@ -19,7 +19,7 @@ FRIENDS_API.
   })
 
   // friends : add friend
-  .post('/:user_id/friends/', validate(friendSchema), async (req, res) => {
+  .post('/:user_id/', validate(friendSchema), async (req, res) => {
     let result = await addFriend(req.params.user_id, req.body.friend_id, req.body.creation_date);
 
     if (!result) res.status(400).json({message: 'Unable to add new friend for specified user'});
@@ -27,7 +27,7 @@ FRIENDS_API.
   })
 
   // friends : delete friend
-  .delete('/:user_id/friends/:friend_id', async (req, res) => {
+  .delete('/:user_id/:friend_id', async (req, res) => {
     let result = await deleteFriend(req.params.user_id, req.params.friend_id);
 
     if (!result) res.status(204).json({message: 'Unable to delete friend'});
