@@ -7,6 +7,9 @@ const { setDefaultResultOrder } = require('dns');
 
 // local stuff
 const COLLECTION_NAME = 'users';
+DATABASE.collection(COLLECTION_NAME).createIndex({ email: 1 }, { unique: true });
+DATABASE.collection(COLLECTION_NAME).createIndex({ username: 1 }, { unique: true });
+DATABASE.collection(COLLECTION_NAME).createIndex({ user_id: 1 }, { unique: true });
 
 async function getUsers(limit=10) {
     let collection = await DATABASE.collection(COLLECTION_NAME);
