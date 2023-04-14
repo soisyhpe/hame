@@ -18,6 +18,4 @@ const userSchema = object(
   }
 )
 
-const followingSchema
-
 module.exports = { userSchema };
