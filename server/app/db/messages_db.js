@@ -59,10 +59,23 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
 // todo : send multiple messages (thread feature)
 
 async function deleteMessage(messageId, userId) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
+
+
+
+  collection.findOne({ message_id: messageId }).then((message) => {
+    // if message is a reply : decrease reply_count of replied_to message
+    if (message.replied_to != '') {
+      collection.updateOne({ message_id: message.replied_to }, { $inc: { reply_count: -1 } });
+    }
+    // if message is a repost : decrease repost_count of reposted_from message
+    if (message.reposted_from != '') {
+      collection.updateOne({ message_id: message.reposted_from }, { $inc: { repost_count: -1 } });
+    }
+  });
+
   let query = { message_id: messageId, user_id: userId };
-  let result = Promise.all[await collection.drop(query)];
-  // todo : decrease reply_count of replied_to message and repost_count of reposted_from message
+  let result = await collection.deleteOne(query);
 
   return result;
 }
