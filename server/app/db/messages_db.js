@@ -16,7 +16,7 @@ async function getMessages(limit=10) {
 
 async function getMessagesFromUser(userId, limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {user_id: userId};
+  let query = { user_id: userId };
   let results = await collection.find(query).limit(limit).toArray();
 
   return results;
@@ -24,7 +24,7 @@ async function getMessagesFromUser(userId, limit=10) {
 
 async function getMessageFromId(messageId) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {message_id: messageId};
+  let query = { message_id: messageId };
   let results = await collection.findOne(query).toArray();
 
   return results;
@@ -61,7 +61,7 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
 
 async function deleteMessage(messageId, userId) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {message_id: messageId, user_id: userId};
+  let query = { message_id: messageId, user_id: userId };
   let result = Promise.all[await collection.drop(query)];
   // todo : decrease reply_count of replied_to message and repost_count of reposted_from message
 
@@ -70,7 +70,7 @@ async function deleteMessage(messageId, userId) {
 
 async function getResponses(messageId, limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {reply_to: messageId};
+  let query = { reply_to: messageId };
   let results = await collection.find(query).limit(limit).toArray();
 
   return results;
@@ -79,17 +79,12 @@ async function getResponses(messageId, limit=10) {
 async function likeMessage(messageId, userId, creationDate) {
   let collection = await DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
   let collection2 = await DATABASE.collection(COLLECTION_NAME);
-  let newLike = {
-    message_id: messageId,
+  let newLike = { message_id: messageId,
     user_id: userId,
     creation_date: creationDate
   };
-  let query = {
-    message_id: messageId
-  };
-  let update = {
-    $inc: { like_count: 1 }
-  };
+  let query = { message_id: messageId };
+  let update = { $inc: { like_count: 1 } };
   let result = await Promise.all[collection.insertOne(newLike), collection2.updateOne(query, update)];
 
   return result;
@@ -98,13 +93,8 @@ async function likeMessage(messageId, userId, creationDate) {
 async function unlikeMessage(messageId, userId) {
   let collection = await DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
   let collection2 = await DATABASE.collection(COLLECTION_NAME);
-  let query = {
-    message_id: messageId,
-    user_id: userId
-  };
-  let update = {
-    $inc: { like_count: -1 } // potential issue : negative like counts
-  };
+  let query = { message_id: messageId, user_id: userId };
+  let update = { $inc: { like_count: -1 } }; // potential issue : negative like counts
   let result = await Promise.all[collection.drop(query), collection2.updateOne(query, update)];
 
   return result;
@@ -122,7 +112,7 @@ async function likingUsers(messageId, limit=10) {
 async function likedMessages(userId, limit=10) {
   let collection = await DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
   let query = { user_id: userId };
-  let projection = { message_id: 1 };
+  let projection = { message_id: 1 };
   let results = await collection.find(query).project(projection).limit(limit).toArray();
 
   return results;
@@ -131,7 +121,7 @@ async function likedMessages(userId, limit=10) {
 async function repostingUsers(messageId, limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
   let query = { reposted_from: messageId };
-  let projection = {user_id: 1};
+  let projection = { user_id: 1 };
   let results = await collection.find(query).project(projection).limit(limit).toArray();
 
   return results;
@@ -139,8 +129,8 @@ async function repostingUsers(messageId, limit=10) {
 
 async function repostedMessages(messageId, limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {reposted_from: messageId};
-  let projection = {message_id: 1};
+  let query = { reposted_from: messageId };
+  let projection = { message_id: 1} ;
   let results = await collection.find(query).project(projection).limit(limit).toArray();
 
   return results;
