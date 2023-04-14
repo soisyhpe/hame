@@ -14,7 +14,9 @@ DATABASE.collection(COLLECTION_NAME).createIndex({ user_id: 1 }, { unique: true 
 async function getUsers(limit=10) {
     let collection = await DATABASE.collection(COLLECTION_NAME);
     let query = {};
-    let result = await collection.find(query).limit(limit).toArray();
+    let result = await collection.find(query).limit(limit).toArray()
+        .then(res => console.log(`Users was found successfully (${res})`))
+        .catch(err => console.error(`Unable to found users (${err})`));
     
     return result;
 }
@@ -22,7 +24,9 @@ async function getUsers(limit=10) {
 async function getUserFromUsername(username) {
     let collection = await DATABASE.collection(COLLECTION_NAME);
     let query = { username: username };
-    let result = await collection.findOne(query);
+    let result = await collection.findOne(query)
+        .then(res => console.log(`User was found successfully (${res})`))
+        .catch(err => console.error(`Unable to found user (${err})`));
     
     return result;
 }
@@ -30,7 +34,9 @@ async function getUserFromUsername(username) {
 async function getUserFromId(userId) {
     let collection = await DATABASE.collection(COLLECTION_NAME);
     let query = { user_id: userId };
-    let result = await collection.findOne(query);
+    let result = await collection.findOne(query)
+        .then(res => console.log(`User was found successfully (${res})`))
+        .catch(err => console.error(`Unable to found user (${err})`));
     
     return result;
 }
@@ -55,8 +61,8 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
         "creation_date": creationDate
     }
     let result = await collection.insertOne(newUser)
-        .then(res => console.log(`User was created successfully`))
-        .catch(err => console.error(`Unable to create user, another user with this user_id, email or username already exist`));
+        .then(res => console.log(`User was created successfully (${res})`))
+        .catch(err => console.error(`Unable to create new user (${err})`));
     
     return result;
 }
@@ -64,7 +70,9 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
 async function deleteUser(userId) {
     let collection = await DATABASE.collection(COLLECTION_NAME);
     let query = { user_id: userId };
-    let result = await collection.deleteOne(query);
+    let result = await collection.deleteOne(query)
+        .then(res => console.log(`User was deleted successfully (${res})`))
+        .catch(err => console.error(`Unable to delete user (${err})`));
 
     return result;
 }
