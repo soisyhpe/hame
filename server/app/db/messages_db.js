@@ -146,23 +146,6 @@ async function repostedMessages(messageId, limit=10) {
   return results;
 }
 
-async function modifyMessage(messageid, newMessage) {
-    if (messageid === null || newMessage === null || messageid === undefined || newMessage === undefined || messageid === "" || newMessage === "") {
-        console.log("Invalid messageid or newMessage");
-        return false;
-    }
-    const query = { "messageid": messageid };
-    newvalues = { $set: { "message": newMessage } };
-
-    const result = await messages.updateOne(query, newvalues);
-
-    if (result.modifiedCount == 0) {
-        console.log("Failed to modify message");
-        return false;
-    }
-
-    console.log(`Updated ${result.modifiedCount} document(s)`);
-    return true;
-}
+// todo : modify message
 
 module.exports = { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages };
