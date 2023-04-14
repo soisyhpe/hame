@@ -61,8 +61,6 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
 async function deleteMessage(messageId, userId) {
   let collection = DATABASE.collection(COLLECTION_NAME);
 
-
-
   collection.findOne({ message_id: messageId }).then((message) => {
     // if message is a reply : decrease reply_count of replied_to message
     if (message.replied_to != '') {
