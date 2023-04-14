@@ -4,7 +4,6 @@ const { DATABASE } = require('../db_connection');
 
 // local stuff
 const COLLECTION_NAME = "bookmarks";
-DATABASE.collection(COLLECTION_NAME).createIndex({ user_id: 1 }, { unique: true });
 
 async function getBookmarks(userId, limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
