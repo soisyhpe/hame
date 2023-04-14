@@ -2,7 +2,7 @@
 const express = require('express');
 const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages } = require('../../db/messages_db');
 const { validate } = require('../../routes/validate_ressource');
-const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessage, responsesSchema, deleteMessageSchema } = require('./validator_schemas');
+const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, respostedMessagesSchema } = require('./validator_schemas');
 
 // express' stuff
 const MESSAGES_API = express.Router();
@@ -51,46 +51,63 @@ MESSAGES_API
   })
 
   // messages : delete message
-  .delete('/:message_id', async (req, res) => {
+  .delete('/:message_id', validate(deleteMessageSchema), async (req, res) => {
     let result = await deleteMessage(req.params.message_id, req.body.user_id);
 
     if (!result) res.status(204).json({message: 'No message was found'});
     else res.status(202).json({message: 'Message was deleted successfully'});
   })
 
-  // message : put a message (modify a message)
-  .put('/:messageId', (req, res) => {
-
-  })
+  // todo : modify a message
 
   // messages : liking users of a message
-  .get('/:message_id/liking-users', async (req, res) => {
-    
+  .get('/:message_id/liking-users', validate(likingUsersSchema), async (req, res) => {
+    let result = await likingUsers(req.params.message_id, req.params.limit);
+
+    if (!result) res.status(204).json({ message: 'No liking users was found' });
+    else res.status(202).json(result);
   })
 
   // messages : like a message
-  .post('/:message_id/likes/', async (req, res) => {
+  .post('/:message_id/likes/', validate(likeMessageSchema), async (req, res) => {
+    let result = await likeMessage(req.params.message_id, req.body.user_id, req.body.creation_date);
 
+    if (!result) res.status(204).json({ message: 'Unable to like this message' });
+    else res.status(200).json({ message: 'Message was liked successfully' });
   })
 
   // messages : unlike a message
-  .delete('/:message_id/likes/:user_id', async (req, res) => {
-    
+  .delete('/:message_id/likes/:user_id', validate(unlikedMessageSchema), async (req, res) => {
+    let result = await unlikeMessage(req.params.message_id, req.body.user_id);
+
+    if (!result) res.status(204).json({ message: 'Unable to unlike this message' });
+    else res.status(200).json({ message: 'Message was unliked successfully' });
   })
 
   // messages : liked messages of an user
-  .get('/:user_id/liked-messages', async (req, res) => {
+  .get('/:user_id/liked-messages', validate(likedMessagesSchema), async (req, res) => {
+    let result = await likedMessages(req.params.user_id, req.params.limit);
 
+    if (!result) res.status(204).json({ message: 'No liked messages was found' });
+    else res.status(202).json(result);
   })
 
   // messages : reposting users of a message
-  .get('/:message_id/reposting-user', async (req, res) => {
+  .get('/:message_id/reposting-user', validate(respostingUsersSchema), async (req, res) => {
+    let result = await repostingUsers(req.params.message_id, req.params.limit);
 
+    if (!result) res.status(204).json({ message: 'No reposting users was found' });
+    else res.status(202).json(result);
   })
 
   // messages : reposted messages of a message
-  .get('/:message_id/reposted-messages', async (req, res) => {
+  .get('/:message_id/reposted-messages', validate(repostedMessagesSchema), async (req, res) => {
+    let result = await repostedMessages(req.params.message_id, req.params.limit);
 
+    if (!result) res.status(204).json({ message: 'No reposted messages was found' });
+    else res.status(202).json(result);
   })
+
+  // todo : reposted messages of an user
 
 module.exports = { MESSAGES_API }

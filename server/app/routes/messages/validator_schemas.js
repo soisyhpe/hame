@@ -9,7 +9,7 @@ const messagesSchema = object(
       limit: number().positive().optional()
     })
   }
-)
+);
 
 const messagesFromUserSchema = object(
   {
@@ -58,7 +58,7 @@ const sendMessageSchema = object(
       user_id: string().matches(UUID_REGEX).required()
     })
   }
-)
+);
 
 const responsesSchema = object(
   {
@@ -67,7 +67,7 @@ const responsesSchema = object(
       limit: number().positive().optional()
     })
   }
-)
+);
 
 const deleteMessageSchema = object(
   {
@@ -78,6 +78,65 @@ const deleteMessageSchema = object(
       message_id: string().matches(UUID_REGEX).required()
     })
   }
-)
+);
 
-module.exports = { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema };
+const likingUsersSchema = object(
+  {
+    params: object({
+      message_id: string().matches(UUID_REGEX).required(),
+      limit: number().positive().optional()
+    })
+  }
+);
+
+const likeMessageSchema = object(
+  {
+    body: object({
+      user_id: string().matches(UUID_REGEX).required(),
+      creation_date: date().required()
+    }),
+    params: object({
+      message_id: string().matches(UUID_REGEX).required()
+    })
+  }
+);
+
+const unlikedMessageSchema = object(
+  {
+    body: object({
+      user_id: string().matches(UUID_REGEX).required(),
+    }),
+    params: object({
+      message_id: string().matches(UUID_REGEX).required()
+    })
+  }
+);
+
+const likedMessagesSchema = object(
+  {
+    params: object({
+      user_id: string().matches(UUID_REGEX).required(),
+      limit: number().positive().optional()
+    })
+  }
+);
+
+const respostingUsersSchema = object(
+  {
+    params: object({
+      message_id: string().matches(UUID_REGEX).required(),
+      limit: number().positive().optional()
+    })
+  }
+);
+
+const respostedMessagesSchema = object(
+  {
+    params: object({
+      message_id: string().matches(UUID_REGEX).required(),
+      limit: number().positive().optional()
+    })
+  }
+);
+
+module.exports = { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, respostedMessagesSchema };
