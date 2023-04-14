@@ -1,15 +1,8 @@
 // dependencies
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const bcrypt = require('bcrypt');
 const authentication_tools = require('../tools/authentication_tools')
 const {randomBytes}=require('crypto');
-
-// mongodb's stuff
-const uri = "mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-const users = client.db("Hame").collection("users")
-
-
+const { DATABASE } = require('../db_connection');
 
 /**
  * Create a new user entry in the database (user and friend collection)
@@ -91,7 +84,7 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
         "creationDate": new Date().getTime()
     }
 
-    const result = await users.insertOne(newUser);
+    const result = await DATABASE.collection('users').insertOne(newUser);
     
     if (result.insertedCount === 0) {
         console.log("No documents inserted");
@@ -108,7 +101,7 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
 */
 async function getUserByuserName(userName) {
     const query = { "userName": userName };
-    const user = await users.findOne(query);
+    const user = await DATABASE.collection('users').findOne(query);
     if (user == null) {
         console.log("User does not exist");
         return false;
@@ -123,7 +116,7 @@ async function getUserByuserName(userName) {
 */
 async function getUserById(id) {
     let query = { "userid": id };
-    let user = await users.findOne(query);
+    let user = await DATABASE.collection('users').findOne(query);
     return user;
 }
 
@@ -134,7 +127,7 @@ async function getUserById(id) {
 */
 async function deleteUser(userName) {
     const query = { "userName": userName };
-    const result = await users.deleteOne(query);
+    const result = await DATABASE.collection('users').deleteOne(query);
     
     if (result.deletedCount === 0) {
         console.log("No documents matched the query. No documents were deleted.");
@@ -151,7 +144,7 @@ async function deleteUser(userName) {
  * @returns {Array} array of users
 */
 async function listUsers() {
-    const cursor = users.find();
+    const cursor = DATABASE.collection('users').find();
     return await cursor.toArray();
 }
 
@@ -238,7 +231,7 @@ async function updateUser(userid,userName, name, lastName, email, password, birt
 
     const query = { "userid": userid };
     const newValues = { $set: { "userName":userName,"name": name, "lastName": lastName, "email": email, "password": password, "birthDate": birthDate, "location": location, "bio": bio, "website": website, "profilePicture": profilePicture } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("No documents matched the query. No documents were updated.");
         return false;
@@ -258,7 +251,7 @@ async function updateUser(userid,userName, name, lastName, email, password, birt
 async function updateUser_email(userid,email){
     const query = { "userid": userid };
     const newValues = { $set: { "email": email } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("No documents matched the query. No documents were updated.");
         return false;
@@ -289,7 +282,7 @@ async function updateUser_userName(userid,newuserName){
     }
     const query = { "userid": userid };
     const newValues={ $set: { "userName": newuserName } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
         return false;
@@ -322,7 +315,7 @@ async function updateUser_password(userid,password){
 
     const query = { "userid": userid };
     const newValues={ $set: { "password": password } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
         return false;
@@ -348,7 +341,7 @@ async function updateUser_name(userid,newfirstName,newlastName){
     }
     const query = { "userid": userid };
     const newValues={ $set: { "name": newfirstName, "lastName": newlastName } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
         return false;
@@ -371,7 +364,7 @@ async function updateUser_bio(userid,newBio){
     }
     const query = { "userid": userid };
     const newValues={ $set: { "bio": newBio } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
         return false;
@@ -394,7 +387,7 @@ async function updateUser_profilePicture(userid,profilePicture){
     }
     const query = { "userid": userid };
     const newValues={ $set: { "profilePicture": profilePicture } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
         return false;
@@ -424,7 +417,7 @@ async function updateUser_birthday(userid,birthday){
     
     const query = { "userid": userid };
     const newValues={ $set: { "birthday": birthday } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
         return false;
@@ -456,7 +449,7 @@ async function updateUser_website(userid,website){
 
     const query = { "userid": userid };
     const newValues={ $set: { "website": website } };
-    const result = await users.updateOne(query, newValues);
+    const result = await DATABASE.collection('users').updateOne(query, newValues);
     if (result.modifiedCount === 0) {
         console.log("Any user matched the query. No user were updated.");
         return false;

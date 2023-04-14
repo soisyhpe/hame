@@ -1,6 +1,6 @@
 // dependencies
 const { randomUUID, randomBytes } =  require('crypto');
-const { DATABASE } = require('../app');
+const { DATABASE } = require('../db_connection');
 
 // local stuff
 const COLLECTION_NAME = "messages";
