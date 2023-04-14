@@ -14,7 +14,7 @@ PRIVATE_MESSAGES_API
   .get('/:user_id', async (req, res) => {
     let result = pm.getConversations(req.params.user_id);
 
-    if (!result) res.status(400).json({message: "No private conversations was found"});
+    if (!result) res.status(400).json({message: 'No private conversations was found'});
     else res.status(200).json(result);
   })
   
@@ -22,7 +22,7 @@ PRIVATE_MESSAGES_API
   .get('/:user_id/requests', async (req, res) => {
     let result = await pm.getConversations(req.params.user_id, true);
 
-    if (!result) res.status(400).json({message: "No requests for private conversations was found"});
+    if (!result) res.status(400).json({message: 'No requests for private conversations was found'});
     else res.status(200).json(result);
   })
 
@@ -30,8 +30,8 @@ PRIVATE_MESSAGES_API
   .post('/:author_id/conversations/', validate(conversationSchema), async (req, res) => {
     let result = await pm.createConversation(req.params.author_id, req.body.participants, req.body.creation_date);
 
-    if (!result) res.status(400).json({message: "Unable to create a new conversation"});
-    else res.status(201).json({message: "New conversation was created successfully"});
+    if (!result) res.status(400).json({message: 'Unable to create a new conversation'});
+    else res.status(201).json({message: 'New conversation was created successfully'});
   })
  
   // get all messages from a conversation
@@ -46,16 +46,16 @@ PRIVATE_MESSAGES_API
   .post('/:author_id/conversations/:conversation_id/messages/', validate(messageSchema), async (req, res) => {
     let result = await pm.sendMessage(req.params.author_id, req.body.content, req.body.type, req.body.reply_to, req.body.is_read, req.params.conversation_id, req.body.sent_date);
 
-    if (!result) res.status(400).json({message: "Unable to post a new message"});
-    else res.status(201).json({message: "Message was posted successfully"});
+    if (!result) res.status(400).json({message: 'Unable to post a new message'});
+    else res.status(201).json({message: 'Message was posted successfully'});
   })
 
   // delete a message
   .delete('/:author_id/conversations/:conversation_id/messages/:message_id', async (req, res) => {
     let result = await pm.deleteMessage(req.params.author_id, req.params.conversation_id, req.params.message_id);
 
-    if (!result) res.status(400).json({message: "Unable to delete message"});
-    else res.status(200).json({message: "Message was deleted successfully"});
+    if (!result) res.status(400).json({message: 'Unable to delete message'});
+    else res.status(200).json({message: 'Message was deleted successfully'});
   })
 
 module.exports = { PRIVATE_MESSAGES_API }

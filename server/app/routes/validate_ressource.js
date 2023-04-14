@@ -1,6 +1,6 @@
 const validate = (schema) => async (req, res, next) => {
   try {
-    await conversationSchema.validate({
+    await schema.validate({
       body: req.body,
       query: req.query,
       params: req.params

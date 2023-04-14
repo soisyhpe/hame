@@ -75,7 +75,7 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
 
     // insert user in database
     const newUser = {
-        "userid":randomBytes(16).toString("hex"),
+        "userid": randomBytes(16).toString("hex"),
         "email": email,
         "firstName": firstName,
         "lastName": lastName,
@@ -122,8 +122,8 @@ async function getUserByuserName(userName) {
  * @returns {Object|boolean} user if successful, false otherwise
 */
 async function getUserById(id) {
-    const query = { "userid": id };
-    const user = await users.findOne(query);
+    let query = { "userid": id };
+    let user = await users.findOne(query);
     return user;
 }
 

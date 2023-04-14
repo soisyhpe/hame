@@ -1,5 +1,5 @@
 // dependencies
-const crypto = require('crypto');
+const { randomUUID } = require('crypto');
 const { DATABASE } = require('../app');
 
 // local stuff
@@ -18,7 +18,7 @@ async function addBookmark(userId, messageId, creationDate) {
   let newBookmark = {
     user_id: userId,
     message_id: messageId,
-    bookmark_id: crypto.randomUUID(),
+    bookmark_id: randomUUID(),
     creation_date: creationDate
   };
   let result = await collection.insertOne(newBookmark);

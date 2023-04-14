@@ -13,9 +13,11 @@ const userSchema = object(
       password: string().matches(PASSWORD_REGEX, 'password is not valid').required()
     }),
     params: object({
-      author_id: string().matches(UUID_REGEX, 'author_id must contains a valid UUID').required()
+      user_id: string().matches(UUID_REGEX, 'author_id must contains a valid UUID').required()
     })
   }
 )
+
+const followingSchema
 
 module.exports = { userSchema };

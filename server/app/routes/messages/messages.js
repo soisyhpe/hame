@@ -1,7 +1,8 @@
 // dependencies
 const express = require('express');
-const messages = require('../../db/messagesDB.js');
-
+const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages } = require('../../db/messages_db');
+const { validate } = require('../../routes/validate_ressource');
+const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessage, responsesSchema, deleteMessageSchema } = require('./validator_schemas');
 
 // express' stuff
 const MESSAGES_API = express.Router();
@@ -9,70 +10,87 @@ const MESSAGES_API = express.Router();
 MESSAGES_API
   .use(express.json())
 
-  // get all messages
-  .get('/', (req, res) => {
-    messages.getAllMessages()
-      .then((result) => {
-        console.log("ANHjEK");
-        if (result.length===0) res.status(400).json({message: "No messages was found"});
-        else res.status(200).json(result);
-      }).catch((err) => {
-        res.status(500).json({message: "Server error"});
-      });
+  // messages : get messages
+  .get('/', validate(messagesSchema), async (req, res) => {
+    let result = await getMessages(req.params.limit);
+
+    if (!result) res.status(204).json({message: 'No messages was found'});
+    else res.status(202).json(result);
   })
 
-  // get all messages from user id
-  .get('/userId/:userId', (req, res) => {
-    messages.getMessagesFromUser(req.params.userId)
-      .then((result) => {
-        console.log("AHJA");
-        if (result.length===0) res.status(400).json({message: "No messages was found"});
-        else res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(500).json({message: "Server error"});
-      }
-    );
+  // messages : get messages of user
+  .get('/:user_id', validate(messagesFromUserSchema), async (req, res) => {
+    let result = await getMessagesFromUser(req.params.user_id, req.params.limit);
 
+    if (!result) res.status(204).json({message: 'No messages was found for user'});
+    else res.status(202).json(result);
   })
 
-  // get a specific message from its id
-  .get('/messageId/:messageId', (req, res) => {
-    messages.getMessageById(req.params.messageId)
-      .then((result) => {
-        console.log("AHUAI");
-        if (result) res.status(200).json(result);
-        else res.status(400).json({message: "Message was not found"});
-      });
+  // messages : get message from id
+  .get('/:message_id', validate(messageFromIdSchema), async (req, res) => {
+    let result = await getMessageFromId(req.params.message_id);
 
+    if (!result) res.status(204).json({message: 'Message do not exist'});
+    else res.status(200).json(result);
   })
 
-  // post a new message
-  .post('/', (req, res) => {
-    messages.sendPublicMessage(req.body.username, req.body.message)
-      .then((result) => {
-        if (result) res.status(200).json({message: "Message was sent successfully", messageid : result});
-        else res.status(400).json({message: "Message was not sent"});
-      });
+  // messages : send new message
+  .post('/:user_id/', validate(sendMessageSchema), async (req, res) => {
+    let result = await sendMessage(req.params.user_id, req.body.text, req.body.repliedTo, req.body.repostedFrom, req.body.place, req.body.media, req.body.source, req.body.scope, req.body.creation_date);
+
+    if (!result) res.status(400).json({message: 'Unable to send new message'});
+    else res.status(201).json({message: 'New message was sended successfully'});
   })
 
-  // delete a message by its id
-  .delete('/:messageId', (req, res) => {
-    messages.deleteMessageById(req.params.messageId)
-      .then((result) => {
-        console.log(result);
-        if (result) res.status(200).json({message: "Message was deleted successfully"});
-        else res.status(400).json({message: "Message was not found"});
-      });
+  // messages : get responses of a message
+  .get('/:message_id/responses', validate(responsesSchema), async (req, res) => {
+    let result = await getResponses(req.params.user_id, req.params.limit);
+
+    if (!result) res.status(204).json({message: 'No responses was found for this message'});
+    else res.status(202).json(result);
   })
 
-  // put a message (modify a message)
+  // messages : delete message
+  .delete('/:message_id', async (req, res) => {
+    let result = await deleteMessage(req.params.message_id, req.body.user_id);
+
+    if (!result) res.status(204).json({message: 'No message was found'});
+    else res.status(202).json({message: 'Message was deleted successfully'});
+  })
+
+  // message : put a message (modify a message)
   .put('/:messageId', (req, res) => {
-    messages.modifyMessage(req.params.messageId, req.body.message)
-      .then((result) => {
-        if (result) res.status(200).json({message: "Message was updated successfully"});
-        else res.status(400).json({message: "Message was not found"});
-      });
+
+  })
+
+  // messages : liking users of a message
+  .get('/:message_id/liking-users', async (req, res) => {
+    
+  })
+
+  // messages : like a message
+  .post('/:message_id/likes/', async (req, res) => {
+
+  })
+
+  // messages : unlike a message
+  .delete('/:message_id/likes/:user_id', async (req, res) => {
+    
+  })
+
+  // messages : liked messages of an user
+  .get('/:user_id/liked-messages', async (req, res) => {
+
+  })
+
+  // messages : reposting users of a message
+  .get('/:message_id/reposting-user', async (req, res) => {
+
+  })
+
+  // messages : reposted messages of a message
+  .get('/:message_id/reposted-messages', async (req, res) => {
+
   })
 
 module.exports = { MESSAGES_API }
