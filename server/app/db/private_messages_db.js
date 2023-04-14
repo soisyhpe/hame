@@ -1,5 +1,5 @@
 // dependencies
-const crypto = require('crypto');
+const { randomUUID } = require('crypto');
 const { time } = require('console');
 const { DATABASE } = require('../app');
 
@@ -9,9 +9,7 @@ const COLLECTION_NAME = "private-messages";
 async function getConversations(userId, request=false, limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, request: request};
-  let results = await collection.find(query)
-    .limit(limit)
-    .toArray();
+  let results = await collection.find(query).limit(limit).toArray();
 
   return results;
 }
@@ -19,7 +17,7 @@ async function getConversations(userId, request=false, limit=10) {
 async function createConversation(userId, participants, creationDate) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
   let newConversation = {
-    conversation_id: crypto.randomUUID(),
+    conversation_id: randomUUID(),
     author_id: userId,
     participants: participants,
     creation_date: creationDate
@@ -31,10 +29,8 @@ async function createConversation(userId, participants, creationDate) {
 
 async function getMessages(userId, conversationId, limit=20) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {conversation_id: conversationId};
-  let results = await collection.find(query)
-    .limit(limit)
-    .toArray();
+  let query = { conversation_id: conversationId };
+  let results = await collection.find(query).limit(limit).toArray();
     
   return results;
 }
@@ -58,7 +54,7 @@ async function sendMessage(authorId, content, type, replyTo, isRead, conversatio
 
 async function deleteMessage(authorId, conversationId, messageId) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {author_id: authorId, conversation_id: conversationId, message_id: messageId};
+  let query = { author_id: authorId, conversation_id: conversationId, message_id: messageId };
   let result = await collection.deleteOne(query);
 
   return result.deletedCount === 1;
