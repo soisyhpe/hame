@@ -54,7 +54,9 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
         "followers": 0,
         "creation_date": creationDate
     }
-    let result = await collection.insertOne(newUser);
+    let result = await collection.insertOne(newUser)
+        .then(res => console.log(`User was created successfully`))
+        .catch(err => console.error(`Unable to create user, another user with this user_id, email or username already exist`));
     
     return result;
 }
