@@ -110,9 +110,9 @@ async function unlikeMessage(messageId, userId) {
   return result;
 }
 
-async function likingUsers(userId, messageId, limit=10) {
+async function likingUsers(messageId, limit=10) {
   let collection = await DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
-  let query = { user_id: userId, message_id: messageId };
+  let query = { message_id: messageId };
   let projection = { user_id: 1 };
   let results = await collection.find(query).project(projection).limit(limit).toArray();
 
@@ -130,7 +130,7 @@ async function likedMessages(userId, limit=10) {
 
 async function repostingUsers(messageId, limit=10) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
-  let query = {reposted_from: messageId};
+  let query = { reposted_from: messageId };
   let projection = {user_id: 1};
   let results = await collection.find(query).project(projection).limit(limit).toArray();
 
@@ -145,7 +145,6 @@ async function repostedMessages(messageId, limit=10) {
 
   return results;
 }
-
 
 async function modifyMessage(messageid, newMessage) {
     if (messageid === null || newMessage === null || messageid === undefined || newMessage === undefined || messageid === "" || newMessage === "") {
