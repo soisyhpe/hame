@@ -47,11 +47,11 @@ const sendMessageSchema = object(
         postalCode: number().optional()
       }).optional(),
       media: object({
-        type: string().oneOf('IMAGE', 'VIDEO', 'GIF', 'WEBSITE').required(),
+        type: string().oneOf(['IMAGE', 'VIDEO', 'GIF', 'WEBSITE']).required(),
         url: string().required()
       }).optional(),
       source: string().required(),
-      scope: string().oneOf('DEFAULT', 'CIRCLES').required(),
+      scope: string().oneOf(['DEFAULT', 'CIRCLES']).required(),
       creation_date: date().required()
     }),
     params: object({

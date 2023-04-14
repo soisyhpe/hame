@@ -2,7 +2,7 @@
 const express = require('express');
 const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages } = require('../../db/messages_db');
 const { validate } = require('../../routes/validate_ressource');
-const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, respostedMessagesSchema } = require('./validator_schemas');
+const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, repostedMessagesSchema } = require('./validator_schemas');
 
 // express' stuff
 const MESSAGES_API = express.Router();

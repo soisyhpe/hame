@@ -1,6 +1,6 @@
 // dependencies
 const express = require('express');
-const { getFollowers, addFollower, deleteFollower } = require('../../db/followersDB');
+const { getFollowers, addFollower, deleteFollower } = require('../../db/followers_db');
 const { validate } = require('../../routes/validate_ressource');
 const { followersSchema, addFollowSchema, removeFollowSchema } = require('./validator_schemas');
 
