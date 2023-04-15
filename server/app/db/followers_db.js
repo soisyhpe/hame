@@ -3,6 +3,8 @@ const { DATABASE } = require('../db_connection');
 
 // local stuff
 const COLLECTION_NAME = "followers";
+DATABASE.collection(COLLECTION_NAME).createIndex({ user_id: 1 , follower_id : 1 }, { unique: true });
+
 
 async function getFollowers(userId, limit=10) {
   let collection = DATABASE.collection(COLLECTION_NAME);
