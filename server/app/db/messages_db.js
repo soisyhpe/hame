@@ -5,6 +5,7 @@ const { DATABASE } = require('../db_connection');
 // local stuff
 const COLLECTION_NAME = "messages";
 const LIKED_MESSAGES_COLLECTION_NAME = "liked_messages";
+DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME).createIndex({ message_id, user_id: 1 }, { unique: true });
 
 async function getMessages(limit=10) {
   let collection = DATABASE.collection(COLLECTION_NAME);
