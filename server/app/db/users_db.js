@@ -77,7 +77,7 @@ async function deleteUser(userId) {
     return result;
 }
 
-// todo : update user
+// todo : update user 
 
 // specify which functions should be accessed from outside
 module.exports = { getUsers, getUserFromUsername, getUserFromId, createUser, deleteUser }
