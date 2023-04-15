@@ -50,11 +50,16 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
     last_modified: creationDate,
     creation_date: creationDate
   };
-  let result = Promise.all[await collection.insertOne(newMessage),
-    replyTo != '' ? await collection.updateOne({ message_id: replyTo }, { $inc: { reply_count: 1 } }) : null,
-    repostedFrom != '' ? await collection.updateOne({ message_id: repostedFrom }, { $inc: { repost_count: 1 } }) : null
-  ];
+  console.log(replyTo, repostedFrom)
 
+  // if replyTo or repostedFrom are undefined, then resolve all promises 
+  let result = await Promise.all([await collection.insertOne(newMessage),
+    replyTo !== undefined ? await collection.updateOne({ message_id: replyTo }, { $inc: { reply_count: 1 } }) : Promise.resolve(),
+    repostedFrom !== undefined ? await collection.updateOne({ message_id: repostedFrom }, { $inc: { repost_count: 1 } }) : Promise.resolve()
+  ]);
+
+
+  console.log(result);
   return result;
 }
 
@@ -107,7 +112,7 @@ async function likeMessage(messageId, userId, creationDate) {
     // return false;
   // }
 
-  let result = await Promise.all[collection.insertOne(newLike), collection2.updateOne(query, update)];
+  let result = await Promise.all([collection.insertOne(newLike), collection2.updateOne(query, update)]);
 
   return result;
 }
@@ -121,7 +126,7 @@ async function unlikeMessage(messageId, userId) {
     //console.log("Message not liked by user");
     return false;
   }
-  let result = await Promise.all[collection.drop(query), collection2.updateOne(query, update)];
+  let result = await Promise.all([collection.drop(query), collection2.updateOne(query, update)]);
 
   return result;
 }
