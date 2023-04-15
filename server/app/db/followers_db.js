@@ -27,9 +27,9 @@ async function addFollower(userId, followerId, creationDate) {
 async function deleteFollower(userId, followerId) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, follower_id: followerId};
-  let result = await collection.drop(query);
+  let result = await collection.deleteOne(query);
 
-  return result;
+  return result.deletedCount > 0;
 }
 
 module.exports = { getFollowers, addFollower, deleteFollower };
