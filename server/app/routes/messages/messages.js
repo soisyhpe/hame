@@ -53,7 +53,7 @@ MESSAGES_API
   // messages : delete message
   .delete('/:message_id', validate(deleteMessageSchema), async (req, res) => {
     let result = await deleteMessage(req.params.message_id, req.body.user_id);
-
+    console.log(result);
     if (!result) res.status(204).json({message: 'No message was found'});
     else res.status(202).json({message: 'Message was deleted successfully'});
   })
