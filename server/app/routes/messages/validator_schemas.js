@@ -180,11 +180,11 @@ const modifyMessageSchema = object(
         city: string().min(1).required(),
         street: string().optional(),
         postalCode: number().optional()
-      }).optional(),
+      }).optional().default(undefined),
       media: object({
         type: string().oneOf(['IMAGE', 'VIDEO', 'GIF', 'WEBSITE']).required(),
         url: string().required()
-      }).optional()
+      }).optional().default(undefined)
     })
   }
 );
