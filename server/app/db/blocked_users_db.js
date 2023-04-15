@@ -28,9 +28,9 @@ async function blockUser(userId, blockedUserId, blockedDate) {
 async function unblockUser(userId, blockedUserId) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, blocked_user_id: blockedUserId};
-  let result = await collection.drop(query);
+  let result = await collection.deleteOne(query);
 
-  return result;
+  return result.deletedCount > 0;
 }
 
 module.exports = { getBlockedUsers, blockUser, unblockUser };
