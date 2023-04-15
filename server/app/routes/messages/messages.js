@@ -1,8 +1,8 @@
 // dependencies
 const express = require('express');
-const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage } = require('../../db/messages_db');
+const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser } = require('../../db/messages_db');
 const { validate } = require('../../routes/validate_ressource');
-const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, repostedMessagesSchema, modifyMessageSchema } = require('./validator_schemas');
+const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema } = require('./validator_schemas');
 
 // express' stuff
 const MESSAGES_API = express.Router();
@@ -12,7 +12,7 @@ MESSAGES_API
 
   // messages : get messages
   .get('/', validate(messagesSchema), async (req, res) => {
-    let result = await getMessages(req.params.limit);
+    let result = await getMessages(req.query.limit);
 
     if (!result) res.status(204).json({message: 'No messages was found'});
     else res.status(202).json(result);
@@ -20,7 +20,7 @@ MESSAGES_API
 
   // messages : get messages of user
   .get('/:user_id', validate(messagesFromUserSchema), async (req, res) => {
-    let result = await getMessagesFromUser(req.params.user_id, req.params.limit);
+    let result = await getMessagesFromUser(req.params.user_id, req.query.limit);
 
     if (!result) res.status(204).json({message: 'No messages was found for user'});
     else res.status(202).json(result);
@@ -44,7 +44,7 @@ MESSAGES_API
 
   // messages : get responses of a message
   .get('/:message_id/responses', validate(responsesSchema), async (req, res) => {
-    let result = await getResponses(req.params.user_id, req.params.limit);
+    let result = await getResponses(req.params.user_id, req.query.limit);
 
     if (!result) res.status(204).json({message: 'No responses was found for this message'});
     else res.status(202).json(result);
@@ -69,7 +69,7 @@ MESSAGES_API
 
   // messages : liking users of a message
   .get('/:message_id/liking-users', validate(likingUsersSchema), async (req, res) => {
-    let result = await likingUsers(req.params.message_id, req.params.limit);
+    let result = await likingUsers(req.params.message_id, req.query.limit);
 
     if (!result) res.status(204).json({ message: 'No liking users was found' });
     else res.status(202).json(result);
@@ -93,15 +93,15 @@ MESSAGES_API
 
   // messages : liked messages of an user
   .get('/:user_id/liked-messages', validate(likedMessagesSchema), async (req, res) => {
-    let result = await likedMessages(req.params.user_id, req.params.limit);
+    let result = await likedMessages(req.params.user_id, req.query.limit);
 
     if (!result) res.status(204).json({ message: 'No liked messages was found' });
     else res.status(202).json(result);
   })
 
   // messages : reposting users of a message
-  .get('/:message_id/reposting-user', validate(respostingUsersSchema), async (req, res) => {
-    let result = await repostingUsers(req.params.message_id, req.params.limit);
+  .get('/:message_id/reposting-user', validate(repostingUsersSchema), async (req, res) => {
+    let result = await repostingUsers(req.params.message_id, req.query.limit);
 
     if (!result) res.status(204).json({ message: 'No reposting users was found' });
     else res.status(202).json(result);
@@ -109,12 +109,19 @@ MESSAGES_API
 
   // messages : reposted messages of a message
   .get('/:message_id/reposted-messages', validate(repostedMessagesSchema), async (req, res) => {
-    let result = await repostedMessages(req.params.message_id, req.params.limit);
+    let result = await repostedMessages(req.params.message_id, req.query.limit);
 
     if (!result) res.status(204).json({ message: 'No reposted messages was found' });
     else res.status(202).json(result);
   })
 
-  // todo : reposted messages of an user
+  .get('/user/:user_id/reposted-messages', validate(repostedMessagesofUserSchema), async (req, res) => {
+    let result = await repostedMessagesofUser(req.params.user_id, req.query.limit);
+
+    if (!result) res.status(204).json({ message: 'No reposted messages was found' });
+    else res.status(202).json(result);
+  })
+
+
 
 module.exports = { MESSAGES_API }

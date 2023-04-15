@@ -162,6 +162,15 @@ async function repostedMessages(messageId, limit=10) {
   return results;
 }
 
+async function repostedMessagesofUser(userID,limit=10){
+  let collection = DATABASE.collection(COLLECTION_NAME);
+  let query = { user_id: userID };
+  let projection = { message_id: 1} ;
+  let results = await collection.find(query).project(projection).limit(limit).toArray();
+
+  return results;
+}
+
 async function modifyMessage(messageId,userId, text, place, media, lastModified) {
   // not sure about userId check maybe only messageId is enough
   let collection = DATABASE.collection(COLLECTION_NAME);
@@ -175,4 +184,4 @@ async function modifyMessage(messageId,userId, text, place, media, lastModified)
 
 
 
-module.exports = { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage };
+module.exports = { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser };

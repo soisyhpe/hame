@@ -4,7 +4,7 @@ const { UUID_REGEX } = require('../../tools/validation_tools');
 
 const messagesSchema = object(
   {
-    params: object({
+    query: object({
       limit: number().positive().optional()
     })
   }
@@ -14,6 +14,8 @@ const messagesFromUserSchema = object(
   {
     params: object({
       user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required(),
+    }),
+    query: object({
       limit: number().positive().optional()
     })
   }
@@ -63,6 +65,8 @@ const responsesSchema = object(
   {
     params: object({
       message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
+    }),
+    query: object({
       limit: number().positive().optional()
     })
   }
@@ -83,6 +87,8 @@ const likingUsersSchema = object(
   {
     params: object({
       message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
+    }),
+    query: object({
       limit: number().positive().optional()
     })
   }
@@ -115,28 +121,46 @@ const likedMessagesSchema = object(
   {
     params: object({
       user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required(),
+    }),
+    query: object({
       limit: number().positive().optional()
     })
   }
 );
 
-const respostingUsersSchema = object(
+const repostingUsersSchema = object(
   {
     params: object({
       message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
+    }),
+    query: object({
       limit: number().positive().optional()
     })
   }
 );
 
-const respostedMessagesSchema = object(
+const repostedMessagesSchema = object(
   {
     params: object({
       message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
+    }),
+    query: object({
       limit: number().positive().optional()
     })
   }
 );
+
+const repostedMessagesofUserSchema = object(
+  {
+    params: object({
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required()
+    }),
+    query: object({
+      limit: number().positive().optional()
+    })
+  }
+);
+
 
 const modifyMessageSchema = object(
   {
@@ -167,4 +191,4 @@ const modifyMessageSchema = object(
       
 
 
-module.exports = { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, respostedMessagesSchema, modifyMessageSchema };
+module.exports = { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema };
