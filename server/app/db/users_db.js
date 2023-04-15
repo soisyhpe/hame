@@ -12,7 +12,7 @@ DATABASE.collection(COLLECTION_NAME).createIndex({ username: 1 }, { unique: true
 DATABASE.collection(COLLECTION_NAME).createIndex({ user_id: 1 }, { unique: true });
 
 async function getUsers(limit=10) {
-    let collection = await DATABASE.collection(COLLECTION_NAME);
+    let collection = DATABASE.collection(COLLECTION_NAME);
     let query = {};
     let result = await collection.find(query).limit(limit).toArray()
         .catch(err => console.error(`Unable to found users (${err})`));
@@ -21,7 +21,7 @@ async function getUsers(limit=10) {
 }
 
 async function getUserFromUsername(username) {
-    let collection = await DATABASE.collection(COLLECTION_NAME);
+    let collection = DATABASE.collection(COLLECTION_NAME);
     let query = { username: username };
     let result = await collection.findOne(query)
         .catch(err => console.error(`Unable to found user (${err})`));
@@ -30,7 +30,7 @@ async function getUserFromUsername(username) {
 }
 
 async function getUserFromId(userId) {
-    let collection = await DATABASE.collection(COLLECTION_NAME);
+    let collection = DATABASE.collection(COLLECTION_NAME);
     let query = { user_id: userId };
     let result = await collection.findOne(query)
         .catch(err => console.error(`Unable to found user (${err})`));
@@ -39,7 +39,7 @@ async function getUserFromId(userId) {
 }
 
 async function createUser(email, firstName, lastName, birthDate, userName, password, location, bio, website, profilePicture, profileBanner, creationDate) {
-    let collection = await DATABASE.collection(COLLECTION_NAME);
+    let collection = DATABASE.collection(COLLECTION_NAME);
     let newUser = {
         "user_id": randomUUID(),
         "email": email,
@@ -64,7 +64,7 @@ async function createUser(email, firstName, lastName, birthDate, userName, passw
 }
 
 async function deleteUser(userId) {
-    let collection = await DATABASE.collection(COLLECTION_NAME);
+    let collection = DATABASE.collection(COLLECTION_NAME);
     let query = { user_id: userId };
     let result = await collection.deleteOne(query)
         .catch(err => console.error(`Unable to delete user (${err})`));

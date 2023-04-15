@@ -31,7 +31,7 @@ async function getMessageFromId(messageId) {
 }
 
 async function sendMessage(userId, text, replyTo, repostedFrom, place, media, source, scope, creationDate) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let newMessage = {
     user_id: userId,
     message_id: randomUUID(),

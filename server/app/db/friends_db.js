@@ -5,7 +5,7 @@ const { DATABASE } = require('../db_connection');
 const COLLECTION_NAME = "friends";
 
 async function getFriends(userId, limit=10) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId};
   let results = await collection.find(query).limit(limit).toArray();
 
@@ -13,7 +13,7 @@ async function getFriends(userId, limit=10) {
 }
 
 async function addFriend(userId, friendId, creationDate) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let newFriend = {
     user_id: userId,
     friend_id: friendId,
@@ -25,7 +25,7 @@ async function addFriend(userId, friendId, creationDate) {
 }
 
 async function deleteFriend(userId, friendId) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, friend_id: friendId};
   let result = await collection.deleteOne(query);
 

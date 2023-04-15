@@ -6,7 +6,7 @@ const COLLECTION_NAME = "blocked_users";
 DATABASE.collection(COLLECTION_NAME).createIndex({ user_id: 1 }, { unique: true });
 
 async function getBlockedUsers(userId, limit=10) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId};
   let results = await collection.find(query).limit(limit).toArray();
 
@@ -14,7 +14,7 @@ async function getBlockedUsers(userId, limit=10) {
 }
 
 async function blockUser(userId, blockedUserId, blockedDate) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let newBlockedUser = {
     user_id: userId,
     blocked_user_id: blockedUserId,
@@ -26,7 +26,7 @@ async function blockUser(userId, blockedUserId, blockedDate) {
 }
 
 async function unblockUser(userId, blockedUserId) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, blocked_user_id: blockedUserId};
   let result = await collection.deleteOne(query);
 

@@ -6,7 +6,7 @@ const { DATABASE } = require('../db_connection');
 const COLLECTION_NAME = "bookmarks";
 
 async function getBookmarks(userId, limit=10) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId};
   let results = await collection.find(query).limit(limit).toArray();
 
@@ -14,7 +14,7 @@ async function getBookmarks(userId, limit=10) {
 }
 
 async function addBookmark(userId, messageId, creationDate) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let newBookmark = {
     user_id: userId,
     message_id: messageId,
@@ -27,7 +27,7 @@ async function addBookmark(userId, messageId, creationDate) {
 }
 
 async function deleteBookmark(userId, bookmarkId) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, bookmark_id: bookmarkId};
   let result = await collection.deleteOne(query);
 

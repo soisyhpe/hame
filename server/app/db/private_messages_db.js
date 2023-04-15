@@ -7,7 +7,7 @@ const { DATABASE } = require('../db_connection');
 const COLLECTION_NAME = "private-messages";
 
 async function getConversations(userId, request=false, limit=10) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, request: request};
   let results = await collection.find(query).limit(limit).toArray();
 
@@ -15,7 +15,7 @@ async function getConversations(userId, request=false, limit=10) {
 }
 
 async function createConversation(userId, participants, creationDate) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let newConversation = {
     conversation_id: randomUUID(),
     author_id: userId,
@@ -28,7 +28,7 @@ async function createConversation(userId, participants, creationDate) {
 }
 
 async function getMessages(userId, conversationId, limit=20) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = { conversation_id: conversationId };
   let results = await collection.find(query).limit(limit).toArray();
     
@@ -36,7 +36,7 @@ async function getMessages(userId, conversationId, limit=20) {
 }
 
 async function sendMessage(authorId, content, type, replyTo, isRead, conversationId, sentDate) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let newMessage = {
     message_id: crypto.randomUUID(),
     author_id: authorId,
@@ -53,7 +53,7 @@ async function sendMessage(authorId, content, type, replyTo, isRead, conversatio
 }
 
 async function deleteMessage(authorId, conversationId, messageId) {
-  let collection = await DATABASE.collection(COLLECTION_NAME);
+  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = { author_id: authorId, conversation_id: conversationId, message_id: messageId };
   let result = await collection.deleteOne(query);
 
