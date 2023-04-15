@@ -101,10 +101,10 @@ async function likeMessage(messageId, userId, creationDate) {
   let query = { message_id: messageId };
   let update = { $inc: { like_count: 1 } };
   // check if liked entry already exists
-  if (await collection.findOne({ message_id: messageId, user_id: userId }) != null) {
+  // if (await collection.findOne({ message_id: messageId, user_id: userId }) != null) {
     //console.log("Message already liked by user");
-    return false;
-  }
+    // return false;
+  // }
 
   let result = await Promise.all[collection.insertOne(newLike), collection2.updateOne(query, update)];
 
