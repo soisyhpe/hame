@@ -33,8 +33,8 @@ const sendMessageSchema = object(
   {
     body: object({
       text: string().min(1).max(256).required(),
-      replied_to: string().matches(UUID_REGEX, 'params.replied_id must be a valid uuid').default('').required(),
-      reposted_from: string().matches(UUID_REGEX, 'params.reposted_id must be a valid uuid').default('').required(),
+      replied_to: string().optional().matches(UUID_REGEX, 'params.replied_id must be a valid uuid'),
+      reposted_from: string().optional().matches(UUID_REGEX, 'params.reposted_id must be a valid uuid'),
       place: object({
         position: object({
           latitude: number().min(-90).max(90).required(),
@@ -46,11 +46,11 @@ const sendMessageSchema = object(
         city: string().min(1).required(),
         street: string().optional(),
         postalCode: number().optional()
-      }).optional(),
+      }).optional().default(undefined),
       media: object({
         type: string().oneOf(['IMAGE', 'VIDEO', 'GIF', 'WEBSITE']).required(),
         url: string().required()
-      }).optional(),
+      }).optional().default(undefined),
       source: string().required(),
       scope: string().oneOf(['DEFAULT', 'CIRCLES']).required(),
       creation_date: date().required()
