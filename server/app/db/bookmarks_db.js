@@ -29,9 +29,9 @@ async function addBookmark(userId, messageId, creationDate) {
 async function deleteBookmark(userId, bookmarkId) {
   let collection = await DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, bookmark_id: bookmarkId};
-  let result = await collection.drop(query);
+  let result = await collection.deleteOne(query);
 
-  return result;
+  return result.deletedCount > 0;
 }
 
 module.exports = { getBookmarks, addBookmark, deleteBookmark };
