@@ -4,7 +4,7 @@ const { EMAIL_REGEX, PASSWORD_REGEX, UUID_REGEX } = require('../../tools/validat
 
 const getUsersSchema = object(
   {
-    params: object({
+    query: object({
       limit: number().positive().optional()
     })
   }
@@ -14,7 +14,11 @@ const getUserFromUsernameSchema = object(
   {
     params: object({
       username: string().min(3).max(16).required()
+    }),
+    query: object({
+      limit: number().positive().optional()
     })
+
   }
 )
 
@@ -22,7 +26,11 @@ const getUserFromIdSchema = object(
   {
     params: object({
       user_id: string().matches(UUID_REGEX, 'params.user_id is not valid').required()
+    }),
+    query: object({
+      limit: number().positive().optional()
     })
+    
   }
 )
 

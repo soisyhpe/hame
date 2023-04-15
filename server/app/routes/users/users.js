@@ -12,7 +12,7 @@ USERS_API.
 
   // users : get all users
   .get('/', validate(getUsersSchema), async (req, res) => {
-    let result = await getUsers(req.params.limit);
+    let result = await getUsers(req.query.limit);
     
     if (!result) res.status(204).json({ message: 'No users was found' });
     else res.status(200).json(result);
@@ -20,7 +20,7 @@ USERS_API.
 
   // users : get a specific user from username
   .get('/:username', validate(getUserFromUsernameSchema), async (req, res) => {
-    let result = await getUserFromUsername(req.params.username, req.params.limit);
+    let result = await getUserFromUsername(req.params.username, req.query.limit);
 
     if (!result) res.status(404).json({ message: 'User does not exist' });
     else res.status(200).json(result);
@@ -28,7 +28,7 @@ USERS_API.
 
   // users : get a specific user from id
   .get('/:user_id', validate(getUserFromIdSchema), async (req, res) => {
-    let result = await getUserFromId(req.params.user_id, req.params.limit);
+    let result = await getUserFromId(req.params.user_id, req.query.limit);
 
     if (!result) res.status(404).json({ message: 'User does not exist' });
     else res.status(200).json(result);

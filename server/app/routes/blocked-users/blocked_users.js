@@ -12,7 +12,7 @@ BLOCKED_USERS_API.
 
   // blocked users : get all blocked users
   .get('/:user_id', validate(blockedUsersSchema), async (req, res) => {
-    let result = await getBlockedUsers(req.params.user_id, req.params.limit);
+    let result = await getBlockedUsers(req.params.user_id, req.query.limit);
 
     if (!result) res.status(204).json({message: 'No blocked users was found for specified user'});
     else res.status(202).json(result);

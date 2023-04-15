@@ -2,6 +2,20 @@
 const { string, boolean, array, number, date, object, addMethod } = require('yup');
 const { UUID_REGEX } = require('../../tools/validation_tools');
 
+
+const getBookmarksSchema = object(
+  {
+    params: object({
+      user_id: string().matches(UUID_REGEX).required()
+    }),
+    query: object({
+      limit: number().positive().optional()
+    })
+  }
+)
+
+
+
 const bookmarkSchema = object(
   {
     body: object({
@@ -14,4 +28,14 @@ const bookmarkSchema = object(
   }
 )
 
-module.exports = { bookmarkSchema };
+const deleteBookmarkSchema = object(
+  {
+    params: object({
+      user_id: string().matches(UUID_REGEX).required(),
+      bookmark_id: string().matches(UUID_REGEX).required()
+    })
+  }
+)
+
+
+module.exports = { bookmarkSchema, getBookmarksSchema, deleteBookmarkSchema };

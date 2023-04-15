@@ -6,6 +6,8 @@ const blockedUsersSchema = object(
   {
     params: object({
       user_id: string().matches(UUID_REGEX).required(),
+    }),
+    query: object({
       limit: number().positive().optional()
     })
   }

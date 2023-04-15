@@ -2,7 +2,7 @@
 const express = require('express');
 const { getBookmarks, addBookmark, deleteBookmark } = require('../../db/bookmarks_db');
 const { validate } = require('../validate_ressource');
-const { bookmarkSchema } = require('./validator_schemas');
+const { bookmarkSchema, getBookmarksSchema, deleteBookmarkSchema } = require('./validator_schemas');
 
 // express' stuff
 const BOOKMARKS_API = express.Router();
@@ -11,8 +11,8 @@ BOOKMARKS_API
   .use(express.json())
 
   // get all bookmarks
-  .get('/:user_id', async (req, res) => {
-    let result = await getBookmarks(req.params.user_id, req.params.limit);
+  .get('/:user_id',validate(getBookmarksSchema), async (req, res) => {
+    let result = await getBookmarks(req.params.user_id, req.query.limit);
 
     if (!result) res.status(204).json({message: 'No bookmarks was found for specified user'});
     else res.status(202).json(result);
@@ -27,7 +27,7 @@ BOOKMARKS_API
   })
 
   // delete a message from bookmarks
-  .delete('/:user_id/:bookmark_id', async (req, res) => {
+  .delete('/:user_id/:bookmark_id',validate(deleteBookmarkSchema), async (req, res) => {
     let result = await deleteBookmark(req.params.user_id, req.params.bookmark_id);
 
     if (!result) res.status(204).json({message : 'Unable to delete bookmark'});

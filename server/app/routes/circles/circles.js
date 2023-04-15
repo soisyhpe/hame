@@ -12,7 +12,7 @@ CIRCLES_API.
 
   // circles : get circles
   .get('/:user_id', validate(circlesSchema), async (req, res) => {
-    let result = await getCircles(req.params.user_id, req.params.limit);
+    let result = await getCircles(req.params.user_id, req.query.limit);
 
     if (!result) res.status(204).json({message: 'No circles was found for specified user'});
     else res.status(202).json(result);
