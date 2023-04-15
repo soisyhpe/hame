@@ -138,4 +138,33 @@ const respostedMessagesSchema = object(
   }
 );
 
-module.exports = { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, respostedMessagesSchema };
+const modifyMessageSchema = object(
+  {
+    params: object({
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required()
+    }),
+    body: object({
+      text: string().min(1).max(256).required(),
+      place: object({
+        position: object({
+          latitude: number().min(-90).max(90).required(),
+          longitude: number().min(-180).max(180).required(),
+          altitude: number().min(-414).max(8848).required()
+        }).required(),
+        country: string().min(1).required(),
+        country_code: string().required(),
+        city: string().min(1).required(),
+        street: string().optional(),
+        postalCode: number().optional()
+      }).optional(),
+      media: object({
+        type: string().oneOf(['IMAGE', 'VIDEO', 'GIF', 'WEBSITE']).required(),
+        url: string().required()
+      }).optional()
+    })
+  }
+);
+      
+
+
+module.exports = { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, respostedMessagesSchema, modifyMessageSchema };

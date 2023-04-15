@@ -1,8 +1,8 @@
 // dependencies
 const express = require('express');
-const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages } = require('../../db/messages_db');
+const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage } = require('../../db/messages_db');
 const { validate } = require('../../routes/validate_ressource');
-const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, repostedMessagesSchema } = require('./validator_schemas');
+const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, respostingUsersSchema, repostedMessagesSchema, modifyMessageSchema } = require('./validator_schemas');
 
 // express' stuff
 const MESSAGES_API = express.Router();
@@ -58,7 +58,14 @@ MESSAGES_API
     else res.status(202).json({message: 'Message was deleted successfully'});
   })
 
-  // todo : modify a message
+  // messages : modify a message (have to be tested)
+  .put('/:message_id',validate(modifyMessageSchema), async (req, res) => {
+    let result = await modifyMessage(req.params.message_id,req.body.user_id,req.body.text,req.body.place,req.body.media,req.body.lastModified);
+
+    if (!result) res.status(404).json({message: 'Unable to modify this message'});
+    else res.status(200).json({message: 'Message was modified successfully'});
+  })
+
 
   // messages : liking users of a message
   .get('/:message_id/liking-users', validate(likingUsersSchema), async (req, res) => {

@@ -47,6 +47,7 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
     reposted: false,
     liked: false,
     scope: scope,
+    last_modified: creationDate,
     creation_date: creationDate
   };
   let result = Promise.all[await collection.insertOne(newMessage),
@@ -161,6 +162,17 @@ async function repostedMessages(messageId, limit=10) {
   return results;
 }
 
-// todo : modify message
+async function modifyMessage(messageId,userId, text, place, media, lastModified) {
+  // not sure about userId check maybe only messageId is enough
+  let collection = DATABASE.collection(COLLECTION_NAME);
+  let query = { message_id: messageId , user_id: userId };
+  let update = { $set: { text: text, place: place, media: media , last_modified:  lastModified} };
 
-module.exports = { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages };
+  let result=await collection.updateOne(query, update);
+
+  return result.modifiedCount>0;
+}
+
+
+
+module.exports = { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage };
