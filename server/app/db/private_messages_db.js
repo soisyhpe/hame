@@ -57,7 +57,7 @@ async function deleteMessage(authorId, conversationId, messageId) {
   let query = { author_id: authorId, conversation_id: conversationId, message_id: messageId };
   let result = await collection.deleteOne(query);
 
-  return result.deletedCount === 1;
+  return result.deletedCount > 0;
 }
 
 module.exports = { getConversations, createConversation, getMessages, sendMessage, deleteMessage };
