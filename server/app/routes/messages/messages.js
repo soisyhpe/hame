@@ -55,7 +55,7 @@ MESSAGES_API
     let result = await deleteMessage(req.params.message_id, req.body.user_id);
     console.log(result);
     if (!result) res.status(204).json({message: 'No message was found'});
-    else res.status(202).json({message: 'Message was deleted successfully'});
+    else res.status(202).json({message: 'Message was successfully deleted'});
   })
 
   // messages : modify a message
@@ -63,7 +63,7 @@ MESSAGES_API
     let result = await modifyMessage(req.params.message_id,req.body.user_id,req.body.text,req.body.place,req.body.media,req.body.lastModified);
 
     if (!result) res.status(404).json({message: 'Unable to modify this message'});
-    else res.status(200).json({message: 'Message was modified successfully'});
+    else res.status(200).json({message: 'Message was successfully modified '});
   })
 
 
@@ -71,7 +71,7 @@ MESSAGES_API
   .get('/:message_id/liking-users', validate(likingUsersSchema), async (req, res) => {
     let result = await likingUsers(req.params.message_id, req.query.limit);
 
-    if (!result) res.status(204).json({ message: 'No liking users was found' });
+    if (!result) res.status(204).json({ message: 'No liking users were found' });
     else res.status(202).json(result);
   })
 
@@ -80,7 +80,7 @@ MESSAGES_API
     let result = await likeMessage(req.params.message_id, req.body.user_id, req.body.creation_date);
 
     if (!result) res.status(204).json({ message: 'Unable to like this message' });
-    else res.status(200).json({ message: 'Message was liked successfully' });
+    else res.status(200).json({ message: 'Message was successfully liked' });
   })
 
   // messages : unlike a message
@@ -88,14 +88,14 @@ MESSAGES_API
     let result = await unlikeMessage(req.params.message_id, req.body.user_id);
 
     if (!result) res.status(204).json({ message: 'Unable to unlike this message' });
-    else res.status(200).json({ message: 'Message was unliked successfully' });
+    else res.status(200).json({ message: 'Message was successfully unliked' });
   })
 
   // messages : liked messages of an user
   .get('/:user_id/liked-messages', validate(likedMessagesSchema), async (req, res) => {
     let result = await likedMessages(req.params.user_id, req.query.limit);
 
-    if (!result) res.status(204).json({ message: 'No liked messages was found' });
+    if (!result) res.status(204).json({ message: 'No liked messages were found' });
     else res.status(202).json(result);
   })
 
@@ -111,14 +111,14 @@ MESSAGES_API
   .get('/:message_id/reposted-messages', validate(repostedMessagesSchema), async (req, res) => {
     let result = await repostedMessages(req.params.message_id, req.query.limit);
 
-    if (!result) res.status(204).json({ message: 'No reposted messages was found' });
+    if (!result) res.status(204).json({ message: 'No reposted messages were found' });
     else res.status(202).json(result);
   })
   // messages : reposted messages of an user
   .get('/user/:user_id/reposted-messages', validate(repostedMessagesofUserSchema), async (req, res) => {
     let result = await repostedMessagesofUser(req.params.user_id, req.query.limit);
 
-    if (!result) res.status(204).json({ message: 'No reposted messages was found' });
+    if (!result) res.status(204).json({ message: 'No reposted messages were found' });
     else res.status(202).json(result);
   })
 

@@ -14,7 +14,7 @@ BOOKMARKS_API
   .get('/:user_id',validate(getBookmarksSchema), async (req, res) => {
     let result = await getBookmarks(req.params.user_id, req.query.limit);
 
-    if (!result) res.status(204).json({message: 'No bookmarks was found for the specified user'});
+    if (!result) res.status(204).json({message: 'No bookmark was found for the specified user'});
     else res.status(202).json(result);
   })
 

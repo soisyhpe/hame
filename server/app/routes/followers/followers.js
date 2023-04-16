@@ -14,7 +14,7 @@ FOLLOWERS_API.
   .get('/:user_id', validate(followersSchema), async (req, res) => {
     let result = await getFollowers(req.params.user_id, req.query.limit);
 
-    if (!result) res.status(204).json({message: 'No followers was found for specified user'});
+    if (!result) res.status(204).json({message: 'No follower was found for specified user'});
     else res.status(202).json(result);
   })
 

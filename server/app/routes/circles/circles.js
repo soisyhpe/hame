@@ -14,7 +14,7 @@ CIRCLES_API.
   .get('/:user_id', validate(circlesSchema), async (req, res) => {
     let result = await getCircles(req.params.user_id, req.query.limit);
 
-    if (!result) res.status(204).json({message: 'No circles was found for specified user'});
+    if (!result) res.status(204).json({message: 'No circle was found for specified user'});
     else res.status(202).json(result);
   })
 
@@ -23,15 +23,15 @@ CIRCLES_API.
     let result = await addCircle(req.params.user_id, req.body.circle_id, req.body.creation_date);
 
     if (!result) res.status(204).json({message: 'Unable to add circle for specified user'});
-    else res.status(201).json({message: 'New circle was added successfully'});
+    else res.status(201).json({message: 'New user in the circle was successfully added'});
   })
 
   // circles : remove circle
   .delete('/:user_id/:circle_id', validate(removeCircleSchema), async (req, res) => {
     let result = await deleteCircle(req.params.user_id, req.params.circle_id);
 
-    if (!result) res.status(204).json({message : 'Unable to delete circle'});
-    else res.status(202).json({message: 'Circle was deleted successfully'});
+    if (!result) res.status(204).json({message : 'Unable to delete user from circle'});
+    else res.status(202).json({message: 'User was successfully deleted from the circle of specified user'});
   })
 
 export { CIRCLES_API };
