@@ -27,7 +27,7 @@ CIRCLES_API.
   })
 
   // circles : remove circle
-  .get('/:user_id/:circle_id', validate(removeCircleSchema), async (req, res) => {
+  .delete('/:user_id/:circle_id', validate(removeCircleSchema), async (req, res) => {
     let result = await deleteCircle(req.params.user_id, req.params.circle_id);
 
     if (!result) res.status(204).json({message : 'Unable to delete circle'});

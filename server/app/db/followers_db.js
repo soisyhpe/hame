@@ -4,7 +4,8 @@ import { FOLLOWERS_COLLECTION } from '../db_connection.js';
 
 async function getFollowers(userId, limit=10) {
   let query = {user_id: userId};
-  let results = await FOLLOWERS_COLLECTION.find(query).limit(limit).toArray();
+  let projection = {_id: 0, follower_id: 1};
+  let results = await FOLLOWERS_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }

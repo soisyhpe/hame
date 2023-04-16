@@ -27,7 +27,7 @@ FOLLOWERS_API.
   })
 
   // followers : delete follower
-  .get('/:user_id/:follower_id', validate(removeFollowSchema), async (req, res) => {
+  .delete('/:user_id/:follower_id', validate(removeFollowSchema), async (req, res) => {
     let result = await deleteFollower(req.params.user_id, req.params.follower_id);
 
     if (!result) res.status(204).json({message : 'Unable to delete follower, specified friend is not a follower of user'});

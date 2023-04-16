@@ -14,7 +14,7 @@ BLOCKED_USERS_API.
   .get('/:user_id', validate(blockedUsersSchema), async (req, res) => {
     let result = await getBlockedUsers(req.params.user_id, req.query.limit);
 
-    if (!result) res.status(204).json({message: 'No blocked users was found for specified user'});
+    if (!result) res.status(204).json({message: 'No blocked users were found for the specified user'});
     else res.status(202).json(result);
   })
 
@@ -22,15 +22,15 @@ BLOCKED_USERS_API.
   .post('/:user_id/', validate(blockUserSchema), async (req, res) => {
     let result = await blockUser(req.params.user_id, req.body.blocked_user_id, req.body.blocked_date);
 
-    if (!result) res.status(204).json({message: 'Unable to add new blocked user for specified user'});
-    else res.status(201).json({message: 'New user was blocked successfully'});
+    if (!result) res.status(204).json({message: 'Unable to add new blocked user for the specified user'});
+    else res.status(201).json({message: 'User was successfully blocked'});
   })
 
   // blocked users : unblock user
   .get('/:user_id/:blocked_user_id', validate(unblockUserSchema), async (req, res) => {
     let result = await unblockUser(req.params.user_id, req.params.blocked_user_id);
 
-    if (!result) res.status(204).json({message : 'Unable to delete blocked user, specified user is not a blocked by user'});
+    if (!result) res.status(204).json({message : 'Unable to delete blocked user, the specified user is not blocked by user'});
     else res.status(202).json({message: 'User was unblocked successfully'});
   })
 

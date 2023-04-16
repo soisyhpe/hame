@@ -14,7 +14,7 @@ BOOKMARKS_API
   .get('/:user_id',validate(getBookmarksSchema), async (req, res) => {
     let result = await getBookmarks(req.params.user_id, req.query.limit);
 
-    if (!result) res.status(204).json({message: 'No bookmarks was found for specified user'});
+    if (!result) res.status(204).json({message: 'No bookmarks was found for the specified user'});
     else res.status(202).json(result);
   })
 
@@ -22,8 +22,8 @@ BOOKMARKS_API
   .post('/:user_id/', validate(bookmarkSchema), async (req, res) => {
     let result = await addBookmark(req.params.user_id, req.body.message_id, req.body.creation_date);
 
-    if (!result) res.status(204).json({message: 'Unable to add new bookmark for specified user'});
-    else res.status(201).json({message: 'New bookmark was added successfully'});
+    if (!result) res.status(204).json({message: 'Unable to add new bookmark for the specified user'});
+    else res.status(201).json({message: 'New bookmark was successfully added'});
   })
 
   // delete a message from bookmarks
@@ -31,7 +31,7 @@ BOOKMARKS_API
     let result = await deleteBookmark(req.params.user_id, req.params.bookmark_id);
 
     if (!result) res.status(204).json({message : 'Unable to delete bookmark'});
-    else res.status(202).json({message: 'Bookmark was deleted successfully'});
+    else res.status(202).json({message: 'Bookmark was successfully deleted '});
   })
 
 export { BOOKMARKS_API };

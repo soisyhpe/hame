@@ -3,7 +3,8 @@ import { FRIENDS_COLLECTION } from '../db_connection.js';
 
 async function getFriends(userId, limit=10) {
   let query = { user_id: userId };
-  let results = await FRIENDS_COLLECTION.find(query).limit(limit).toArray();
+  let projection = { _id: 0, friend_id: 1 };
+  let results = await FRIENDS_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }

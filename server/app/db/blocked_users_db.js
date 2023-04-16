@@ -3,7 +3,8 @@ import BLOCKED_USERS_COLLECTION from "../db_connection.js";
 
 async function getBlockedUsers(userId, limit=10) {
   let query = {user_id: userId};
-  let results = await BLOCKED_USERS_COLLECTION.find(query).limit(limit).toArray();
+  let projection = {_id: 0, blocked_user_id: 1};
+  let results = await BLOCKED_USERS_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }

@@ -3,7 +3,8 @@ import { CIRCLES_COLLECTION } from '../db_connection.js';
 
 async function getCircles(userId, limit=10) {
   let query = {user_id: userId};
-  let results = await CIRCLES_COLLECTION.find(query).limit(limit).toArray();
+  let projection = {_id: 0, circle_id: 1};
+  let results = await CIRCLES_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }
