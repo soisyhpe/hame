@@ -33,78 +33,84 @@ await DATABASE.createCollection("blocked_users",
       }
     }
   }
-)
-.then((res) => res.createIndex({ user_id: 1 , blocked_user_id : 1 }, { unique: true }))
+).then((res) => res.createIndex({ user_id: 1 , blocked_user_id : 1 }, { unique: true }))
 .catch((err) => console.error(`Unable de create collection 'blocked_users' : ${err}`));
 
-const BOOKMARKS_COLLECTION = DATABASE.createCollection(
-  "bookmarks",
+DATABASE.createCollection("bookmarks",
   {
 
   }
-).catch((err) => {});
-BOOKMARKS_COLLECTION.createIndex({ message_id: 1, user_id: 1 }, { unique: true });
+).then((res) => res.createIndex({ message_id: 1, user_id: 1 }, { unique: true }))
+.catch((err) => {});
 
-const CIRCLES_COLLECTION = await DATABASE.createCollection(
-  "bookmarks",
-  {
-
-  }
-).catch((err) => {});
-
-const FOLLOWERS_COLLECTION = await DATABASE.createCollection(
-  "followers",
-  {
-
-  }
-).catch((err) => {});
-FOLLOWERS_COLLECTION.createIndex({ user_id: 1 , follower_id : 1 }, { unique: true });
-
-const FRIENDS_COLLECTION = await DATABASE.createCollection(
-  "friends",
-  {
-
-  }
-).catch((err) => {});
-FRIENDS_COLLECTION.createIndex({ user_id: 1, friend_id: 1 }, { unique: true });
-
-const MESSAGES_COLLECTION = await DATABASE.createCollection(
-  "messages",
+await DATABASE.createCollection("bookmarks",
   {
 
   }
 ).catch((err) => {});
 
-const LIKED_MESSAGES_COLLECTION = await DATABASE.createCollection(
-  "liked_messages",
+await DATABASE.createCollection("followers",
+  {
+
+  }
+).then((res) => res.createIndex({ user_id: 1 , follower_id : 1 }, { unique: true }))
+.catch((err) => {});
+
+await DATABASE.createCollection("friends",
+  {
+
+  }
+)
+.then((res) => res.createIndex({ user_id: 1, friend_id: 1 }, { unique: true }))
+.catch((err) => {});
+
+await DATABASE.createCollection("messages",
   {
 
   }
 ).catch((err) => {});
-LIKED_MESSAGES_COLLECTION.createIndex({ message_id: 1, user_id: 1 }, { unique: true });
 
-const PRIVATE_MESSAGES_COLLECTION = await DATABASE.createCollection(
-  "private_messages",
+await DATABASE.createCollection("liked_messages",
+  {
+
+  }
+)
+.then((res) => res.createIndex({ message_id: 1, user_idz: 1 }, { unique: true }))
+.catch((err) => {});
+
+await DATABASE.createCollection("private_messages",
   {
 
   }
 ).catch((err) => {});
 
-const SESSIONS_COLLECTION = await DATABASE.createCollection(
-  "sessions",
+await DATABASE.createCollection("sessions",
   {
 
   }
 ).catch((err) => {});
 
-const USERS_COLLECTION = DATABASE.createCollection(
-  "users",
+DATABASE.createCollection("users",
   {
 
   }
-).catch((err) => {});
-USERS_COLLECTION.createIndex({ email: 1 }, { unique: true });
-USERS_COLLECTION.createIndex({ username: 1 }, { unique: true });
-USERS_COLLECTION.createIndex({ user_id: 1 }, { unique: true });
+)
+.then((res) => {
+  res.createIndex({ email: 1 }, { unique: true });
+  res.createIndex({ username: 1 }, { unique: true });
+  res.createIndex({ user_id: 1 }, { unique: true });
+})
+.catch((err) => {});
 
-export { DATABASE };
+const BLOCKED_USERS_COLLECTION = DATABASE.collection("blocked_users");
+const BOOKMARKS_COLLECTION = DATABASE.collection("bookmarks");
+const CIRCLES_COLLECTION = DATABASE.collection("circles");
+const FOLLOWERS_COLLECTION = DATABASE.collection("followers");
+const FRIENDS_COLLECTION = DATABASE.collection("friends");
+const MESSAGES_COLLECTION = DATABASE.collection("messages");
+const LIKED_MESSAGES_COLLECTION = DATABASE.collection("messages");
+const PRIVATE_MESSAGES_COLLECTION = DATABASE.collection("private_messages");
+const USERS_COLLECTION = DATABASE.collection("users");
+
+export default { DATABASE };
+export { BLOCKED_USERS_COLLECTION, BOOKMARKS_COLLECTION, CIRCLES_COLLECTION, FOLLOWERS_COLLECTION, FRIENDS_COLLECTION, MESSAGES_COLLECTION, LIKED_MESSAGES_COLLECTION, PRIVATE_MESSAGES_COLLECTION, USERS_COLLECTION };
