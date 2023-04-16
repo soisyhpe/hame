@@ -14,9 +14,6 @@ const getUserFromUsernameSchema = object(
   {
     params: object({
       username: string().min(3).max(16).required()
-    }),
-    query: object({
-      limit: number().positive().optional()
     })
 
   }
@@ -26,9 +23,6 @@ const getUserFromIdSchema = object(
   {
     params: object({
       user_id: string().matches(UUID_REGEX, 'params.user_id is not valid').required()
-    }),
-    query: object({
-      limit: number().positive().optional()
     })
     
   }
