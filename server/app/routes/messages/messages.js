@@ -58,7 +58,7 @@ MESSAGES_API
     else res.status(202).json({message: 'Message was deleted successfully'});
   })
 
-  // messages : modify a message (have to be tested)
+  // messages : modify a message
   .put('/:message_id',validate(modifyMessageSchema), async (req, res) => {
     let result = await modifyMessage(req.params.message_id,req.body.user_id,req.body.text,req.body.place,req.body.media,req.body.lastModified);
 
@@ -114,7 +114,7 @@ MESSAGES_API
     if (!result) res.status(204).json({ message: 'No reposted messages was found' });
     else res.status(202).json(result);
   })
-
+  // messages : reposted messages of an user
   .get('/user/:user_id/reposted-messages', validate(repostedMessagesofUserSchema), async (req, res) => {
     let result = await repostedMessagesofUser(req.params.user_id, req.query.limit);
 

@@ -150,7 +150,7 @@ async function repostedMessages(messageId, limit=10) {
 }
 
 async function repostedMessagesofUser(userId, limit=10){
-  let query = { user_id: userId };
+  let query = { user_id: userId , reposted: true};
   let projection = { message_id: 1 };
   let results = await MESSAGES_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
