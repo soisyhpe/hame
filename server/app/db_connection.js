@@ -271,7 +271,30 @@ await DATABASE.createCollection("messages",
 
 await DATABASE.createCollection("liked_messages",
   {
-
+    validator:
+    {
+      $jsonSchema:
+      {
+        bsonType: 'object',
+        required: ["user_id", "message_id", "creation_date"],
+        properties:
+        {
+          _id: {},
+          bookmark_id: {
+            bsonType: 'string',
+            description: "'bookmark_id' is a required field"
+          },
+          message_id: {
+            bsonType: 'string',
+            description: "'message_id' is a required field"
+          },
+          creation_date: {
+            bsonType: 'date',
+            description: "'creation_date' is a required field"
+          }
+        }
+      }
+    }
   }
 )
 .then((res) => res.createIndex({ message_id: 1, user_idz: 1 }, { unique: true }))
