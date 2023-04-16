@@ -3,7 +3,7 @@ import express from 'express';
 // import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import babel from '@babel/core';
-import * as dotenv from 'dotenv';
+import 'dotenv/config.js';
 
 // express stuff
 const app = express();
@@ -13,8 +13,8 @@ const app = express();
   presets: ["@babel/preset-en"]
 }); */
 
-// dotenv stuff
-dotenv.config();
+// dotenv stuff (useless since importing dotenv/config.js)
+// dotenv.config();
 
 // local stuff
 const BASE = '/v1'

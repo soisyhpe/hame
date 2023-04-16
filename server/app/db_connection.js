@@ -2,7 +2,7 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
 // mongodb stuff
-const CLIENT = new MongoClient("mongodb+srv://Norras:Y1jGNQyOv8bZa0Sn@hame.jlet2.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const CLIENT = new MongoClient(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const DATABASE_NAME = 'Hame';
 const DATABASE = CLIENT.db(DATABASE_NAME);
 
@@ -34,27 +34,27 @@ await DATABASE.createCollection("blocked_users",
     }
   }
 ).then((res) => res.createIndex({ user_id: 1 , blocked_user_id : 1 }, { unique: true }))
-.catch((err) => console.error(`Unable de create collection 'blocked_users' : ${err}`));
-
-DATABASE.createCollection("bookmarks",
-  {
-
-  }
-).then((res) => res.createIndex({ message_id: 1, user_id: 1 }, { unique: true }))
-.catch((err) => {});
+.catch((err) => console.warn(`Unable to create collection 'blocked_users'. ${err}`));
 
 await DATABASE.createCollection("bookmarks",
   {
 
   }
-).catch((err) => {});
+).then((res) => res.createIndex({ message_id: 1, user_id: 1 }, { unique: true }))
+.catch((err) => console.warn(`Unable to create collection 'bookmarks'. ${err}`));
+
+await DATABASE.createCollection("circles",
+  {
+
+  }
+).catch((err) => console.warn(`Unable to create collection 'circles'. ${err}`));
 
 await DATABASE.createCollection("followers",
   {
 
   }
 ).then((res) => res.createIndex({ user_id: 1 , follower_id : 1 }, { unique: true }))
-.catch((err) => {});
+.catch((err) => console.warn(`Unable to create collection 'followers'. ${err}`));
 
 await DATABASE.createCollection("friends",
   {
@@ -62,13 +62,13 @@ await DATABASE.createCollection("friends",
   }
 )
 .then((res) => res.createIndex({ user_id: 1, friend_id: 1 }, { unique: true }))
-.catch((err) => {});
+.catch((err) => console.warn(`Unable to create collection 'friends'. ${err}`));
 
 await DATABASE.createCollection("messages",
   {
 
   }
-).catch((err) => {});
+).catch((err) => console.warn(`Unable to create collection 'messages'. ${err}`));
 
 await DATABASE.createCollection("liked_messages",
   {
@@ -76,21 +76,21 @@ await DATABASE.createCollection("liked_messages",
   }
 )
 .then((res) => res.createIndex({ message_id: 1, user_idz: 1 }, { unique: true }))
-.catch((err) => {});
+.catch((err) => console.warn(`Unable to create collection 'liked_messages'. ${err}`));
 
 await DATABASE.createCollection("private_messages",
   {
 
   }
-).catch((err) => {});
+).catch((err) => console.warn(`Unable to create collection 'private_messages'. ${err}`));
 
 await DATABASE.createCollection("sessions",
   {
 
   }
-).catch((err) => {});
+).catch((err) => console.warn(`Unable to create collection 'sessions'. ${err}`));
 
-DATABASE.createCollection("users",
+await DATABASE.createCollection("users",
   {
 
   }
@@ -100,7 +100,7 @@ DATABASE.createCollection("users",
   res.createIndex({ username: 1 }, { unique: true });
   res.createIndex({ user_id: 1 }, { unique: true });
 })
-.catch((err) => {});
+.catch((err) => console.warn(`Unable to create collection 'users'. ${err}`));
 
 const BLOCKED_USERS_COLLECTION = DATABASE.collection("blocked_users");
 const BOOKMARKS_COLLECTION = DATABASE.collection("bookmarks");
