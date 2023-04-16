@@ -1,7 +1,5 @@
 // dependencies
 const express = require('express');
-const cookieParser = require("cookie-parser");
-const sessions = require('express-session');
 const pm = require('../../db/private_messages_db');
 const { validate } = require('../validate_ressource');
 const { conversationSchema, messageSchema } = require('./validator_schemas');
@@ -13,10 +11,8 @@ SESSIONS_API
   .use(express.json())
 
   // sessions : login
-  .get('/', async (req, res) => {
-    let session = req.session;
-    
-    if (session.user_id) {
+  .get('/login', async (req, res) => {
+    if (req.session.user_id) {
       res.send('');
     }
   })

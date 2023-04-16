@@ -1,5 +1,8 @@
 // dependencies
 const express = require('express');
+// const cookieParser = require("cookie-parser");
+const session = require('express-session');
+require('dotenv').config();
 
 // handlers
 const { BLOCKED_USERS_API } = require('./routes/blocked-users/blocked_users');
@@ -16,10 +19,19 @@ const { USERS_API } = require('./routes/users/users');
 const app = express();
 
 // local stuff
-const SERVER_PORT = 8000;
 const BASE = '/v1'
+const SERVER_PORT = 8000;
 
 app
+  .use(session({
+    secret: process.env.SESSION_SECRET,
+    cookie: { 
+      maxAge: 60 * 60 * 24 * 1000 // = 24h in milliseconds
+    },
+    resave: false,
+    saveUninitialized: true
+  }))
+
   .use(BASE + '/blocked-users', BLOCKED_USERS_API)
   .use(BASE + '/bookmarks', BOOKMARKS_API)
   .use(BASE + '/circles', CIRCLES_API)
@@ -29,16 +41,7 @@ app
   .use(BASE + '/private-messages', PRIVATE_MESSAGES_API)
   .use(BASE + '/sessions', SESSIONS_API)
   .use(BASE + '/users', USERS_API)
+
   .listen(SERVER_PORT, () => {
     console.log(`[HAME SERVER] API running at http://localhost:${SERVER_PORT}/`)
   });
-
-/*async function run() {
-  try {
-    // connect the client to the server
-    await CLIENT.connect().then(init);
-  } finally {
-    // ensure that the client will close when you finish/error
-    await CLIENT.close();
-  }
-}*/
