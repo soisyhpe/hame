@@ -20,7 +20,7 @@ USERS_API.
 
   // users : get a specific user from username
   .get('/:username', validate(getUserFromUsernameSchema), async (req, res) => {
-    let result = await getUserFromUsername(req.params.username, req.query.limit);
+    let result = await getUserFromUsername(req.params.username);
 
     if (!result) res.status(404).json({ message: 'User does not exist' });
     else res.status(200).json(result);
@@ -28,7 +28,7 @@ USERS_API.
 
   // users : get a specific user from id
   .get('/:user_id', validate(getUserFromIdSchema), async (req, res) => {
-    let result = await getUserFromId(req.params.user_id, req.query.limit);
+    let result = await getUserFromId(req.params.user_id);
 
     if (!result) res.status(404).json({ message: 'User does not exist' });
     else res.status(200).json(result);
@@ -48,6 +48,6 @@ USERS_API.
 
     if (!result) res.status(404).json({ message: 'User does not exist' });
     else res.status(202).json({ message: 'User account was deleted successfully' });
-  })
+  });
 
 export { USERS_API };
