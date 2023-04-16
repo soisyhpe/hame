@@ -1,14 +1,14 @@
 // dependencies
-const express = require('express');
-const { getUsers, getUserFromUsername, getUserFromId, deleteUser, createUser } = require('../../db/users_db');
-const { validate } = require('../../routes/validate_ressource');
-const { getUsersSchema, getUserFromUsernameSchema, getUserFromIdSchema, createUserSchema, deleteUserSchema } = require('./validator_schemas');
+import { Router, json } from 'express';
+import { getUsers, getUserFromUsername, getUserFromId, deleteUser, createUser } from '../../db/users_db.js';
+import { validate } from '../../routes/validate_ressource.js';
+import { getUsersSchema, getUserFromUsernameSchema, getUserFromIdSchema, createUserSchema, deleteUserSchema } from './validator_schemas.js';
 
 // express' stuff
-const USERS_API = express.Router();
+const USERS_API = Router();
 
 USERS_API.
-  use(express.json())
+  use(json())
 
   // users : get all users
   .get('/', validate(getUsersSchema), async (req, res) => {
@@ -50,4 +50,4 @@ USERS_API.
     else res.status(202).json({ message: 'User account was deleted successfully' });
   })
 
-module.exports = { USERS_API };
+export { USERS_API };

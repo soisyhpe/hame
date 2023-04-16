@@ -1,5 +1,3 @@
 // dependencies
-const { string } = require('yup');
-const { UUID_REGEX } = require('../../tools/validation_tools');
-
-module.exports = {  };
+import { string } from 'yup';
+import { UUID_REGEX } from '../../tools/validation_tools.js';

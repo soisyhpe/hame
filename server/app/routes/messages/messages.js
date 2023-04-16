@@ -1,14 +1,14 @@
 // dependencies
-const express = require('express');
-const { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser } = require('../../db/messages_db');
-const { validate } = require('../../routes/validate_ressource');
-const { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema } = require('./validator_schemas');
+import { Router, json } from 'express';
+import { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser } from '../../db/messages_db.js';
+import { validate } from '../../routes/validate_ressource.js';
+import { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema } from './validator_schemas.js';
 
 // express' stuff
-const MESSAGES_API = express.Router();
+const MESSAGES_API = Router();
 
 MESSAGES_API
-  .use(express.json())
+  .use(json())
 
   // messages : get messages
   .get('/', validate(messagesSchema), async (req, res) => {
@@ -122,6 +122,4 @@ MESSAGES_API
     else res.status(202).json(result);
   })
 
-
-
-module.exports = { MESSAGES_API }
+export { MESSAGES_API }

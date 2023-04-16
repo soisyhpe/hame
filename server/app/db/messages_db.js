@@ -1,37 +1,28 @@
 // dependencies
-const { randomUUID, randomBytes } =  require('crypto');
-const { DATABASE } = require('../db_connection');
-
-// local stuff
-const COLLECTION_NAME = "messages";
-const LIKED_MESSAGES_COLLECTION_NAME = "liked_messages";
-DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME).createIndex({ message_id: 1, user_id: 1 }, { unique: true });
+import { randomUUID } from 'crypto';
+import { MESSAGES_COLLECTION, LIKED_MESSAGES_COLLECTION } from '../db_connection.js';
 
 async function getMessages(limit=10) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
-  let results = await collection.find().limit(limit).toArray();
+  let results = await MESSAGES_COLLECTION.find().limit(limit).toArray();
 
   return results;
 }
 
 async function getMessagesFromUser(userId, limit=10) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = { user_id: userId };
-  let results = await collection.find(query).limit(limit).toArray();
+  let results = await MESSAGES_COLLECTION.find(query).limit(limit).toArray();
 
   return results;
 }
 
 async function getMessageFromId(messageId) {
-  let collection =  DATABASE.collection(COLLECTION_NAME);
   let query = { message_id: messageId };
-  let results = await collection.findOne(query).toArray();
+  let results = await MESSAGES_COLLECTION.findOne(query).toArray();
 
   return results;
 }
 
 async function sendMessage(userId, text, replyTo, repostedFrom, place, media, source, scope, creationDate) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let newMessage = {
     user_id: userId,
     message_id: randomUUID(),
@@ -53,9 +44,9 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
   console.log(replyTo, repostedFrom)
 
   // if replyTo or repostedFrom are undefined, then resolve all promises 
-  let result = await Promise.all([await collection.insertOne(newMessage),
-    replyTo !== undefined ? await collection.updateOne({ message_id: replyTo }, { $inc: { reply_count: 1 } }) : Promise.resolve(),
-    repostedFrom !== undefined ? await collection.updateOne({ message_id: repostedFrom }, { $inc: { repost_count: 1 } }) : Promise.resolve()
+  let result = await Promise.all([await MESSAGES_COLLECTION.insertOne(newMessage),
+    replyTo !== undefined ? await MESSAGES_COLLECTION.updateOne({ message_id: replyTo }, { $inc: { reply_count: 1 } }) : Promise.resolve(),
+    repostedFrom !== undefined ? await MESSAGES_COLLECTION.updateOne({ message_id: repostedFrom }, { $inc: { repost_count: 1 } }) : Promise.resolve()
   ]);
 
 
@@ -66,25 +57,24 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
 // todo : send multiple messages (thread feature)
 
 async function deleteMessage(messageId, userId) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
-  if (await collection.findOne({ message_id: messageId, user_id: userId }) == null) {
+  if (await MESSAGES_COLLECTION.findOne({ message_id: messageId, user_id: userId }) == null) {
     console.log("Message not found or not owned by user");
     return false;
   }
 
-  collection.findOne({ message_id: messageId }).then((message) => {
+  MESSAGES_COLLECTION.findOne({ message_id: messageId }).then((message) => {
     // if message is a reply : decrease reply_count of replied_to message
     if (message.replied_to != '') {
-      collection.updateOne({ message_id: message.replied_to }, { $inc: { reply_count: -1 } });
+      MESSAGES_COLLECTION.updateOne({ message_id: message.replied_to }, { $inc: { reply_count: -1 } });
     }
     // if message is a repost : decrease repost_count of reposted_from message
     if (message.reposted_from != '') {
-      collection.updateOne({ message_id: message.reposted_from }, { $inc: { repost_count: -1 } });
+      MESSAGES_COLLECTION.updateOne({ message_id: message.reposted_from }, { $inc: { repost_count: -1 } });
     }
   });
 
   let query = { message_id: messageId, user_id: userId };
-  let result = await collection.deleteOne(query);
+  let result = await MESSAGES_COLLECTION.deleteOne(query);
 
   return result;
 }
@@ -98,8 +88,6 @@ async function getResponses(messageId, limit=10) {
 }
 
 async function likeMessage(messageId, userId, creationDate) {
-  let collection =DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
-  let collection2 =DATABASE.collection(COLLECTION_NAME);
   let newLike = { message_id: messageId,
     user_id: userId,
     creation_date: creationDate
@@ -112,81 +100,70 @@ async function likeMessage(messageId, userId, creationDate) {
     // return false;
   // }
 
-  let result = await Promise.all([collection.insertOne(newLike), collection2.updateOne(query, update)]);
+  let result = await Promise.all([LIKED_MESSAGES_COLLECTION.insertOne(newLike), MESSAGES_COLLECTION.updateOne(query, update)]);
 
   return result;
 }
 
 async function unlikeMessage(messageId, userId) {
-  let collection =  DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
-  let collection2 = DATABASE.collection(COLLECTION_NAME);
   let query = { message_id: messageId, user_id: userId };
   let update = { $inc: { like_count: -1 } }; // potential issue : negative like counts
   if (await collection.findOne({ message_id: messageId, user_id: userId }) == null) {
     //console.log("Message not liked by user");
     return false;
   }
-  let result = await Promise.all([collection.drop(query), collection2.updateOne(query, update)]);
+  let result = await Promise.all([LIKED_MESSAGES_COLLECTION.deleteOne(query), MESSAGES_COLLECTION.updateOne(query, update)]);
 
   return result;
 }
 
 async function likingUsers(messageId, limit=10) {
-  let collection = DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
   let query = { message_id: messageId };
   let projection = { user_id: 1 };
-  let results = await collection.find(query).project(projection).limit(limit).toArray();
+  let results = await LIKED_MESSAGES_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }
 
 async function likedMessages(userId, limit=10) {
-  let collection = DATABASE.collection(LIKED_MESSAGES_COLLECTION_NAME);
   let query = { user_id: userId };
   let projection = { message_id: 1 };
-  let results = await collection.find(query).project(projection).limit(limit).toArray();
+  let results = await LIKED_MESSAGES_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }
 
 async function repostingUsers(messageId, limit=10) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = { reposted_from: messageId };
   let projection = { user_id: 1 };
-  let results = await collection.find(query).project(projection).limit(limit).toArray();
+  let results = await MESSAGES_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }
 
 async function repostedMessages(messageId, limit=10) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = { reposted_from: messageId };
   let projection = { message_id: 1} ;
-  let results = await collection.find(query).project(projection).limit(limit).toArray();
+  let results = await MESSAGES_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }
 
-async function repostedMessagesofUser(userID,limit=10){
-  let collection = DATABASE.collection(COLLECTION_NAME);
-  let query = { user_id: userID };
-  let projection = { message_id: 1} ;
-  let results = await collection.find(query).project(projection).limit(limit).toArray();
+async function repostedMessagesofUser(userId, limit=10){
+  let query = { user_id: userId };
+  let projection = { message_id: 1 };
+  let results = await MESSAGES_COLLECTION.find(query).project(projection).limit(limit).toArray();
 
   return results;
 }
 
-async function modifyMessage(messageId,userId, text, place, media, lastModified) {
+async function modifyMessage(messageId, userId, text, place, media, lastModified) {
   // not sure about userId check maybe only messageId is enough
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = { message_id: messageId , user_id: userId };
-  let update = { $set: { text: text, place: place, media: media , last_modified:  lastModified} };
+  let update = { $set: { text: text, place: place, media: media, last_modified: lastModified} };
+  let result = await MESSAGES_COLLECTION.updateOne(query, update);
 
-  let result=await collection.updateOne(query, update);
-
-  return result.modifiedCount>0;
+  return result.modifiedCount > 0;
 }
 
-
-
-module.exports = { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser };
+export { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser };

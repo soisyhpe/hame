@@ -1,26 +1,35 @@
 // dependencies
-const express = require('express');
-// const cookieParser = require("cookie-parser");
-const session = require('express-session');
-require('dotenv').config();
-
-// handlers
-const { BLOCKED_USERS_API } = require('./routes/blocked-users/blocked_users');
-const { BOOKMARKS_API } = require('./routes/bookmarks/bookmarks');
-const { CIRCLES_API } = require('./routes/circles/circles');
-const { FOLLOWERS_API } = require('./routes/followers/followers');
-const { FRIENDS_API } = require('./routes/friends/friends');
-const { MESSAGES_API } = require('./routes/messages/messages');
-const { PRIVATE_MESSAGES_API } = require('./routes/private-messages/private_messages');
-const { SESSIONS_API } = require('./routes/sessions/sessions');
-const { USERS_API } = require('./routes/users/users');
+import express from 'express';
+// import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import babel from '@babel/core';
+import * as dotenv from 'dotenv';
 
 // express stuff
 const app = express();
 
+// babel stuff
+/* babel.transform("code", {
+  presets: ["@babel/preset-en"]
+}); */
+
+// dotenv stuff
+dotenv.config();
+
 // local stuff
 const BASE = '/v1'
 const SERVER_PORT = 8000;
+
+// handlers
+import { BLOCKED_USERS_API } from './routes/blocked-users/blocked_users.js';
+import { BOOKMARKS_API } from './routes/bookmarks/bookmarks.js';
+import { CIRCLES_API } from './routes/circles/circles.js';
+import { FOLLOWERS_API } from './routes/followers/followers.js';
+import { FRIENDS_API } from './routes/friends/friends.js';
+import { MESSAGES_API } from './routes/messages/messages.js';
+import { PRIVATE_MESSAGES_API } from './routes/private-messages/private_messages.js';
+import { SESSIONS_API } from './routes/sessions/sessions.js';
+import { USERS_API } from './routes/users/users.js';
 
 app
   .use(session({

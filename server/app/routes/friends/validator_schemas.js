@@ -1,6 +1,6 @@
 // dependencies
-const { object, string, number, date } = require('yup');
-const { UUID_REGEX } = require('../../tools/validation_tools');
+import { object, string, number, date } from 'yup';
+import { UUID_REGEX } from '../../tools/validation_tools.js';
 
 const friendsSchema = object(
   {
@@ -32,4 +32,4 @@ const deleteFriendSchema = object(
   }
 )
 
-module.exports = { friendsSchema, addFriendSchema, deleteFriendSchema };
+export { friendsSchema, addFriendSchema, deleteFriendSchema };

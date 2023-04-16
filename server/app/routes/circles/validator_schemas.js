@@ -1,6 +1,6 @@
 // dependencies
-const { object, string, number, date } = require('yup');
-const { UUID_REGEX } = require('../../tools/validation_tools');
+import { object, string, number, date } from 'yup';
+import { UUID_REGEX } from '../../tools/validation_tools.js';
 
 const circlesSchema = object(
   {
@@ -34,4 +34,4 @@ const removeCircleSchema = object(
   }
 )
 
-module.exports = { circlesSchema, addCircleSchema, removeCircleSchema };
+export { circlesSchema, addCircleSchema, removeCircleSchema };

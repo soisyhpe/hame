@@ -1,8 +1,8 @@
 // dependencies
-const express = require('express');
-const { getBlockedUsers, blockUser, unblockUser } = require('../../db/blocked_users_db');
-const { validate } = require('../validate_ressource');
-const { blockedUsersSchema, blockUserSchema, unblockUserSchema } = require('./validator_schemas');
+import express from 'express';
+import { getBlockedUsers, blockUser, unblockUser } from '../../db/blocked_users_db.js';
+import { validate } from '../validate_ressource.js';
+import { blockedUsersSchema, blockUserSchema, unblockUserSchema } from './validator_schemas.js';
 
 // express stuff
 const BLOCKED_USERS_API = express.Router();
@@ -34,4 +34,4 @@ BLOCKED_USERS_API.
     else res.status(202).json({message: 'User was unblocked successfully'});
   })
 
-module.exports = { BLOCKED_USERS_API };
+export { BLOCKED_USERS_API };

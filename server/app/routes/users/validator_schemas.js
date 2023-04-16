@@ -1,6 +1,6 @@
 // dependencies
-const { string, number, date, object } = require('yup');
-const { EMAIL_REGEX, PASSWORD_REGEX, UUID_REGEX } = require('../../tools/validation_tools');
+import { string, number, date, object } from 'yup';
+import { EMAIL_REGEX, PASSWORD_REGEX, UUID_REGEX } from '../../tools/validation_tools.js';
 
 const getUsersSchema = object(
   {
@@ -61,4 +61,4 @@ const deleteUserSchema = object(
   }
 )
 
-module.exports = { getUsersSchema, getUserFromUsernameSchema, getUserFromIdSchema, createUserSchema, deleteUserSchema };
+export { getUsersSchema, getUserFromUsernameSchema, getUserFromIdSchema, createUserSchema, deleteUserSchema };

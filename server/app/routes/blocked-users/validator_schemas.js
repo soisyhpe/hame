@@ -1,6 +1,6 @@
 // dependencies
-const { string, number, date, object } = require('yup');
-const { UUID_REGEX } = require('../../tools/validation_tools');
+import { string, number, date, object } from 'yup';
+import { UUID_REGEX } from '../../tools/validation_tools.js';
 
 const blockedUsersSchema = object(
   {
@@ -37,4 +37,4 @@ const unblockUserSchema = object(
   }
 );
 
-module.exports = { blockedUsersSchema, blockUserSchema, unblockUserSchema };
+export { blockedUsersSchema, blockUserSchema, unblockUserSchema };

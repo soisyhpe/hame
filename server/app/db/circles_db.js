@@ -1,35 +1,29 @@
 // dependencies
-const { DATABASE } = require('../db_connection');
-
-// local stuff
-const COLLECTION_NAME = "circles";
+import { CIRCLES_COLLECTION } from '../db_connection.js';
 
 async function getCircles(userId, limit=10) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId};
-  let results = await collection.find(query).limit(limit).toArray();
+  let results = await CIRCLES_COLLECTION.find(query).limit(limit).toArray();
 
   return results;
 }
 
 async function addCircle(userId, circleId, addedDate) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let newCircle = {
     user_id: userId,
     circle_id: circleId,
     added_date: addedDate
   };
-  let result = await collection.insertOne(newCircle);
+  let result = await CIRCLES_COLLECTION.insertOne(newCircle);
 
   return result;
 }
 
 async function deleteCircle(userId, circleId) {
-  let collection = DATABASE.collection(COLLECTION_NAME);
   let query = {user_id: userId, circle_id: circleId};
-  let result = await collection.deleteOne(query);
+  let result = await CIRCLES_COLLECTION.deleteOne(query);
 
   return result.deletedCount > 0;
 }
 
-module.exports = { getCircles, addCircle, deleteCircle };
+export { getCircles, addCircle, deleteCircle };

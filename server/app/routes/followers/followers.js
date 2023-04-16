@@ -1,14 +1,14 @@
 // dependencies
-const express = require('express');
-const { getFollowers, addFollower, deleteFollower } = require('../../db/followers_db');
-const { validate } = require('../../routes/validate_ressource');
-const { followersSchema, addFollowSchema, removeFollowSchema } = require('./validator_schemas');
+import { Router, json } from 'express';
+import { getFollowers, addFollower, deleteFollower } from '../../db/followers_db.js';
+import { validate } from '../../routes/validate_ressource.js';
+import { followersSchema, addFollowSchema, removeFollowSchema } from './validator_schemas.js';
 
 // express' stuff
-const FOLLOWERS_API = express.Router();
+const FOLLOWERS_API = Router();
 
 FOLLOWERS_API.
-  use(express.json())
+  use(json())
 
   // followers : get followers
   .get('/:user_id', validate(followersSchema), async (req, res) => {
@@ -34,4 +34,4 @@ FOLLOWERS_API.
     else res.status(202).json({message: 'Follower was deleted successfully'});
   })
 
-module.exports = { FOLLOWERS_API };
+export { FOLLOWERS_API };

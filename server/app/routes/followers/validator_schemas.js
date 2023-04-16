@@ -1,6 +1,6 @@
 // dependencies
-const { object, string, number, date } = require('yup');
-const { UUID_REGEX } = require('../../tools/validation_tools');
+import { object, string, number, date } from 'yup';
+import { UUID_REGEX } from '../../tools/validation_tools.js';
 
 const followersSchema = object(
   {
@@ -35,4 +35,4 @@ const removeFollowSchema = object(
   }
 )
 
-module.exports = { followersSchema, addFollowSchema, removeFollowSchema };
+export { followersSchema, addFollowSchema, removeFollowSchema };

@@ -19,7 +19,9 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.21.4",
     "all": "^0.0.0",
+    "babel": "^6.23.0",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
@@ -29,5 +31,6 @@
     "nodemon": "^2.0.22",
     "yup": "^1.0.2"
   },
-  "description": ""
+  "description": "",
+  "type": "module"
 }

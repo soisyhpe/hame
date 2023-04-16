@@ -1,8 +1,8 @@
 // dependencies
-const express = require('express');
-const { getBookmarks, addBookmark, deleteBookmark } = require('../../db/bookmarks_db');
-const { validate } = require('../validate_ressource');
-const { bookmarkSchema, getBookmarksSchema, deleteBookmarkSchema } = require('./validator_schemas');
+import express from 'express';
+import { getBookmarks, addBookmark, deleteBookmark } from '../../db/bookmarks_db.js';
+import { validate } from '../validate_ressource.js';
+import { bookmarkSchema, getBookmarksSchema, deleteBookmarkSchema } from './validator_schemas.js';
 
 // express' stuff
 const BOOKMARKS_API = express.Router();
@@ -34,4 +34,4 @@ BOOKMARKS_API
     else res.status(202).json({message: 'Bookmark was deleted successfully'});
   })
 
-module.exports = { BOOKMARKS_API };
+export { BOOKMARKS_API };

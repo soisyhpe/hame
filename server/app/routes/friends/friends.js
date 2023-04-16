@@ -1,14 +1,14 @@
 // dependencies
-const express = require('express');
-const { getFriends, addFriend, deleteFriend } = require('../../db/friends_db');
-const { validate } = require('../../routes/validate_ressource');
-const { friendsSchema, addFriendSchema, deleteFriendSchema } = require('./validator_schemas');
+import { Router, json } from 'express';
+import { getFriends, addFriend, deleteFriend } from '../../db/friends_db.js';
+import { validate } from '../../routes/validate_ressource.js';
+import { friendsSchema, addFriendSchema, deleteFriendSchema } from './validator_schemas.js';
 
 // express' stuff
-const FRIENDS_API = express.Router();
+const FRIENDS_API = Router();
 
 FRIENDS_API.
-  use(express.json())
+  use(json())
 
   // friends : get friends
   .get('/:user_id', validate(friendsSchema), async (req, res) => {
@@ -34,4 +34,4 @@ FRIENDS_API.
     else res.status(202).json({message: 'Friend was deleted successfully'});
   })
 
-module.exports = { FRIENDS_API };
+export { FRIENDS_API };

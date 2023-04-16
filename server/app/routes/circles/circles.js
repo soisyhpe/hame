@@ -1,14 +1,14 @@
 // dependencies
-const express = require('express');
-const { getCircles, addCircle, deleteCircle } = require('../../db/circles_db');
-const { validate } = require('../validate_ressource');
-const { circlesSchema, addCircleSchema, removeCircleSchema } = require('./validator_schemas');
+import { Router, json } from 'express';
+import { getCircles, addCircle, deleteCircle } from '../../db/circles_db.js';
+import { validate } from '../validate_ressource.js';
+import { circlesSchema, addCircleSchema, removeCircleSchema } from './validator_schemas.js';
 
 // express' stuff
-const CIRCLES_API = express.Router();
+const CIRCLES_API = Router();
 
 CIRCLES_API.
-  use(express.json())
+  use(json())
 
   // circles : get circles
   .get('/:user_id', validate(circlesSchema), async (req, res) => {
@@ -34,4 +34,4 @@ CIRCLES_API.
     else res.status(202).json({message: 'Circle was deleted successfully'});
   })
 
-module.exports = { CIRCLES_API };
+export { CIRCLES_API };

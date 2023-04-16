@@ -1,14 +1,12 @@
 // dependencies
-const express = require('express');
-const pm = require('../../db/private_messages_db');
-const { validate } = require('../validate_ressource');
-const { conversationSchema, messageSchema } = require('./validator_schemas');
+import { Router, json } from 'express';
+import { validate } from '../validate_ressource.js';
 
 // express stuff
-const SESSIONS_API = express.Router();
+const SESSIONS_API = Router();
 
 SESSIONS_API
-  .use(express.json())
+  .use(json())
 
   // sessions : login
   .get('/login', async (req, res) => {
@@ -23,4 +21,4 @@ SESSIONS_API
     res.redirect('/');
   })
 
-module.exports = { SESSIONS_API };
+export { SESSIONS_API };
