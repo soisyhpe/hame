@@ -27,11 +27,11 @@ BLOCKED_USERS_API.
   })
 
   // blocked users : unblock user
-  .get('/:user_id/:blocked_user_id', validate(unblockUserSchema), async (req, res) => {
+  .delete('/:user_id/:blocked_user_id', validate(unblockUserSchema), async (req, res) => {
     let result = await unblockUser(req.params.user_id, req.params.blocked_user_id);
 
     if (!result) res.status(204).json({message : 'Unable to delete blocked user, the specified user is not blocked by user'});
-    else res.status(202).json({message: 'User was unblocked successfully'});
+    else res.status(202).json({message: 'User was successfully unblocked'});
   })
 
 export { BLOCKED_USERS_API };
