@@ -38,27 +38,119 @@ await DATABASE.createCollection("blocked_users",
 
 await DATABASE.createCollection("bookmarks",
   {
-
+    validator:
+    {
+      $jsonSchema:
+      {
+        bsonType: 'object',
+        required: ["user_id", "message_id", "creation_date"],
+        properties:
+        {
+          _id: {},
+          bookmark_id: {
+            bsonType: 'string',
+            description: "'bookmark_id' is a required field"
+          },
+          message_id: {
+            bsonType: 'string',
+            description: "'message_id' is a required field"
+          },
+          creation_date: {
+            bsonType: 'date',
+            description: "'creation_date' is a required field"
+          }
+        }
+      }
+    }
   }
 ).then((res) => res.createIndex({ message_id: 1, user_id: 1 }, { unique: true }))
 .catch((err) => console.warn(`Unable to create collection 'bookmarks'. ${err}`));
 
 await DATABASE.createCollection("circles",
   {
-
+    validator:
+    {
+      $jsonSchema:
+      {
+        bsonType: 'object',
+        required: ["user_id", "circle_id", "creation_date"],
+        properties:
+        {
+          _id: {},
+          user_id: {
+            bsonType: 'string',
+            description: "'user_id' is a required field"
+          },
+          circle_id: {
+            bsonType: 'string',
+            description: "'circle_id' is a required field"
+          },
+          creation_date: {
+            bsonType: 'date',
+            description: "'creation_date' is a required field"
+          }
+        }
+      }
+    }
   }
 ).catch((err) => console.warn(`Unable to create collection 'circles'. ${err}`));
 
 await DATABASE.createCollection("followers",
   {
-
+    validator:
+    {
+      $jsonSchema:
+      {
+        bsonType: 'object',
+        required: ["user_id", "follower_id", "creation_date"],
+        properties:
+        {
+          _id: {},
+          bookmark_id: {
+            bsonType: 'string',
+            description: "'bookmark_id' is a required field"
+          },
+          follower_id: {
+            bsonType: 'string',
+            description: "'follower_id' is a required field"
+          },
+          creation_date: {
+            bsonType: 'date',
+            description: "'creation_date' is a required field"
+          }
+        }
+      }
+    }
   }
 ).then((res) => res.createIndex({ user_id: 1 , follower_id : 1 }, { unique: true }))
 .catch((err) => console.warn(`Unable to create collection 'followers'. ${err}`));
 
 await DATABASE.createCollection("friends",
   {
-
+    validator:
+    {
+      $jsonSchema:
+      {
+        bsonType: 'object',
+        required: ["user_id", "friend_id", "creation_date"],
+        properties:
+        {
+          _id: {},
+          bookmark_id: {
+            bsonType: 'string',
+            description: "'bookmark_id' is a required field"
+          },
+          friend_id: {
+            bsonType: 'string',
+            description: "'friend_id' is a required field"
+          },
+          creation_date: {
+            bsonType: 'date',
+            description: "'creation_date' is a required field"
+          }
+        }
+      }
+    }
   }
 )
 .then((res) => res.createIndex({ user_id: 1, friend_id: 1 }, { unique: true }))
@@ -66,7 +158,114 @@ await DATABASE.createCollection("friends",
 
 await DATABASE.createCollection("messages",
   {
-
+    validator:
+    {
+      $jsonSchema:
+      {
+        bsonType: 'object',
+        required: ["user_id", "message_id", "text", "source", "scope", "creation_date"],
+        properties:
+        {
+          _id: {},
+          user_id: {
+            bsonType: 'string',
+            description: "'user_id' is a required field"
+          },
+          message_id: {
+            bsonType: 'string',
+            description: "'message_id' is a required field"
+          },
+          text: {
+            bsonType: 'string',
+            description: "'text' is a required field"
+          },
+          replied_to: {
+            bsonType: 'string',
+            description: "'replied_to' is a required field"
+          },
+          reposted_from: {
+            bsonType: 'string',
+            description: "'reposted_from' is a required field"
+          },
+          place: {
+            bsonType: 'object',
+            required: ["position", "country", "country_code", "city"],
+            properties:
+            {
+              position: {
+                bsonType: 'object',
+                required: ["latitude", "longitude", "altitude"],
+                properties:
+                {
+                  latitude: {
+                    bsonType: 'double',
+                    minimum: '-90',
+                    maximum: '90',
+                    description: ''
+                  },
+                  longitude: {
+                    bsonType: 'double',
+                    minimum: '-180',
+                    maximum: '180',
+                    description: ''
+                  },
+                  altitude: {
+                    bsonType: 'double',
+                    minimum: '-414',
+                    maximum: '8848',
+                    description: ''
+                  },
+                }
+              },
+              country: {
+                bsonType: 'string',
+                description: "'place.country' is a required field"
+              },
+              country_code: {
+                bsonType: 'string',
+                description: "'place.country_code' is a required field"
+              },
+              city: {
+                bsonType: 'string',
+                description: "'place.city' is a required field"
+              },
+              street: {
+                bsonType: 'string'
+              },
+              postal_code: {
+                bsonType: 'int'
+              }
+            }
+          },
+          media: {
+            bsonType: 'object',
+            properties:
+            {
+              type: {
+                enum: ["image", "video", "gid", "website"],
+                description: "'media.type' must be either image, video, gif or website"
+              },
+              url: {
+                bsonType: 'string',
+                description: "'media.url' is a required field"
+              }
+            }
+          },
+          source: {
+            bsonType: 'string',
+            description: "'source' is a required field"
+          },
+          scope: {
+            enum: ["default", "circles"],
+            description: "'scope' must be either default or circles"
+          },
+          creation_date: {
+            bsonType: 'date',
+            description: "'creation_date' is a required field"
+          }
+        }
+      }
+    }
   }
 ).catch((err) => console.warn(`Unable to create collection 'messages'. ${err}`));
 

@@ -45,14 +45,14 @@ const sendMessageSchema = object(
         country_code: string().required(),
         city: string().min(1).required(),
         street: string().optional(),
-        postalCode: number().optional()
+        postal_code: number().optional()
       }).optional().default(undefined),
       media: object({
-        type: string().oneOf(['IMAGE', 'VIDEO', 'GIF', 'WEBSITE']).required(),
+        type: string().oneOf(['image', 'video', 'gif', 'website']).required(),
         url: string().required()
       }).optional().default(undefined),
       source: string().required(),
-      scope: string().oneOf(['DEFAULT', 'CIRCLES']).required(),
+      scope: string().oneOf(['default', 'circles']).required(),
       creation_date: date().required()
     }),
     params: object({
