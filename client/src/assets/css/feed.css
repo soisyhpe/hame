@@ -1,0 +1,37 @@
+#feed {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: hsl(0, 0%, 100%);
+  position: relative;
+  width: 100%;
+}
+
+#feed-content {
+  background-color: #0C0C0C;
+  width: 100%;
+  height: 100%;
+  padding: 50px 100px 50px 100px;
+}
+
+#feed-header {
+  background-color: #0C0C0C;
+  border: 1px solid #282828;
+  border-radius: 25px;
+  padding: 25px;
+  display: flex;
+}
+
+.feed-header-newmessage-textarea {
+  width: 500px;
+  height: 100px;
+  resize: none;
+}
+
+#feed-items {
+
+}
+
+#feed-item {
+
+}
