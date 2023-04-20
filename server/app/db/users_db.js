@@ -12,10 +12,28 @@ async function getUsers(limit=10) {
     return result;
 }
 
+async function isUser(email, password) {
+    let query = { email: email, password: await hash(password, 10) };
+    await USERS_COLLECTION.findOne(query)
+        .then(result => {
+            if (result) return true;
+            else return false;
+        })
+        .catch(err => console.error(`Unable to find user (${err})`));
+}
+
+async function getUserFromEmail(email) {
+    let query = { email: email };
+    let result = await USERS_COLLECTION.findOne(query)
+        .catch(err => console.error(`Unable to find user (${err})`));
+    
+    return result;
+}
+
 async function getUserFromUsername(username) {
     let query = { username: username };
     let result = await USERS_COLLECTION.findOne(query)
-        .catch(err => console.error(`Unable to found user (${err})`));
+        .catch(err => console.error(`Unable to find user (${err})`));
     
     return result;
 }
@@ -23,7 +41,7 @@ async function getUserFromUsername(username) {
 async function getUserFromId(userId) {
     let query = { user_id: userId };
     let result = await USERS_COLLECTION.findOne(query)
-        .catch(err => console.error(`Unable to found user (${err})`));
+        .catch(err => console.error(`Unable to find user (${err})`));
     
     return result;
 }
@@ -63,4 +81,4 @@ async function deleteUser(userId) {
 // todo : update user 
 
 // specify which functions should be accessed from outside
-export { getUsers, getUserFromUsername, getUserFromId, createUser, deleteUser }
+export { getUsers, isUser, getUserFromEmail, getUserFromUsername, getUserFromId, createUser, deleteUser }

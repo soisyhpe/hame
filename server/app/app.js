@@ -1,6 +1,6 @@
 // dependencies
 import express from 'express';
-// import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import babel from '@babel/core';
 import 'dotenv/config.js';
@@ -40,6 +40,11 @@ app
     resave: false,
     saveUninitialized: true
   }))
+
+  .use(express.urlencoded({ extended: true }))
+  .use('public/users/', express.static('storage/uploaded_files/'))
+
+  .use(cookieParser())
 
   .use(BASE + '/blocked-users', BLOCKED_USERS_API)
   .use(BASE + '/bookmarks', BOOKMARKS_API)
