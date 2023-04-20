@@ -1,6 +1,7 @@
+/* form-box need to have opacity 0.7 but not form-content (child)*/
+
 #form-box {
-  background-color: #000000;
-  opacity: 0.75;
+  background-color: rgba(0,0,0,0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,7 +12,7 @@
 }
 
 #form-content {
-  background-color: #0C0C0C;
+  background-color: rgba(12,12,12,1);
   border: 1px solid #282828;
   border-radius: 25px;
   padding: 50px 100px 50px 100px;
