@@ -9,7 +9,7 @@ function signinForm() {
           <img src={logo} alt='Hame logo' height='25px'/>
           <h1 class='form-title'>Authentifiez-vous</h1>
         </div>
-        <div id='form-sections'>
+        <form action='' method='post' id='form-sections'>
           <div id='form-section'>
             <div id='form-items'>
               <div id='form-item'>
@@ -32,7 +32,7 @@ function signinForm() {
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <div id='form-footer'>
           <p className='form-item-footer'>Vous n'avez pas de compte ? <a href='#'>Inscrivez-vous</a> </p>
         </div>

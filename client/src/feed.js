@@ -5,15 +5,19 @@ function feed() {
     <div id='feed'>
       <div id='feed-content'>
         <div id='feed-header'>
-          <img src='' alt='Picture profile of @eroschn'></img>
-          <form className='feed-header-newmessage'>
-            <textarea className='feed-header-newmessage-textarea'/>
-            <select>
-              <option>Tout le monde</option>
-              <option>Cercle</option>
-            </select>
-            <button className='feed-header-button' type='submit'>Envoyer</button>
-          </form>
+          <div>
+            <img src='' alt='Picture profile of @eroschn'></img>
+          </div>
+          <div id='feed-header-newmessage'>
+            <form className='feed-header-newmessage'>
+              <textarea className='feed-header-newmessage-textarea'/>
+              <select>
+                <option>Tout le monde</option>
+                <option>Cercle</option>
+              </select>
+              <button className='feed-header-button' type='submit'>Envoyer</button>
+            </form>
+          </div>
         </div>
         <div id='feed-items'>
           <div id='feed-item'>

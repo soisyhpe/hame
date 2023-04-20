@@ -8,7 +8,7 @@ function App() {
   return (
     <body className="home">
       <Navbar/>
-      <Feed/>
+      <SignupForm/>
     </body>
   );
 }

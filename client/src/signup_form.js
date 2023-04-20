@@ -9,7 +9,7 @@ function signupForm() {
           <img src={logo} alt='Hame logo' height='25px'/>
           <h1 class='form-title'>Inscrivez-vous</h1>
         </div>
-        <div id='form-sections'>
+        <form action='' method='post' id='form-sections'>
           <div id='form-section'>
             <div id='form-items'>
               <div id='form-item'>
@@ -55,7 +55,7 @@ function signupForm() {
               </div>
             </div>
           </div>
-        </div>
+        </form>
         <div id='form-footer'>
           <p className='form-item-footer'>Déjà un compte ? <a href='#'>Connectez-vous</a> </p> 
         </div>
