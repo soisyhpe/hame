@@ -1,0 +1,6 @@
+.page {
+  display: flex;
+  color: hsl(0, 0%, 100%);
+  position: relative;
+  width: 100%;
+}

@@ -89,12 +89,12 @@ const Feed = () => {
   }
 
   return (
-    <div id='feed'>
-      <div id='feed-content'>
+    <div className='feed'>
+      <div className='feed-content'>
         <h1>Fil d'actualité</h1>
-        <div id='feed-header'>
+        <div className='feed-header'>
           <img className='feed-header-icon' src={tom_anderson} alt='Profile of @eroschn'></img>
-          <form id='new-message' className='feed-header-newmessage' onSubmit={sendNewMessage}>
+          <form className='feed-header-newmessage' onSubmit={sendNewMessage}>
 
             <div className='feed-header-newmessage-text'>
               <textarea placeholder='Écrire un message...' className='feed-header-newmessage-textarea' onChange={changetextarea}/>
@@ -109,7 +109,7 @@ const Feed = () => {
             </div>
           </form>
         </div>
-        <section id='feed-messages'>
+        <section className='feed-messages'>
 
           {messages.length > 0 && messages.map(message => {
 

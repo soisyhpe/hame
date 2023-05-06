@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import '../assets/css/home.css';
+import '../assets/css/notifications.css';
+
 import Navbar from './navbar';
 
 const Notifications = () => {
