@@ -72,11 +72,11 @@ const Feed = () => {
           <form id='new-message' className='feed-header-newmessage' onSubmit={sendNewMessage}>
 
             <div className='feed-header-newmessage-text'>
-              <textarea className='feed-header-newmessage-textarea' onChange={changetextarea}/>
+              <textarea placeholder='Écrire un message...' className='feed-header-newmessage-textarea' onChange={changetextarea}/>
             </div>
 
             <div className='feed-header-newmessage-footer'>
-              <select>
+              <select className='feed-header-newmessage-rangeselect'>
                 <option>Tout le monde</option>
                 <option>Cercle</option>
               </select>

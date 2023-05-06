@@ -25,11 +25,12 @@
 }
 
 .feed-header-newmessage-textarea {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   min-height: 5rem;
   max-height: 15rem;
   border: 1px solid #282828;
   color: white;
-  font-size: 1.2em;
+  font-size: 0.9em;
   border-radius: 0.7em;
   background: rgb(25,25,25);
   width: 16rem;
@@ -38,14 +39,39 @@
   box-sizing: border-box;
 }
 
-.feed-header-button {
+.feed-header-newmessage-footer{
+  display: flex;
+  margin-top: 10px;
+  
+  flex-direction: row;
+  justify-content: flex-end;
+
+}
+
+.feed-header-newmessage-rangeselect{
+  /* select element*/
+
+  width: 130px;
+  height: 30px;
+  border-radius: 5px;
+  margin-right: 10px;
   background-color: #282828;
+  color: #ffffff;
   border: 1px solid #282828;
-  /* put button on the right side */
+  font-size: small;
+  padding: 5px 10px 5px 10px;
+  text-align-last: center;
+
+}
+
+.feed-header-button {
+  background-color: #ededed;
+  border: 1px solid #282828;
+  margin-right: 0;
   margin-left: auto;
   border-radius: 5px;
-  color: #ffffff;
-  font-size: medium;
+  color: #282828;
+  font-size: small;
   padding: 5px 10px 5px 10px;
   margin-left: 10px;
 }
