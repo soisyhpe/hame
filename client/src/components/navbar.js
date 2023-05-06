@@ -23,19 +23,19 @@ function navbar() {
           <div id='navbar-items'>
             <div id='navbar-item'>
               <img src={home_icon} className='navbar-item-icon' alt='House icon'></img>
-              <Link href='./home'>Accueil</Link>
+              <Link to='./home'>Accueil</Link>
             </div>
             <div id='navbar-item'>
               <img src={notifications_icon} className='navbar-item-icon' alt='Ring-bell icon'></img>
-              <a href='./notifications'>Notifications</a>
+              <Link to='./notifications'>Notifications</Link>
             </div>
             <div id='navbar-item'>
               <img src={bookmarks_icon} className='navbar-item-icon' alt='Bookmark icon'></img>
-              <a href='./bookmarks'>Bookmarks</a>
+              <Link to='./bookmarks'>Bookmarks</Link>
             </div>
             <div id='navbar-item'>
               <img src={messages_icon} className='navbar-item-icon' alt='Opened letter icon'></img>
-              <a href='./private-messages'>Messages</a>
+              <Link to='./private-messages'>Messages</Link>
             </div>
           </div>
         </section>
@@ -44,11 +44,11 @@ function navbar() {
           <div id='navbar-items'>
             <div id='navbar-item'>
               <img src={user_icon} className='navbar-profile' alt='User icon'></img>
-              <a href='./profile'>Profile</a>
+              <Link to='./profile'>Profile</Link>
             </div>
             <div id='navbar-item'>
               <img src={settings_icon} className='navbar-item-icon' alt='Settings icon'></img>
-              <a href='./settings'>Paramètres</a>
+              <Link to='./settings'>Paramètres</Link>
             </div>
           </div>
         </section>
