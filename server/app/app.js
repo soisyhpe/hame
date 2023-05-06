@@ -33,7 +33,22 @@ import { SESSIONS_API } from './routes/sessions/sessions.js';
 import { USERS_API } from './routes/users/users.js';
 
 app
-  .use(cors())
+
+  // allowing json data to be received from client
+  .use(express.json())
+
+  // here we are setting up cors so that we can make requests from cross-origin resources
+  .use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    allowedHeaders: [
+      "set-cookie",
+      "Content-Type",
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Credentials",
+    ],
+  }))
+
   .use(session({
     secret: process.env.SESSION_SECRET,
     cookie: { 

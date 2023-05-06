@@ -12,8 +12,8 @@ async function getUsers(limit=10) {
     return result;
 }
 
-async function isUser(email, password) {
-    let query = { email: email, password: await hash(password, 10) };
+async function isUser(username, password) {
+    let query = { username: username, password: await hash(password, 10) };
     await USERS_COLLECTION.findOne(query)
         .then(result => {
             if (result) return true;
