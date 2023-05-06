@@ -24,15 +24,12 @@ const Feed = () => {
       reply_count: 0,
       repost_count: 0,
       like_count: 0,
-      scope : "default",
+      scope : message.target[1].value,
       source : "web",
       creation_date: new Date().toISOString().slice(0, 19).replace('T', ' ')
     }, {headers: {'Content-Type': 'application/json'}})
       .then((response) => {
         // updating state
-        console.log(response.data.message);
-        console.log(messages);
-
         setMessages( prevValues => { return [ ...prevValues, response.data.content ] });
         console.log("message posted");
       }
@@ -104,8 +101,8 @@ const Feed = () => {
 
             <div className='feed-header-newmessage-footer'>
               <select className='feed-header-newmessage-rangeselect'>
-                <option>Tout le monde</option>
-                <option>Cercle</option>
+                <option value="default">Tout le monde</option>
+                <option value="circle">Cercle</option>
               </select>
               <button className='feed-header-button' type='submit'>Envoyer</button>
             </div>

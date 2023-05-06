@@ -12,8 +12,7 @@ function searchbar() {
         <section id='searchbar-header'>
           <h3>Rechercher</h3>
           <form id='searchbar-item'>
-            <input type='text' placeholder='Messages contains "hello world"'/>
-            <button type='submit'>Rechercher</button>
+            <input className='searchbar-input' type='text' placeholder='Recherche'/>
           </form>
 
         </section>
