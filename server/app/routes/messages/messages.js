@@ -36,7 +36,7 @@ MESSAGES_API
 
   // messages : send new message
   .post('/:user_id/', validate(sendMessageSchema), async (req, res) => {
-    let result = await sendMessage(req.params.user_id, req.body.text, req.body.repliedTo, req.body.repostedFrom, req.body.place, req.body.media, req.body.source, req.body.scope, req.body.creation_date);
+    let result = await sendMessage(req.params.user_id, req.body.text, req.body.replied_to, req.body.reposted_from, req.body.place, req.body.media, req.body.source, req.body.scope, req.body.creation_date);
 
     if (!result) res.status(400).json({message: 'Unable to send new message'});
     else res.status(201).json({message: 'New message was sended successfully'});
@@ -60,7 +60,7 @@ MESSAGES_API
 
   // messages : modify a message
   .put('/:message_id',validate(modifyMessageSchema), async (req, res) => {
-    let result = await modifyMessage(req.params.message_id,req.body.user_id,req.body.text,req.body.place,req.body.media,req.body.lastModified);
+    let result = await modifyMessage(req.params.message_id, req.body.user_id, req.body.text, req.body.place, req.body.media, req.body.last_modified);
 
     if (!result) res.status(404).json({message: 'Unable to modify this message'});
     else res.status(200).json({message: 'Message was successfully modified '});

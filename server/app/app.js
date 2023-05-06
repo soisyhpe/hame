@@ -1,5 +1,6 @@
 // dependencies
 import express from 'express';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import babel from '@babel/core';
@@ -32,6 +33,7 @@ import { SESSIONS_API } from './routes/sessions/sessions.js';
 import { USERS_API } from './routes/users/users.js';
 
 app
+  .use(cors())
   .use(session({
     secret: process.env.SESSION_SECRET,
     cookie: { 

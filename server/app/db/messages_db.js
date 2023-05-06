@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { MESSAGES_COLLECTION, LIKED_MESSAGES_COLLECTION } from '../db_connection.js';
 
 async function getMessages(limit=10) {
-  let results = await MESSAGES_COLLECTION.find().limit(limit).toArray();
+  let results = await MESSAGES_COLLECTION.find().sort({ creation_date: -1 }).limit(limit).toArray();
 
   return results;
 }
