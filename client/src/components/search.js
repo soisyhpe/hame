@@ -1,3 +1,5 @@
+import React from 'react';
+
 import './assets/css/search.css'
 
 function search() {

@@ -1,5 +1,7 @@
-import './assets/css/form.css'
-import logo from './assets/medias/hame_logo.svg';
+import React from 'react';
+
+import '../assets/css/form.css'
+import logo from '../assets/medias/hame_logo.svg';
 
 function signinForm() {
   return (

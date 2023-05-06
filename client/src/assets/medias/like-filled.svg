@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 666.67 598.67">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 66.67px;
+      }
+    </style>
+  </defs>
+  <g id="Interface_Heart_01" data-name="Interface / Heart_01">
+    <path id="Vector" class="cls-1" d="m333.33,138.48C266.67-18.01,33.33-1.34,33.33,198.66s300,366.67,300,366.67c0,0,300-166.67,300-366.67s-233.33-216.67-300-60.19Z"/>
+  </g>
+</svg>

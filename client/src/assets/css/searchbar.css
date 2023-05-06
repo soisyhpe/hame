@@ -1,0 +1,28 @@
+#searchbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #ffffff;
+}
+
+#searchbar-content {
+  background-color: #0C0C0C;
+  border: 1px solid #282828;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  width: 300px;
+}
+
+#searchbar-header {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+#searchbar-section {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+#searchbar-footer {
+  padding-left: 25px;
+  padding-right: 25px;
+}

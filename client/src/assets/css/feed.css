@@ -1,10 +1,8 @@
 #feed {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
   color: hsl(0, 0%, 100%);
   position: relative;
-  width: 100%;
+  max-width: 800px;
 }
 
 #feed-content {
@@ -17,21 +15,62 @@
 #feed-header {
   background-color: #0C0C0C;
   border: 1px solid #282828;
-  border-radius: 25px;
   padding: 25px;
   display: flex;
+  margin-bottom: 25px;
+}
+
+.feed-header-newmessage {
+  width: 100%;
 }
 
 .feed-header-newmessage-textarea {
-  width: 500px;
+  width: 100%;
   height: 100px;
   resize: none;
+  box-sizing: border-box;
 }
 
-#feed-items {
-
+.feed-header-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  margin-right: 25px;
 }
 
-#feed-item {
+.feed-message-picture {
+  width: 100%;
+  border-radius: 100%;
+}
 
+.feed-message {
+  background-color: #0C0C0C;
+  border: 1px solid #282828;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.feed-message-header {
+  padding: 25px;
+  width: 50px;
+}
+
+.feed-message-content {
+  padding: 25px;
+  width: 100%;
+}
+
+.feed-message-footer {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.feed-message-action {
+  display: inline-flex;
+}
+
+.action-icon {
+  width: 25px;
+  padding-right: 5px;
 }

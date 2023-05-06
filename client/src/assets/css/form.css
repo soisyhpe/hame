@@ -25,9 +25,6 @@
   margin: 25px 0px 0px 0px;
 }
 
-#form-sections {
-}
-
 #form-section {
   padding: 15px 0px 15px 0px;
 }
@@ -37,8 +34,14 @@
   display: grid;
 }
 
+.form-item-error {
+  margin: 0;
+  color: rgb(207, 94, 94);
+}
+
 .form-item-inline {
-  display: inline-flex;
+  display: flex;
+  align-content: center;
 }
 
 .form-item-label {
@@ -95,6 +98,10 @@
 .form-item-button:hover {
   background-color: #d5d5d5;
 }
+
+.form-item-button:disabled {
+  background-color: #afafaf;
+} 
 
 #form-footer {
 
