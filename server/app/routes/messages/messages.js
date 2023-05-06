@@ -39,7 +39,7 @@ MESSAGES_API
     let result = await sendMessage(req.params.user_id, req.body.text, req.body.replied_to, req.body.reposted_from, req.body.place, req.body.media, req.body.source, req.body.scope, req.body.creation_date);
 
     if (!result) res.status(500).json({message: 'Unable to send new message'});
-    else res.status(201).json({message: 'New message was sended successfully'});
+    else res.status(201).json({message: 'New message was sended successfully', content: result});
   })
 
   // messages : get responses of a message

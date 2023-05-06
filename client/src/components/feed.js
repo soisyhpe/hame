@@ -13,13 +13,12 @@ import { useEffect, useState } from 'react';
 const Feed = () => {
   const [messages, setMessages] = useState([]);
 
-  const sendNewMessage = async (message) => {
+  const sendNewMessage = (message) => {
     // todo : post new message and get message_id
     // setMessages( prevValues => { return { ...prevValues, [response.message.message_id]: response.message } });
     
     // posting new message
-    
-    await axios.post('http://localhost:8000/v1/messages/b9bb829a-d3f7-4a0b-b58e-9af7611a79f9', {
+      axios.post('http://localhost:8000/v1/messages/b9bb829a-d3f7-4a0b-b58e-9af7611a79f9', {
       text: message.target[0].value,
       user_id: "b9bb829a-d3f7-4a0b-b58e-9af7611a79f9",
       reply_count: 0,
@@ -31,8 +30,11 @@ const Feed = () => {
     }, {headers: {'Content-Type': 'application/json'}})
       .then((response) => {
         // updating state
-        setMessages( prevValues => { return [ ...prevValues, response.data.message ] });
+        console.log(response.data.message);
+        console.log(messages);
 
+        setMessages( prevValues => { return [ ...prevValues, response.data.content ] });
+        console.log("message posted");
       }
     )
       .catch((error) => {
@@ -91,7 +93,7 @@ const Feed = () => {
   return (
     <div className='feed'>
       <div className='feed-content'>
-        <h1>Fil d'actualité</h1>
+        <h1>Fil d'actualité</h1>  
         <div className='feed-header'>
           <img className='feed-header-icon' src={tom_anderson} alt='Profile of @eroschn'></img>
           <form className='feed-header-newmessage' onSubmit={sendNewMessage}>
@@ -105,7 +107,7 @@ const Feed = () => {
                 <option>Tout le monde</option>
                 <option>Cercle</option>
               </select>
-              <button form='new-message' className='feed-header-button' type='submit'>Envoyer</button>
+              <button className='feed-header-button' type='submit'>Envoyer</button>
             </div>
           </form>
         </div>

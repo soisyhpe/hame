@@ -23,9 +23,10 @@ async function getMessageFromId(messageId) {
 }
 
 async function sendMessage(userId, text, replyTo, repostedFrom, place, media, source, scope, creationDate) {
+  let msgid= randomUUID();
   let newMessage = {
     user_id: userId,
-    message_id: randomUUID(),
+    message_id: msgid,
     text: text,
     replied_to: replyTo,
     reposted_from: repostedFrom,
@@ -51,7 +52,12 @@ async function sendMessage(userId, text, replyTo, repostedFrom, place, media, so
 
 
   console.log(result);
-  return result;
+  if (!result){
+    console.log("Message not posted");
+    return false;
+  } else {
+    return newMessage;
+  }
 }
 
 // todo : send multiple messages (thread feature)
