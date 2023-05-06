@@ -13,9 +13,34 @@ import { useEffect, useState } from 'react';
 const Feed = () => {
   const [messages, setMessages] = useState([]);
 
-  const sendNewMessage = (message) => {
+  const sendNewMessage = async (message) => {
     // todo : post new message and get message_id
     // setMessages( prevValues => { return { ...prevValues, [response.message.message_id]: response.message } });
+    
+    // posting new message
+    
+    await axios.post('http://localhost:8000/v1/messages/b9bb829a-d3f7-4a0b-b58e-9af7611a79f9', {
+      text: message.target[0].value,
+      user_id: "b9bb829a-d3f7-4a0b-b58e-9af7611a79f9",
+      reply_count: 0,
+      repost_count: 0,
+      like_count: 0,
+      scope : "default",
+      source : "web",
+      creation_date: new Date().toISOString().slice(0, 19).replace('T', ' ')
+    }, {headers: {'Content-Type': 'application/json'}})
+      .then((response) => {
+        // updating state
+        setMessages( prevValues => { return [ ...prevValues, response.data.message ] });
+
+      }
+    )
+      .catch((error) => {
+        console.log(error);
+      }
+    )
+    message.target[0].value = '';
+    message.preventDefault();
   }
 
   const fetchProfilePicture = (userId) => {
