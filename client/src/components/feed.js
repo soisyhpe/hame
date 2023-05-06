@@ -57,6 +57,12 @@ const Feed = () => {
     fetchMessages()
   }, []);
 
+  // change textarea height according to content
+  const changetextarea = (event) => {
+    event.target.style.height = 'auto';
+    event.target.style.height = event.target.scrollHeight + 10 + 'px';
+  }
+
   return (
     <div id='feed'>
       <div id='feed-content'>
@@ -66,7 +72,7 @@ const Feed = () => {
           <form id='new-message' className='feed-header-newmessage' onSubmit={sendNewMessage}>
 
             <div className='feed-header-newmessage-text'>
-              <textarea className='feed-header-newmessage-textarea'/>
+              <textarea className='feed-header-newmessage-textarea' onChange={changetextarea}/>
             </div>
 
             <div className='feed-header-newmessage-footer'>
