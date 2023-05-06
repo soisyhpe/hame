@@ -1,18 +1,18 @@
-#feed {
+.feed {
   display: flex;
   color: hsl(0, 0%, 100%);
   position: relative;
   max-width: 800px;
 }
 
-#feed-content {
+.feed-content {
   background-color: #0C0C0C;
   width: 100%;
   height: 100%;
   padding: 50px 100px 50px 100px;
 }
 
-#feed-header {
+.feed-header {
   background-color: #0C0C0C;
   border: 1px solid #282828;
   padding: 25px;

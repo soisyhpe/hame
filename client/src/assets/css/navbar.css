@@ -1,4 +1,4 @@
-#navbar {
+.navbar {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -7,7 +7,7 @@
   height: 100vh;*/
 }
 
-#navbar-content {
+.navbar-content {
   background-color: #0C0C0C;
   border: 1px solid #282828;
   border-top-right-radius: 25px;
@@ -16,16 +16,16 @@
   /*height: 100vh;*/
 }
 
-#navbar-header {
+.navbar-header {
   padding: 50px 25px 50px 25px;
 }
 
-#navbar-section {
+.navbar-section {
   padding-top: 25px;
   padding-bottom: 25px;
 }
 
-#navbar-item {
+.navbar-item {
   border: 1px solid #0C0C0C;
   border-radius: 25px;
   margin-left: 25px;
@@ -36,35 +36,63 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-#navbar-item:hover {
+.navbar-item-active {
+  background-color: #ffffff;
+  color: #0C0C0C;
+  font-weight: bold;
+  border: 1px solid #0C0C0C;
+  border-radius: 25px;
+  margin-left: 25px;
+  margin-right: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.navbar-item:hover {
   border: 1px solid #282828;
 }
 
-#navbar-item:active {
+.navbar-item:active {
   background-color: #ffffff;
   color: #0C0C0C;
   font-weight: bold;
 }
 
-#navbar-item:active a {
+.navbar-item a:active {
   color: #0C0C0C;
 }
 
-#navbar-item img {
+.navbar-item a:visited {
+  color: #0C0C0C;
+}
+
+.navbar-item img {
   display: inline-flex;
   width: 25px;
   height: 25px;
   margin-right: 25px;
 }
 
-#navbar-item a {
+.navbar-item a {
   text-decoration: none;
   text-transform: capitalize;
   color: #ffffff;
   /*overflow: hidden;*/
   vertical-align: middle;
+}
+
+.navbar-item-text {
+  text-decoration: none;
 }
 
 img.navbar-profile {
@@ -75,22 +103,22 @@ img.navbar-profile {
   text-align: center;
 }
 
-#navbar-footer {
+.navbar-footer {
   padding-left: 25px;
   padding-right: 25px;
 }
 
-#navbar-footer-links {
+.navbar-footer-links {
   padding-top: 25px;
 }
 
-#navbar-footer-links a {
+.navbar-footer-links a {
   display: flex;
   text-decoration: none;
   color: #909090;
 }
 
-#navbar-footer-copyright {
+.navbar-footer-copyright {
   padding-top: 25px;
   padding-bottom: 25px;
 }
