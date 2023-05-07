@@ -12,7 +12,8 @@ MESSAGES_API
 
   // messages : get messages
   .get('/', validate(messagesSchema), async (req, res) => {
-    let result = await getMessages(req.query.limit);
+    
+    let result = await getMessages(req.query.limit,req.query.text);
 
     if (!result) res.status(204).json({message: 'No messages was found'});
     else res.status(202).json(result);

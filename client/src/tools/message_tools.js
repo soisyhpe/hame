@@ -1,6 +1,16 @@
-import React, { useState, useEffect } from 'react';
-
 import tom_anderson from '../assets/medias/tom_anderson.jpg';
+
+const fetchCountMessagesFromUserId = async (userId) => {
+  const response = await fetch(`http://localhost:8000/v1/messages/${userId}`)
+  const data = await response.json();
+  return data.length;
+}
+
+const fetchMessagesFromUserId = async (userId) => {
+  const response = await fetch(`http://localhost:8000/v1/messages/${userId}`)
+  const data = await response.json();
+  return data;
+}
 
 const fetchUserFromUserId = async (userId) => {
   const response = await fetch(`http://localhost:8000/v1/users?user_id=${userId}`);
@@ -40,4 +50,4 @@ const fetchUsernameFromUsername = async (username) => {
   return data.username;
 };
 
-export { fetchUserFromUserId, fetchUserFromUsername, fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId, fetchUsernameFromUsername };
+export { fetchCountMessagesFromUserId, fetchMessagesFromUserId, fetchUserFromUserId, fetchUserFromUsername, fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId, fetchUsernameFromUsername };

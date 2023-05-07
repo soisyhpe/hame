@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { fetchUserFromUserId, fetchProfilePictureFromUserId } from '../tools/message_tools.js';
+import { fetchCountMessagesFromUserId, fetchMessagesFromUserId, fetchUserFromUserId, fetchProfilePictureFromUserId } from '../tools/message_tools.js';
 
 import '../assets/css/profile.css';
 import '../assets/css/feed.css';
@@ -26,7 +26,7 @@ const Profile = () => {
     }
 
     const fetchMessages = async () => {
-      const messages = await fetch(`http://localhost:8000/v1/messages/${userId}`)
+      const messages = await fetchMessagesFromUserId(`${userId}`);
       setUserMessages(messages);
     }
 
@@ -69,10 +69,16 @@ const Profile = () => {
     return (
       <div className='profile-header-statistics'>
         <div className='profile-header-statistics-item'>
-          <p>{`${userData.friends} friends`}</p>
+          <p>{`${userData.friends}`} friends</p>
         </div>
         <div className='profile-header-statistics-item'>
-          <p>{`${userData.followers} followers`}</p>
+          <p>{`${userData.followers}`} followers</p>
+        </div>
+        <div className='profile-header-statistics-item'>
+          <p>{userMessages.length} messages</p>
+        </div>
+        <div className='profile-header-statistics-item'>
+          <p>{userMessages.length} j'aime</p>
         </div>
       </div>
     );
@@ -113,7 +119,6 @@ const Profile = () => {
   };
 
   const showUserMessages = () => {
-    console.log(userMessages);
     if (userMessages.length > 0) {
       return (
         userMessages.map(message => showUserMessage(message))
@@ -138,13 +143,12 @@ const Profile = () => {
         <div className='profile-content'>
           <h1>Profile de {`${userData.username}`}</h1>
           <div className='profile-header'>
-            <div className='profile-header-banner'>
-              <img src={banner}/>
-            </div>
             <div className='profile-header-picture'>
               <img src={tom_anderson}/>
-            </div>
-            <div className='profile-header-action'>
+              <div className='profile-header-action'>
+                <button className='profile-button'>Suivre</button>
+                <button className='profile-button block'>Bloquer</button>
+              </div>
             </div>
             <div className='profile-header-username'>
               <h2>{`${userData.firstname} ${userData.lastname}`}</h2>

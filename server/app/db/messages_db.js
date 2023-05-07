@@ -2,9 +2,12 @@
 import { randomUUID } from 'crypto';
 import { MESSAGES_COLLECTION, LIKED_MESSAGES_COLLECTION } from '../db_connection.js';
 
-async function getMessages(limit=10) {
-  let results = await MESSAGES_COLLECTION.find().sort({ creation_date: -1 }).limit(limit).toArray();
+async function getMessages(limit=10, keywords="") {
+  if (keywords == "")
+    return await MESSAGES_COLLECTION.find().sort({ creation_date: -1 }).limit(limit).toArray();
 
+  const regxp= new RegExp(keywords, 'i');
+  let results = await MESSAGES_COLLECTION.find({text : {$regex : regxp}}).sort({ creation_date: -1 }).limit(limit).toArray();
   return results;
 }
 

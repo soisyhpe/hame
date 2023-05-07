@@ -97,13 +97,22 @@
 }
 
 .feed-message-header {
-  padding: 25px;
+  padding: 41px 25px 25px 25px;
   width: 50px;
+  display: inline-table;
+}
+
+.feed-message-header a {
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .feed-message-content {
   padding: 25px;
   width: 100%;
+}
+
+.feed-message-content p {
 }
 
 .feed-message-footer {

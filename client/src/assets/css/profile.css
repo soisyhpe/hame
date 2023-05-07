@@ -20,14 +20,15 @@
 }
 
 .profile-header-picture {
-  padding-left: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .profile-header-picture img {
   border: 5px solid #0C0C0C;
   width: 100px;
   border-radius: 100%;
-  margin-top: -50px;
 }
 
 .profile-header-banner img {
@@ -59,8 +60,26 @@
 
 .profile-header-statistics-item p {
   font-weight: bold;
+  margin: 0;
 }
 
 .profile-messages {
   margin-top: 25px;
+}
+
+.profile-button {
+  border: 0px;
+  border-radius: 25px;
+  padding: 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.block {
+  background-color: rgb(207, 94, 94);
+  color: #ffffff;
+}
+
+.block:hover {
+  background-color: rgb(157, 66, 66);
 }

@@ -7,6 +7,7 @@ import Bookmarks from './components/bookmarks.js';
 import Messages from './components/messages.js';
 import Profile from './components/profile.js';
 import Settings from './components/settings.js';
+import Search from './components/search.js';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path='/messages' element={<Messages/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/settings' element={<Settings/>}/>
+        <Route path='/search' element={<Search/>}/>
       </Routes>
     </div>
   );
