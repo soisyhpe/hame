@@ -44,18 +44,10 @@ const fetchUsernameFromUserId = async (userId) => {
   return data[0].username;
 };
 
-const fetchUsernameFromUserIdNoAsync = (userId) => {
-  let result = fetch(`http://localhost:8000/v1/users?user_id=${userId}`)
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      return data.username;
-    }
-  );
-
-  return result;
-
+const fetchUserIdFromUsername = async (username) => {
+  const response = await fetch(`http://localhost:8000/v1/users?username=${username}`);
+  const data = await response.json();
+  return data[0].user_id;
 };
 
-export { fetchCountMessagesFromUserId, fetchMessagesFromUserId, fetchUserFromUserId, fetchUserFromUsername, fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId };
+export { fetchCountMessagesFromUserId, fetchMessagesFromUserId, fetchUserFromUserId, fetchUserFromUsername, fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId, fetchUserIdFromUsername };

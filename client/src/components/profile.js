@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { fetchCountMessagesFromUserId, fetchMessagesFromUserId, fetchUserFromUserId, fetchProfilePictureFromUserId } from '../tools/message_tools.js';
+import { fetchCountMessagesFromUserId, fetchMessagesFromUserId, fetchUserFromUserId, fetchProfilePictureFromUserId, fetchUserFromUsername,  } from '../tools/message_tools.js';
 
 import '../assets/css/profile.css';
 import '../assets/css/feed.css';
@@ -20,19 +20,21 @@ const Profile = () => {
   // const userId = 'b9bb829a-d3f7-4a0b-b58e-9af7611a79f9';
   const [userData, setUserData] = useState({});
   const [userMessages, setUserMessages] = useState({});
+  const [userId, setUserId] = useState('b9bb829a-d3f7-4a0b-b58e-9af7611a79f9');
 
   const navigate = useNavigate();
 
-  let { userId } = useParams();
+  let { username } = useParams();
 
-
-  if (userId === undefined) {
-    userId = 'b9bb829a-d3f7-4a0b-b58e-9af7611a79f9';
+  if (username === undefined) {
+    username = 'eroschn';
   }
+
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchUserFromUserId(`${userId}`);
+      const data = await fetchUserFromUsername(`${username}`);
+      setUserId(data.user_id);
       setUserData(data);
     }
 
@@ -43,7 +45,7 @@ const Profile = () => {
 
     fetchData();
     fetchMessages();
-    console.log(userData);
+    console.log(userMessages);
   }, []);
 
   const showBiography = () => {
@@ -101,7 +103,7 @@ const Profile = () => {
       <div className='feed-message' id={`${message.message_id}`}>
         <div className='feed-message-header'>
           <img src={tom_anderson} className='feed-message-picture' alt={`Profile of ${message.user_id}`}/>
-          <a href={`./${message.user_id}`} onClick={(e)=>{e.preventDefault(); navigate(`/${message.user_id}`);}}>{userData.username}</a>
+          <a href={`./${userData.username}`} onClick={(e)=>{e.preventDefault(); navigate(`/${userData.username}`);}}>{userData.username}</a>
         </div>
         <div className='feed-message-content'>
           <p>{`${message.text}`}</p>

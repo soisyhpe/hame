@@ -9,11 +9,12 @@ import like_icon from '../assets/medias/like.svg';
 import filled_like_icon from '../assets/medias/like-filled.svg';
 import save_icon from '../assets/medias/bookmarks.svg';
 import { useNavigate } from 'react-router-dom';
-
+import { fetchUsernameFromUserId } from '../tools/message_tools';
 import { useEffect, useState } from 'react';
 
 const Feed = () => {
   const [messages, setMessages] = useState([]);
+  const [usernames, setUsernames] = useState({});
 
   const navigate = useNavigate();
 
@@ -51,10 +52,6 @@ const Feed = () => {
 
   };
 
-  const fetchUsername = (userId) => {
-    return "eroschn"
-  };
-
   const fetchMessages = () => {
     fetch('http://localhost:8000/v1/messages/')
       .then((response) => {
@@ -69,6 +66,22 @@ const Feed = () => {
   const commentMessage = () => {
     
   };
+
+  React.useEffect(() => {
+    const fetchUsernames = async () => {
+      const newUsernames = {};
+      for (const message of messages) {
+        if (!newUsernames[message.user_id]) {
+          newUsernames[message.user_id] = await fetchUsernameFromUserId(message.user_id);
+        }
+      }
+      setUsernames(newUsernames);
+    }
+    
+    fetchUsernames();
+  }, [messages]);
+
+
   // like the message and update state
   const likeMessage = (event) => {
     const userId = "b9bb829a-d3f7-4a0b-b58e-9af7611a79f9";
@@ -186,7 +199,7 @@ const Feed = () => {
             return (<div className='feed-message' id={`${message.message_id}`}>
               <div className='feed-message-header'>
                 <img src={tom_anderson} className='feed-message-picture' alt={`Profile of ${message.user_id}`}></img>
-                <a href={`./${message.user_id}`} onClick={(e)=>{e.preventDefault(); navigate(`/${message.user_id}`);}}>{fetchUsername(`${message.user_id}`)}</a>
+                <a href={`./${usernames[message.user_id]}`} onClick={(e)=>{e.preventDefault(); navigate(`/${usernames[message.user_id]}`);}}>{usernames[message.user_id]}</a>
               </div>
               <div className='feed-message-content'>
                 <p>{`${message.text}`}</p>

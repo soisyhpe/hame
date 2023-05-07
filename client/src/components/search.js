@@ -82,7 +82,7 @@ const Search = () => {
               <div className='feed-message' id={`${message.message_id}`}>
                 <div className='feed-message-header'>
                   <img src={tom_anderson} className='feed-message-picture' alt={`Profile of ${message.user_id}`}></img>
-                  <a href={`./${message.user_id}`} className='feed-message-username' onClick={(e)=>{e.preventDefault(); navigate(`/${message.user_id}`);}} >{usernames[message.user_id]}</a>
+                  <a href={`./${usernames[message.user_id]}`} className='feed-message-username' onClick={(e)=>{e.preventDefault(); navigate(`/${usernames[message.user_id]}`);}} >{usernames[message.user_id]}</a>
                 </div>
                 <div className='feed-message-content'>
                   <p>{message.text}</p>
