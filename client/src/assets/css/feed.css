@@ -3,6 +3,7 @@
   color: hsl(0, 0%, 100%);
   position: relative;
   max-width: 800px;
+  width: 100%;
 }
 
 .feed-content {
