@@ -5,7 +5,8 @@ import { UUID_REGEX } from '../../tools/validation_tools.js';
 const messagesSchema = object(
   {
     query: object({
-      limit: number().positive().optional()
+      limit: number().positive().optional(),
+      text : string().optional()
     })
   }
 );

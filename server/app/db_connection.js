@@ -267,7 +267,12 @@ await DATABASE.createCollection("messages",
       }
     }
   }
-).catch((err) => console.warn(`Unable to create collection 'messages'. ${err}`));
+)
+.then((res) => res.createIndex({ text : 'text'}, { unique: false }))
+
+.catch((err) => console.warn(`Unable to create collection 'messages'. ${err}`));
+
+
 
 await DATABASE.createCollection("liked_messages",
   {
@@ -330,6 +335,7 @@ const LIKED_MESSAGES_COLLECTION = DATABASE.collection("liked_messages");
 const PRIVATE_MESSAGES_COLLECTION = DATABASE.collection("private_messages");
 const SESSIONS_COLLECTION = DATABASE.collection("sessions");
 const USERS_COLLECTION = DATABASE.collection("users");
+
 
 export default { DATABASE };
 export { BLOCKED_USERS_COLLECTION, BOOKMARKS_COLLECTION, CIRCLES_COLLECTION, FOLLOWERS_COLLECTION, FRIENDS_COLLECTION, MESSAGES_COLLECTION, LIKED_MESSAGES_COLLECTION, PRIVATE_MESSAGES_COLLECTION, SESSIONS_COLLECTION, USERS_COLLECTION };
