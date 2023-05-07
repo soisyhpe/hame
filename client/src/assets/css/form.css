@@ -1,6 +1,6 @@
 /* form-box need to have opacity 0.7 but not form-content (child)*/
 
-#form-box {
+.form-box {
   background-color: rgba(0,0,0,0.7);
   display: flex;
   align-items: center;
@@ -11,7 +11,7 @@
   width: 100%;
 }
 
-#form-content {
+.form-content {
   background-color: rgba(12,12,12,1);
   border: 1px solid #282828;
   border-radius: 25px;
@@ -25,11 +25,11 @@
   margin: 25px 0px 0px 0px;
 }
 
-#form-section {
+.form-section {
   padding: 15px 0px 15px 0px;
 }
 
-#form-item {
+.form-item {
   padding: 5px 0px 5px 0px;
   display: grid;
 }
@@ -103,7 +103,7 @@
   background-color: #afafaf;
 } 
 
-#form-footer {
+.form-footer {
 
 }
 

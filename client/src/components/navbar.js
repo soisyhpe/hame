@@ -22,7 +22,7 @@ const navbar = () => {
 
         <section className='navbar-section'>
           <div className='navbar-items'>
-            <Link to='/' className='navbar-item'>
+            <Link to='/home' className='navbar-item'>
               <img src={home_icon} className='navbar-item-icon' alt='House icon'/>
               <div className=''>Accueil</div>
             </Link>

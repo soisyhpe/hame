@@ -199,7 +199,7 @@ const Feed = () => {
                     <img className='action-icon' src={repost_icon}/>
                     <p>{`${message.repost_count} reposts`}</p>
                   </div>
-                  <div className='feed-message-action'onClick={likeMessage}>
+                  <div className='feed-message-action' onClick={likeMessage}>
                     <input type="image" className='action-icon' src={like_icon} alt='likebutton' />
                     <p>{`${message.like_count} likes`}</p>
                   </div>

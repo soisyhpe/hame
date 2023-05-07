@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import '../assets/css/form.css';
 import logo from '../assets/medias/hame_logo.svg';
@@ -100,16 +101,16 @@ const SignupForm = () => {
 
   // render
   return (
-    <div id='form-box'>
-      <div id='form-content'>
-        <section id='form-header'>
+    <div className='form-box'>
+      <div className='form-content'>
+        <section className='form-header'>
           <img src={logo} alt='Hame logo' height='25px'/>
           <h1 className='form-title'>Inscrivez-vous</h1>
         </section>
 
         <form onSubmit={submitForm}>
-          <section id='form-section'>
-            <div id='form-item'>
+          <section className='form-section'>
+            <div className='form-item'>
               <label className='form-item-label'>Adresse mail</label>
               <input 
                 type='email' 
@@ -121,7 +122,7 @@ const SignupForm = () => {
                 className='form-item-input'/>
               <p id='email' className='form-item-error'>{ formErrors.email && formErrors.email }</p>
             </div>
-            <div id='form-item' className='form-item-inline'>
+            <div className='form-item'>
               <label className='form-item-label'>Prénom</label>
               <input 
                 type='text'
@@ -139,7 +140,7 @@ const SignupForm = () => {
                 onChange={event => updateUserData(event)} 
                 className='form-item-input'/>
             </div>
-            <div id='form-item'>
+            <div className='form-item'>
               <label className='form-item-label'>Date de naissance</label>
               <input 
                 type='date' 
@@ -151,8 +152,8 @@ const SignupForm = () => {
             </div>
           </section>
 
-          <section id='form-section'>
-            <div id='form-item'>
+          <section className='form-section'>
+            <div className='form-item'>
               <label className='form-item-label'>Pseudo</label>
               <input 
                 type='text' 
@@ -164,8 +165,8 @@ const SignupForm = () => {
             </div>
           </section>
 
-          <section id='form-section'>
-            <div id='form-item'>
+          <section className='form-section'>
+            <div className='form-item'>
               <label className='form-item-label'>Mot de passe</label>
               <input 
                 type='password' 
@@ -176,7 +177,7 @@ const SignupForm = () => {
                 className='form-item-input'/>
               <p id='password' className='form-item-error' dangerouslySetInnerHTML={{__html: formErrors.password}}></p>
             </div>
-            <div id='form-item'>
+            <div className='form-item'>
               <label className='form-item-label'>Confirmer le mot de passe</label>
               <input 
                 type='password' 
@@ -189,15 +190,15 @@ const SignupForm = () => {
             </div>
           </section>
 
-          <section id='form-section'>
-            <div id='form-item'>
+          <section className='form-section'>
+            <div className='form-item'>
               <button id='submit' type='submit' className='form-item-button'>S'inscrire</button>
             </div>
           </section>
         </form>
 
-        <section id='form-footer'>
-          <p className='form-item-footer'>Déjà un compte ? <a href='/auth/sign-in'>Connectez-vous</a> </p> 
+        <section className='form-footer'>
+          <p className='form-item-footer'>Déjà un compte ? <Link to='/'>Connectez-vous</Link> </p> 
         </section>
       </div>
     </div>
