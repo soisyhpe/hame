@@ -13,14 +13,16 @@ import like_icon from '../assets/medias/like.svg';
 import save_icon from '../assets/medias/bookmarks.svg';
 
 import Navbar from './navbar';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Followers from './followers.js';
 
 const Profile = () => {
   // const userId = 'b9bb829a-d3f7-4a0b-b58e-9af7611a79f9';
   const [userData, setUserData] = useState({});
   const [userMessages, setUserMessages] = useState({});
   const [userId, setUserId] = useState('b9bb829a-d3f7-4a0b-b58e-9af7611a79f9');
+  const [showFollowersModal, setShowFollowersModal] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -47,6 +49,10 @@ const Profile = () => {
     fetchMessages();
     console.log(userMessages);
   }, []);
+
+  const toggleFollowersModal = () => {
+    setShowFollowersModal(!showFollowersModal);
+  };
 
   const showBiography = () => {
     return (
@@ -83,10 +89,12 @@ const Profile = () => {
     return (
       <div className='profile-header-statistics'>
         <div className='profile-header-statistics-item'>
-          <p>{`${userData.friends}`} friends</p>
+          <Link to={`/${userData.username}/friends`} className='profile-item'>{`${userData.friends}`} friends</Link>
         </div>
-        <div className='profile-header-statistics-item'>
-          <p>{`${userData.followers}`} followers</p>
+        <div className="profile-header-statistics-item">
+          <span onClick={toggleFollowersModal} className="profile-item">
+            {`${userData.followers}`} followers
+          </span>
         </div>
         <div className='profile-header-statistics-item'>
           <p>{userMessages.length} messages</p>
@@ -152,7 +160,12 @@ const Profile = () => {
   return (
     <div className="profile">
       <Navbar/>
-
+      {showFollowersModal && (
+          <div className="followers-modal">
+            <Followers username={userData.username} />
+            <button onClick={toggleFollowersModal} className='profile-followerlist-closebutton'>Close</button>
+          </div>
+      )}
       <div className='profile-page'>
         <div className='profile-content'>
           <h1>Profile de {`${userData.username}`}</h1>
