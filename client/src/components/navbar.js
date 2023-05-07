@@ -45,7 +45,7 @@ const navbar = () => {
           <div className='navbar-items'>
             <Link to='/profile' className='navbar-item'>
               <img src={user_icon} className='navbar-profile' alt='User icon'></img>
-              <p>Profile</p>
+              <p>Profil</p>
             </Link>
             <Link to='/settings' className='navbar-item'>
               <img src={settings_icon} className='navbar-item-icon' alt='Settings icon'></img>
