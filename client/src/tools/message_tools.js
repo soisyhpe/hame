@@ -19,13 +19,21 @@ const fetchProfilePictureFromUsername = async (username) => {
 const fetchUsernameFromUserId = async (userId) => {
   const response = await fetch(`http://localhost:8000/v1/users?user_id=${userId}`);
   const data = await response.json();
-  return data.username;
+  return data[0].username;
 };
 
-const fetchUsernameFromUsername = async (username) => {
-  const response = await fetch(`http://localhost:8000/v1/users?username=${username}`);
-  const data = await response.json();
-  return data.username;
+const fetchUsernameFromUserIdNoAsync = (userId) => {
+  let result = fetch(`http://localhost:8000/v1/users?user_id=${userId}`)
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      return data.username;
+    }
+  );
+
+  return result;
+
 };
 
-export { fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId, fetchUsernameFromUsername };
+export { fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId, fetchUsernameFromUserIdNoAsync };
