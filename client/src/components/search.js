@@ -3,45 +3,84 @@ import React from 'react';
 import '../assets/css/search.css';
 import '../assets/css/feed.css';
 import '../assets/css/navbar.css';
+import '../assets/css/home.css';
+import '../assets/css/searchbar.css';
+
 
 import Navbar from './navbar.js';
+import SearchBar from './searchbar.js';
+import { fetchUsernameFromUserId } from '../tools/message_tools';
 import tom_anderson from '../assets/medias/tom_anderson.jpg';
 import comment_icon from '../assets/medias/comment.svg';
 import repost_icon from '../assets/medias/repost.svg';
 import like_icon from '../assets/medias/like.svg';
 import save_icon from '../assets/medias/bookmarks.svg';
+import { useSearchParams } from 'react-router-dom';
 
 
 const Search = () => {
+  
   const [messages, setMessages] = React.useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [usernames, setUsernames] = React.useState({});
+
+  
+  let keywords=searchParams.get("keywords");
 
   const fetchMessages = () => {
-    fetch('http://localhost:8000/v1/messages/', { text: 'hey' })
+    console.log(keywords);
+    fetch('http://localhost:8000/v1/messages/?text=' + keywords)
       .then((response) => {
         return response.json()
-      })
+      })    
       .then((data) => {
         setMessages(data);
       })
   }
 
+  const convertFromUserIdToUsername = async (userId) => {
+    const response=await fetchUsernameFromUserId(userId);
+    return response[0].username;
+  }
+
   React.useEffect(() => {
+
     fetchMessages();
-  }, []);
+    document.getElementById('search-title').innerHTML = `Search for "${keywords}"`;
+  
+  }, [keywords]);
+
+  React.useEffect(() => {
+    const fetchUsernames = async () => {
+      const newUsernames = {};
+      for (const message of messages) {
+        if (!newUsernames[message.user_id]) {
+          newUsernames[message.user_id] = await fetchUsernameFromUserId(message.user_id);
+          console.log(`Fetched username: ${newUsernames[message.user_id]} for user_id: ${message.user_id}`);
+        }
+      }
+      setUsernames(newUsernames);
+    }
+    
+    fetchUsernames();
+  }, [messages]);
+
 
   return (
-    <div id='feed'>
+    <div className='home'>
       <Navbar/>
-      <div id='feed-content'>
-        <h1>Search for "test"</h1>
-        <div id='feed-messages'> 
-          {messages.length > 0 && messages.map(message => {
+
+    <div className='feed'>
+      <div className='feed-content'>
+        <h1 id="search-title"></h1>
+        <section className='feed-messages'> 
+          {messages.length > 0 &&  messages.map( (message) => {
 
             return (
               <div className='feed-message' id={`${message.message_id}`}>
                 <div className='feed-message-header'>
-                  <img src={tom_anderson} className='search-message-picture' alt={`Profile of ${message.user_id}`}></img>
-                  <a href={`./${message.user_id}`}>{message.user_id}</a>
+                  <img src={tom_anderson} className='feed-message-picture' alt={`Profile of ${message.user_id}`}></img>
+                  <a href={`./${message.user_id}`} className='feed-message-username'>{usernames[message.user_id]}</a>
                 </div>
                 <div className='feed-message-content'>
                   <p>{message.text}</p>
@@ -71,9 +110,12 @@ const Search = () => {
           })}
 
 
-          </div>
+          </section>
         </div>
       </div>
+      <SearchBar/>
+      </div>
+      
   );
 }
 
