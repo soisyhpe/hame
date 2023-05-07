@@ -19,16 +19,16 @@ USERS_API.
   })
 
   // users : get a specific user from username
-  .get('/:username', validate(getUserFromUsernameSchema), async (req, res) => {
-    let result = await getUserFromUsername(req.params.username);
+  .get('/', validate(getUserFromUsernameSchema), async (req, res) => {
+    let result = await getUserFromUsername(req.query.username);
 
     if (!result) res.status(404).json({ message: 'User does not exist' });
     else res.status(200).json(result);
   })
 
   // users : get a specific user from id
-  .get('/:user_id', validate(getUserFromIdSchema), async (req, res) => {
-    let result = await getUserFromId(req.params.user_id);
+  .get('/', validate(getUserFromIdSchema), async (req, res) => {
+    let result = await getUserFromId(req.query.user_id);
 
     if (!result) res.status(404).json({ message: 'User does not exist' });
     else res.status(200).json(result);

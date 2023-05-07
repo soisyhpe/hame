@@ -1,8 +1,8 @@
 // dependencies
 import { Router, json } from 'express';
-import { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser } from '../../db/messages_db.js';
+import { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage,isLikedBy, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser } from '../../db/messages_db.js';
 import { validate } from '../../routes/validate_ressource.js';
-import { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema } from './validator_schemas.js';
+import { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, isLikedBySchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema } from './validator_schemas.js';
 
 // express' stuff
 const MESSAGES_API = Router();
@@ -82,9 +82,19 @@ MESSAGES_API
     if (!result) res.status(204).json({ message: 'Unable to like this message' });
     else res.status(200).json({ message: 'Message was successfully liked' });
   })
+  
+  // messages : is liked by an user
+  .get('/:message_id/likes/:user_id', validate(isLikedBySchema), async (req, res) => {
+    
+    console.log(req.params.message_id, req.params.user_id);
+    let result = await isLikedBy(req.params.message_id, req.params.user_id);
+    if (!result) res.status(200).json({ message: 'false' });
+    else res.status(200).json({ message: 'true' });
+  })
 
   // messages : unlike a message
-  .delete('/:message_id/likes/:user_id', validate(unlikedMessageSchema), async (req, res) => {
+  .delete('/:message_id/likes/', validate(unlikedMessageSchema), async (req, res) => {
+    console.log("hehe yea");
     let result = await unlikeMessage(req.params.message_id, req.body.user_id);
 
     if (!result) res.status(204).json({ message: 'Unable to unlike this message' });
