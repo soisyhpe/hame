@@ -182,7 +182,7 @@ const Profile = () => {
       )}
       <div className='profile-page'>
         <div className='profile-content'>
-          <h1>Profile de {`${userData.username}`}</h1>
+          <h1>Profil de {`${userData.username}`}</h1>
           <div className='profile-header'>
             <div className='profile-header-picture'>
               <img src={tom_anderson}/>
