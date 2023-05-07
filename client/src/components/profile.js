@@ -16,6 +16,7 @@ import Navbar from './navbar';
 import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Followers from './followers.js';
+import Friends from './friends.js';
 
 const Profile = () => {
   // const userId = 'b9bb829a-d3f7-4a0b-b58e-9af7611a79f9';
@@ -23,6 +24,7 @@ const Profile = () => {
   const [userMessages, setUserMessages] = useState({});
   const [userId, setUserId] = useState('b9bb829a-d3f7-4a0b-b58e-9af7611a79f9');
   const [showFollowersModal, setShowFollowersModal] = React.useState(false);
+  const [showFriendsModal, setShowFriendsModal] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -52,6 +54,10 @@ const Profile = () => {
 
   const toggleFollowersModal = () => {
     setShowFollowersModal(!showFollowersModal);
+  };
+
+  const toggleFriendsModal = () => {
+    setShowFriendsModal(!showFriendsModal);
   };
 
   const showBiography = () => {
@@ -89,7 +95,9 @@ const Profile = () => {
     return (
       <div className='profile-header-statistics'>
         <div className='profile-header-statistics-item'>
-          <Link to={`/${userData.username}/friends`} className='profile-item'>{`${userData.friends}`} friends</Link>
+        <span onClick={toggleFriendsModal} className="profile-item">
+            {`${userData.friends}`} friends
+          </span>
         </div>
         <div className="profile-header-statistics-item">
           <span onClick={toggleFollowersModal} className="profile-item">
@@ -161,9 +169,15 @@ const Profile = () => {
     <div className="profile">
       <Navbar/>
       {showFollowersModal && (
-          <div className="followers-modal">
+          <div className="page-modal">
             <Followers username={userData.username} />
-            <button onClick={toggleFollowersModal} className='profile-followerlist-closebutton'>Close</button>
+            <button onClick={toggleFollowersModal} className='profile-list-closebutton'>Close</button>
+          </div>
+      )}
+      {showFriendsModal && (
+          <div className="page-modal">
+            <Friends username={userData.username} />
+            <button onClick={toggleFriendsModal} className='profile-list-closebutton'>Close</button>
           </div>
       )}
       <div className='profile-page'>
