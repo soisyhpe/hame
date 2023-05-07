@@ -13,11 +13,22 @@ import like_icon from '../assets/medias/like.svg';
 import save_icon from '../assets/medias/bookmarks.svg';
 
 import Navbar from './navbar';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const userId = 'b9bb829a-d3f7-4a0b-b58e-9af7611a79f9';
+  // const userId = 'b9bb829a-d3f7-4a0b-b58e-9af7611a79f9';
   const [userData, setUserData] = useState({});
   const [userMessages, setUserMessages] = useState({});
+
+  const navigate = useNavigate();
+
+  let { userId } = useParams();
+
+
+  if (userId === undefined) {
+    userId = 'b9bb829a-d3f7-4a0b-b58e-9af7611a79f9';
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +43,7 @@ const Profile = () => {
 
     fetchData();
     fetchMessages();
+    console.log(userData);
   }, []);
 
   const showBiography = () => {
@@ -89,7 +101,7 @@ const Profile = () => {
       <div className='feed-message' id={`${message.message_id}`}>
         <div className='feed-message-header'>
           <img src={tom_anderson} className='feed-message-picture' alt={`Profile of ${message.user_id}`}/>
-          <a href={`./${message.user_id}`}>{userData.username}</a>
+          <a href={`./${message.user_id}`} onClick={(e)=>{e.preventDefault(); navigate(`/${message.user_id}`);}}>{userData.username}</a>
         </div>
         <div className='feed-message-content'>
           <p>{`${message.text}`}</p>

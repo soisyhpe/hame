@@ -8,11 +8,14 @@ import repost_icon from '../assets/medias/repost.svg';
 import like_icon from '../assets/medias/like.svg';
 import filled_like_icon from '../assets/medias/like-filled.svg';
 import save_icon from '../assets/medias/bookmarks.svg';
+import { useNavigate } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
 
 const Feed = () => {
   const [messages, setMessages] = useState([]);
+
+  const navigate = useNavigate();
 
   const sendNewMessage = (message) => {
     // todo : post new message and get message_id
@@ -183,7 +186,7 @@ const Feed = () => {
             return (<div className='feed-message' id={`${message.message_id}`}>
               <div className='feed-message-header'>
                 <img src={tom_anderson} className='feed-message-picture' alt={`Profile of ${message.user_id}`}></img>
-                <a href={`./${message.user_id}`}>{fetchUsername(`${message.user_id}`)}</a>
+                <a href={`./${message.user_id}`} onClick={(e)=>{e.preventDefault(); navigate(`/${message.user_id}`);}}>{fetchUsername(`${message.user_id}`)}</a>
               </div>
               <div className='feed-message-content'>
                 <p>{`${message.text}`}</p>

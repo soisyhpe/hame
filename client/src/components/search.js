@@ -16,6 +16,7 @@ import repost_icon from '../assets/medias/repost.svg';
 import like_icon from '../assets/medias/like.svg';
 import save_icon from '../assets/medias/bookmarks.svg';
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const Search = () => {
@@ -23,6 +24,8 @@ const Search = () => {
   const [messages, setMessages] = React.useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [usernames, setUsernames] = React.useState({});
+
+  const navigate = useNavigate();
 
   
   let keywords=searchParams.get("keywords");
@@ -56,7 +59,6 @@ const Search = () => {
       for (const message of messages) {
         if (!newUsernames[message.user_id]) {
           newUsernames[message.user_id] = await fetchUsernameFromUserId(message.user_id);
-          console.log(`Fetched username: ${newUsernames[message.user_id]} for user_id: ${message.user_id}`);
         }
       }
       setUsernames(newUsernames);
@@ -80,7 +82,7 @@ const Search = () => {
               <div className='feed-message' id={`${message.message_id}`}>
                 <div className='feed-message-header'>
                   <img src={tom_anderson} className='feed-message-picture' alt={`Profile of ${message.user_id}`}></img>
-                  <a href={`./${message.user_id}`} className='feed-message-username'>{usernames[message.user_id]}</a>
+                  <a href={`./${message.user_id}`} className='feed-message-username' onClick={(e)=>{e.preventDefault(); navigate(`/${message.user_id}`);}} >{usernames[message.user_id]}</a>
                 </div>
                 <div className='feed-message-content'>
                   <p>{message.text}</p>

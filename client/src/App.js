@@ -23,7 +23,8 @@ const App = () => {
         <Route path='/messages' element={<Messages/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/settings' element={<Settings/>}/>
-        <Route path='/search/' element={<Search/>}/>
+        <Route path='/search' element={<Search/>}/>
+        <Route path='/:userId' element={<Profile/>}/>
       </Routes>
     </div>
   );
