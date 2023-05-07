@@ -1,4 +1,85 @@
 .profile {
   display: flex;
   justify-content: flex-start;
+  color: #ffffff;
+}
+
+.profile-page {
+  max-width: 800px;
+  width: 100%;
+}
+
+.profile-content {
+  padding: 50px 100px 50px 100px;
+}
+
+.profile-header {
+  border: 1px solid #282828;
+  padding: 25px;
+  background-color: #0C0C0C;
+}
+
+.profile-header-picture {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-header-picture img {
+  border: 5px solid #0C0C0C;
+  width: 100px;
+  border-radius: 100%;
+}
+
+.profile-header-banner img {
+  width: 100%;
+}
+
+.profile-header-username h2 {
+  margin: 0;
+}
+
+.profile-header-username h3 {
+  margin: 0;
+}
+
+.profile-header-information {
+}
+
+.profile-header-information-item {
+}
+
+.profile-header-statistics {
+  display: inline-flex;
+  justify-content: flex-start;
+}
+
+.profile-header-statistics-item {
+  margin-right: 25px;
+}
+
+.profile-header-statistics-item p {
+  font-weight: bold;
+  margin: 0;
+}
+
+.profile-messages {
+  margin-top: 25px;
+}
+
+.profile-button {
+  border: 0px;
+  border-radius: 25px;
+  padding: 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.block {
+  background-color: rgb(207, 94, 94);
+  color: #ffffff;
+}
+
+.block:hover {
+  background-color: rgb(157, 66, 66);
 }
