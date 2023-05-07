@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import '../assets/css/form.css';
 import logo from '../assets/medias/hame_logo.svg';
@@ -28,6 +28,7 @@ const SignupForm = () => {
     password: '',
     confirm_password: ''
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     //setUserData( prevValues => { return { ...prevValues, [event.target.name]: event.target.value } });
@@ -66,6 +67,8 @@ const SignupForm = () => {
     }
 
     /*if (formErrors.email === '' && formErrors.firstname === '' && formErrors.lastname === '' && formErrors.birthdate === '' && formErrors.username === '' && formErrors.password === '' && formErrors.confirm_password === '') {
+      document.getElementById('submit').disabled = "true";
+    } else {
       document.getElementById('submit').disabled = "false";
     }*/
   }, [userData]);;
@@ -76,8 +79,8 @@ const SignupForm = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-    console.log("user: ", userData)
-    console.log("errors:", formErrors)
+    // console.log("user: ", userData)
+    // console.log("errors:", formErrors)
 
     // document.body.insertAdjacentHTML('beforebegin', '<p>Coucou</p>');
     
@@ -92,10 +95,10 @@ const SignupForm = () => {
         creation_date: new Date()
       })
       .catch((err) => {
-        // todo : show error message
+        alert(err);
       })
       .then((response) => {
-        // todo : redirect to home page
+        navigate('/home')
       });
   };
 
