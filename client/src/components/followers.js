@@ -23,7 +23,7 @@ const Followers = ({ username }) => {
         {Array.isArray(followers) ? (
           followers.map((follower) => (
             <li key={follower.follower_id}>
-              <a href={`/profile/${follower.follower_id}`}>{follower.follower_id}</a>
+              <a href={`./${follower.follower_id}`}>{follower.follower_id}</a>
             </li>
           ))
         ) : (
