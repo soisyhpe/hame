@@ -280,10 +280,6 @@ await DATABASE.createCollection("liked_messages",
         properties:
         {
           _id: {},
-          bookmark_id: {
-            bsonType: 'string',
-            description: "'bookmark_id' is a required field"
-          },
           message_id: {
             bsonType: 'string',
             description: "'message_id' is a required field"
@@ -297,7 +293,7 @@ await DATABASE.createCollection("liked_messages",
     }
   }
 )
-.then((res) => res.createIndex({ message_id: 1, user_idz: 1 }, { unique: true }))
+.then((res) => res.createIndex({ message_id: 1, user_id: 1 }, { unique: true }))
 .catch((err) => console.warn(`Unable to create collection 'liked_messages'. ${err}`));
 
 await DATABASE.createCollection("private_messages",
