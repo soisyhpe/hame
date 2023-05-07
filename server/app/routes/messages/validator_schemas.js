@@ -106,6 +106,14 @@ const likeMessageSchema = object(
   }
 );
 
+const isLikedBySchema = object(
+  {
+    params: object({
+      message_id: string().matches(UUID_REGEX, 'params.message_id must be a valid uuid').required(),
+      user_id: string().matches(UUID_REGEX, 'params.user_id must be a valid uuid').required()
+    })
+  }
+);
 const unlikedMessageSchema = object(
   {
     body: object({
@@ -189,4 +197,4 @@ const modifyMessageSchema = object(
   }
 );
 
-export { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema };
+export { messagesSchema, messagesFromUserSchema, messageFromIdSchema, sendMessageSchema, responsesSchema, deleteMessageSchema, likingUsersSchema, likeMessageSchema, isLikedBySchema, unlikedMessageSchema, likedMessagesSchema, repostingUsersSchema, repostedMessagesSchema, repostedMessagesofUserSchema, modifyMessageSchema };

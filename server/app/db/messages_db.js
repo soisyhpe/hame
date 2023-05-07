@@ -114,13 +114,25 @@ async function likeMessage(messageId, userId, creationDate) {
 async function unlikeMessage(messageId, userId) {
   let query = { message_id: messageId, user_id: userId };
   let update = { $inc: { like_count: -1 } }; // potential issue : negative like counts
-  if (await collection.findOne({ message_id: messageId, user_id: userId }) == null) {
+  console.log("hehe yea");
+  if (await LIKED_MESSAGES_COLLECTION.findOne({ message_id: messageId, user_id: userId }) == null) {
     //console.log("Message not liked by user");
     return false;
   }
   let result = await Promise.all([LIKED_MESSAGES_COLLECTION.deleteOne(query), MESSAGES_COLLECTION.updateOne(query, update)]);
 
   return result;
+}
+
+async function isLikedBy(messageId, userId) {
+  
+  let query = { message_id: messageId, user_id: userId };
+  console.log(query);
+  let result = await LIKED_MESSAGES_COLLECTION.findOne(query);
+  console.log(result!=null);
+
+
+  return result != null;
 }
 
 async function likingUsers(messageId, limit=10) {
@@ -172,4 +184,4 @@ async function modifyMessage(messageId, userId, text, place, media, lastModified
   return result.modifiedCount > 0;
 }
 
-export { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser };
+export { getMessages, getMessagesFromUser, getMessageFromId, sendMessage, getResponses, deleteMessage, likeMessage, isLikedBy, unlikeMessage, likingUsers, likedMessages, repostingUsers, repostedMessages, modifyMessage, repostedMessagesofUser };

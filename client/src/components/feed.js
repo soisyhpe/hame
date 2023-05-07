@@ -6,6 +6,7 @@ import tom_anderson from '../assets/medias/tom_anderson.jpg';
 import comment_icon from '../assets/medias/comment.svg';
 import repost_icon from '../assets/medias/repost.svg';
 import like_icon from '../assets/medias/like.svg';
+import filled_like_icon from '../assets/medias/like-filled.svg';
 import save_icon from '../assets/medias/bookmarks.svg';
 
 import { useEffect, useState } from 'react';
@@ -44,6 +45,7 @@ const Feed = () => {
 
   const fetchProfilePicture = (userId) => {
 
+
   };
 
   const fetchUsername = (userId) => {
@@ -62,12 +64,78 @@ const Feed = () => {
   };
   
   const commentMessage = () => {
+    
+  };
+  // like the message and update state
+  const likeMessage = (event) => {
+    const userId = "b9bb829a-d3f7-4a0b-b58e-9af7611a79f9";
+    const messageId = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    // get message_id from event target
+    axios.get(`http://localhost:8000/v1/messages/${messageId}/likes/${userId}`, {headers: {'Content-Type': 'application/json'}})
+      .then((response) => {
+        // updating state
+        const likedbool = response.data.message;
+        if (likedbool===true) {
+          // unlike message
+          axios.delete(`http://localhost:8000/v1/messages/${messageId}/likes`, {
+            user_id: "b9bb829a-d3f7-4a0b-b58e-9af7611a79f9"
+          }, {headers: {'Content-Type': 'application/json'}})
+            .then((response) => {
+              // updating state
+              if (response.data.message ==='Message was successfully unliked') {
+                event.target.src = like_icon;
+                // decrement directly in state
+                // setMessages( prevValues => {
+                //   let messages = [...prevValues];
+                //   messages.find(message => message.message_id === messageId).like_count -= 1;
+                //   return messages;
+                // });
+                // console.log("message unliked");
+              }
+    
+            }
+          )
+            .catch((error) => {
+              console.log(error);
+            }
+          )
+        } else {
+          console.log(messageId);
+          // post like
+          axios.post(`http://localhost:8000/v1/messages/${messageId}/likes`, {
+            user_id: "b9bb829a-d3f7-4a0b-b58e-9af7611a79f9",
+            creation_date: new Date().toISOString().slice(0, 19).replace('T', ' ')
+          }, {headers: {'Content-Type': 'application/json'}})
+            .then((response) => {
+              // updating state
+              if (response.data.message ==='Message was successfully liked') {
+                event.target.src = filled_like_icon;
+                // increment directly in state
+                // setMessages( prevValues => {
+                //   let messages = [...prevValues];
+                //   messages.find(message => message.message_id === messageId).like_count += 1;
+                //   return messages;
+                // });
+                // console.log("message liked");
+              } 
+              
+            }
+          )
+            .catch((error) => {
+              console.log(error);
+            }
+          )
+        }
+        
+      }
+    )
+      .catch((error) => {
+        console.log(error);
+      }
+    )
 
   };
-
-  const likeMessage = () => {
-
-  };
+    
 
   const repostMessage = () => {
 
@@ -131,8 +199,8 @@ const Feed = () => {
                     <img className='action-icon' src={repost_icon}/>
                     <p>{`${message.repost_count} reposts`}</p>
                   </div>
-                  <div className='feed-message-action' onClick={likeMessage}>
-                    <img className='action-icon' src={like_icon}/>
+                  <div className='feed-message-action'onClick={likeMessage}>
+                    <input type="image" className='action-icon' src={like_icon} alt='likebutton' />
                     <p>{`${message.like_count} likes`}</p>
                   </div>
                   <div className='feed-message-action' onClick={saveMessage}>
