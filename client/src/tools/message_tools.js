@@ -2,6 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 import tom_anderson from '../assets/medias/tom_anderson.jpg';
 
+const fetchUserFromUserId = async (userId) => {
+  const response = await fetch(`http://localhost:8000/v1/users?user_id=${userId}`);
+  const data = await response.json();
+  return data[0];
+};
+
+const fetchUserFromUsername = async (username) => {
+  const response = await fetch(`http://localhost:8000/v1/users?username=${username}`);
+  const data = await response.json();
+  return data[0];
+};
+
 const fetchProfilePictureFromUserId = async (userId) => {
   return {tom_anderson};
   // const response = await fetch(`http://localhost:8000/v1/users?user_id=${userId}`);
@@ -28,4 +40,4 @@ const fetchUsernameFromUsername = async (username) => {
   return data.username;
 };
 
-export { fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId, fetchUsernameFromUsername };
+export { fetchUserFromUserId, fetchUserFromUsername, fetchProfilePictureFromUserId, fetchProfilePictureFromUsername, fetchUsernameFromUserId, fetchUsernameFromUsername };
